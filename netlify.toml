@@ -1,4 +1,0 @@
-# Netlify: die Webseite liegt im Hauptordner, der Speicher-Dienst in netlify/functions
-[build]
-  publish = "."
-  functions = "netlify/functions"

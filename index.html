@@ -781,7 +781,6 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .laune-froh .f-koerper-g, .laune-satt .f-koerper-g{animation:huepfen 1.4s cubic-bezier(.3,0,.3,1) infinite}
 .laune-schlaf .f-koerper-g{animation:atmen 4s ease-in-out infinite}
 .f-ei{transform-origin:100px 180px; animation:wackel-ei 3s ease-in-out infinite}
-.f-augen{transform-box:fill-box; transform-origin:center; animation:blinzeln 4.5s infinite}
 .f-aura{animation:puls 2.4s ease-in-out infinite}
 .freund-tier.hops .f-svg{animation:hops .55s cubic-bezier(.2,1.6,.4,1)}
 .freund-herz{position:absolute; top:10%; font-size:22px; pointer-events:none; animation:herz 1s ease-out forwards}
@@ -792,6 +791,66 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes hops{0%{transform:none} 40%{transform:translateY(-22px) rotate(-6deg)} 70%{transform:translateY(0) scale(1.06,.94)} 100%{transform:none}}
 @keyframes herz{from{opacity:1; transform:translateY(0) scale(.6)} to{opacity:0; transform:translateY(-60px) scale(1.3)}}
 @keyframes zzz{0%{opacity:0; transform:translateY(6px)} 40%{opacity:1} 100%{opacity:0; transform:translateY(-14px)}}
+/* Karo-Freund: Aktionen */
+.freund-futter .bar i{transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.freund-essen{position:absolute; font-size:24px; z-index:4; pointer-events:none; transition:transform .6s cubic-bezier(.4,-0.3,.6,1), opacity .6s ease-in}
+.f-glanz.klein{opacity:.8}
+.f-zunge{fill:#ff7b8f}
+.f-hops{transform-box:view-box; transform-origin:100px 182px}
+.f-schatten{transform-box:fill-box; transform-origin:center}
+.f-lider{transform-box:fill-box; transform-origin:center; transition:transform .06s}
+.blinzelt .f-lider{transform:scaleY(.08)}
+.f-mund-g{transform-box:fill-box; transform-origin:center top}
+.f-arm-g{transform-box:view-box}
+.f-arm-g.links{transform-origin:58px 118px} .f-arm-g.rechts{transform-origin:142px 118px}
+.stufe-1 .f-arm-g.links{transform-origin:58px 132px} .stufe-1 .f-arm-g.rechts{transform-origin:142px 132px}
+.f-antenne-g{transform-box:view-box; transform-origin:100px 50px; animation:antenne 2.2s ease-in-out infinite}
+@keyframes antenne{0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(5deg)}}
+.akt-hops .f-hops{animation:a-hops .75s cubic-bezier(.3,0,.3,1)}
+.akt-hops .f-schatten{animation:a-schatten .75s cubic-bezier(.3,0,.3,1)}
+@keyframes a-hops{0%{transform:none} 18%{transform:scale(1.12,.86)} 45%{transform:translateY(-34px) scale(.92,1.1)} 70%{transform:translateY(0) scale(1.1,.9)} 85%{transform:scale(.97,1.03)} 100%{transform:none}}
+@keyframes a-schatten{45%{transform:scale(.6); opacity:.5}}
+.akt-winken .f-arm-g.rechts{animation:a-winken 1.5s ease-in-out}
+@keyframes a-winken{0%,100%{transform:none} 15%{transform:rotate(-120deg)} 30%{transform:rotate(-95deg)} 45%{transform:rotate(-125deg)} 60%{transform:rotate(-95deg)} 75%{transform:rotate(-120deg)}}
+.akt-winken .f-hops{animation:a-neigen 1.5s ease-in-out}
+@keyframes a-neigen{30%,70%{transform:rotate(-4deg)}}
+.akt-tanzen .f-hops{animation:a-tanzen 2s ease-in-out}
+.akt-tanzen .f-arm-g.links{animation:a-arm-hoch-l 2s ease-in-out} .akt-tanzen .f-arm-g.rechts{animation:a-arm-hoch-r 2s ease-in-out}
+@keyframes a-tanzen{0%,100%{transform:none} 12%{transform:rotate(-9deg) translateY(-6px)} 25%{transform:rotate(9deg)} 37%{transform:rotate(-9deg) translateY(-6px)} 50%{transform:rotate(9deg)} 62%{transform:rotate(-9deg) translateY(-6px)} 75%{transform:rotate(9deg)} 88%{transform:translateY(-10px)}}
+@keyframes a-arm-hoch-l{0%,100%{transform:none} 10%,90%{transform:rotate(110deg)} 30%,70%{transform:rotate(80deg)} 50%{transform:rotate(115deg)}}
+@keyframes a-arm-hoch-r{0%,100%{transform:none} 10%,90%{transform:rotate(-110deg)} 30%,70%{transform:rotate(-80deg)} 50%{transform:rotate(-115deg)}}
+.akt-drehen .f-hops{animation:a-drehen .9s cubic-bezier(.4,0,.2,1)}
+@keyframes a-drehen{0%{transform:none} 25%{transform:scaleX(.05) translateY(-8px)} 50%{transform:scaleX(-1) translateY(-12px)} 75%{transform:scaleX(.05) translateY(-8px)} 100%{transform:none}}
+.akt-gaehnen .f-mund-g{animation:a-gaehnen 1.7s ease-in-out}
+.akt-gaehnen .f-lider{transform:scaleY(.35)}
+.akt-gaehnen .f-hops{animation:a-strecken 1.7s ease-in-out}
+@keyframes a-gaehnen{0%,100%{transform:none} 30%,65%{transform:scale(1.9,2.6)}}
+@keyframes a-strecken{0%,100%{transform:none} 30%,65%{transform:scale(.96,1.07)}}
+.akt-bauch .f-arm-g.links{animation:a-bauch-l 1.4s ease-in-out} .akt-bauch .f-arm-g.rechts{animation:a-bauch-r 1.4s ease-in-out}
+@keyframes a-bauch-l{0%,100%{transform:none} 20%,80%{transform:rotate(-55deg)} 40%{transform:rotate(-40deg)} 60%{transform:rotate(-60deg)}}
+@keyframes a-bauch-r{0%,100%{transform:none} 20%,80%{transform:rotate(55deg)} 40%{transform:rotate(60deg)} 60%{transform:rotate(40deg)}}
+.akt-schwindel .f-hops{animation:a-schwindel .55s ease-in-out 4}
+@keyframes a-schwindel{0%,100%{transform:rotate(0)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)}}
+.akt-schnarchen .f-hops{animation:a-schnarchen 1.8s ease-in-out}
+@keyframes a-schnarchen{50%{transform:scale(1.05,.95)}}
+.akt-wackeln .f-hops{animation:a-wackeln .9s ease-in-out}
+.akt-wackeln-stark .f-hops{animation:a-wackeln-stark .9s ease-in-out}
+.akt-schluepfen .f-hops{animation:a-wackeln-stark .5s ease-in-out 3}
+@keyframes a-wackeln{0%,100%{transform:none} 20%{transform:rotate(-7deg)} 45%{transform:rotate(7deg)} 70%{transform:rotate(-4deg)}}
+@keyframes a-wackeln-stark{0%,100%{transform:none} 15%{transform:rotate(-13deg) translateY(-4px)} 35%{transform:rotate(12deg)} 55%{transform:rotate(-10deg) translateY(-6px)} 75%{transform:rotate(8deg)}}
+.akt-leuchten .f-hops{animation:a-leuchten 1.5s ease-in forwards}
+@keyframes a-leuchten{0%{filter:none; transform:none} 60%{filter:brightness(1.6) drop-shadow(0 0 12px #fff6b0)} 100%{filter:brightness(4) drop-shadow(0 0 30px #fff); transform:scale(1.12)}}
+.akt-geschluepft .f-hops, .akt-verwandelt .f-hops{animation:a-plopp .8s cubic-bezier(.2,1.6,.4,1)}
+@keyframes a-plopp{0%{transform:scale(.3) translateY(20px); filter:brightness(3)} 60%{filter:none} 100%{transform:none}}
+.f-schalen path{transform-box:fill-box; transform-origin:center bottom}
+.akt-geschluepft .f-schalen path:first-child{animation:schale-l .9s ease-out forwards}
+.akt-geschluepft .f-schalen path:last-child{animation:schale-r .9s ease-out forwards}
+@keyframes schale-l{to{transform:translate(-50px, 30px) rotate(-70deg); opacity:0}}
+@keyframes schale-r{to{transform:translate(50px, 30px) rotate(70deg); opacity:0}}
+.spricht .f-mund-g{animation:sprechen .16s ease-in-out infinite alternate}
+@keyframes sprechen{from{transform:scale(1,1)} to{transform:scale(.8,1.7)}}
+.kaut .f-mund-g{animation:kauen .22s ease-in-out infinite alternate}
+@keyframes kauen{from{transform:scale(1.2,.5)} to{transform:scale(.9,1.3)}}
 .freund-einst .freund-vorschau{width:120px; height:120px; align-self:center}
 .freund-farben{display:flex; gap:10px; flex-wrap:wrap}
 .freund-farbe{width:40px; height:40px; border-radius:50%; border:3px solid var(--paper); box-shadow:0 0 0 2px var(--line-2); cursor:pointer}
@@ -22544,28 +22603,33 @@ function freundLaune(){
   if(S.serie.letzter === datum(-1) || !S.serie.letzter) return "hunger";
   return "schlaf";
 }
-function freundSvg(stufe, laune){
+/* Aufbau der Zeichnung (damit sich Teile einzeln bewegen können):
+   f-schatten · f-hops (Sprünge, Drehungen) › f-koerper-g (Atmen) › Flügel, Antenne, Füße, Arme (f-arm-g), Körper,
+   f-gesicht (folgt dem Finger) › f-augen › f-lider › f-pupillen (folgen dem Finger) · Backen · f-mund-g · Brille */
+function freundSvg(stufe, laune, extra){
   const hat = id => !!(S.abz && S.abz[id]);
   const schlaf = laune === "schlaf";
-  const augen = (x1, x2, y, r) => schlaf
-    ? '<path class="f-strich" d="M'+(x1-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0 M'+(x2-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0"/>'
-    : '<g class="f-augen"><ellipse class="f-weiss" cx="'+x1+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/><ellipse class="f-weiss" cx="'+x2+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/>'+
-      '<circle class="f-pupille" cx="'+(x1+r*0.15)+'" cy="'+(y+r*0.15)+'" r="'+(r*0.58)+'"/><circle class="f-pupille" cx="'+(x2+r*0.15)+'" cy="'+(y+r*0.15)+'" r="'+(r*0.58)+'"/>'+
-      '<circle class="f-glanz" cx="'+(x1+r*0.35)+'" cy="'+(y-r*0.25)+'" r="'+(r*0.22)+'"/><circle class="f-glanz" cx="'+(x2+r*0.35)+'" cy="'+(y-r*0.25)+'" r="'+(r*0.22)+'"/></g>';
-  const mund = (x, y, b) => laune === "satt" || laune === "froh"
-    ? '<path class="f-mund" d="M'+(x-b)+' '+y+' q'+b+' '+(b*0.9)+' '+(2*b)+' 0 q-'+b+' '+(b*0.35)+' -'+(2*b)+' 0z"/>'
+  const augen = (x1, x2, y, r) => {
+    const pupille = x => '<circle class="f-pupille" cx="'+(x+r*0.12)+'" cy="'+(y+r*0.12)+'" r="'+(r*0.58)+'"/><circle class="f-glanz" cx="'+(x+r*0.34)+'" cy="'+(y-r*0.22)+'" r="'+(r*0.22)+'"/><circle class="f-glanz klein" cx="'+(x-r*0.1)+'" cy="'+(y+r*0.35)+'" r="'+(r*0.1)+'"/>';
+    if(schlaf) return '<g class="f-augen"><path class="f-strich" d="M'+(x1-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0 M'+(x2-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0"/></g>';
+    return '<g class="f-augen"><g class="f-lider"><ellipse class="f-weiss" cx="'+x1+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/><ellipse class="f-weiss" cx="'+x2+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/>'+
+      '<g class="f-pupillen">'+pupille(x1)+pupille(x2)+'</g></g></g>';
+  };
+  const mund = (x, y, b) => '<g class="f-mund-g">'+(laune === "satt" || laune === "froh"
+    ? '<path class="f-mund" d="M'+(x-b)+' '+y+' q'+b+' '+(b*0.95)+' '+(2*b)+' 0 q-'+b+' '+(b*0.35)+' -'+(2*b)+' 0z"/><path class="f-zunge" d="M'+(x-b*0.45)+' '+(y+b*0.55)+' q'+(b*0.45)+' -'+(b*0.3)+' '+(b*0.9)+' 0 q-'+(b*0.45)+' '+(b*0.25)+' -'+(b*0.9)+' 0z"/>'
     : laune === "hunger" ? '<ellipse class="f-mund" cx="'+x+'" cy="'+(y+3)+'" rx="'+(b*0.45)+'" ry="'+(b*0.55)+'"/>'
-    : '<path class="f-strich" d="M'+(x-b*0.5)+' '+(y+3)+' h'+b+'"/>';
+    : '<path class="f-strich" d="M'+(x-b*0.5)+' '+(y+3)+' h'+b+'"/>')+'</g>';
   const backen = (x1, x2, y) => '<ellipse class="f-backe" cx="'+x1+'" cy="'+y+'" rx="9" ry="6"/><ellipse class="f-backe" cx="'+x2+'" cy="'+y+'" rx="9" ry="6"/>';
-  const karo = '<defs><pattern id="fkaro" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="8" height="8" class="f-karo"/><rect x="8" y="8" width="8" height="8" class="f-karo"/></pattern>'+
-    '<radialGradient id="faura"><stop offset="0" stop-color="#fff6b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff6b0" stop-opacity="0"/></radialGradient></defs>';
-  let s = '<svg viewBox="0 0 200 200" class="f-svg" role="img" aria-label="Dein Karo-Freund">'+karo+'<ellipse class="f-schatten" cx="100" cy="186" rx="50" ry="8"/>';
+  const defs = '<defs><pattern id="fkaro" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="8" height="8" class="f-karo"/><rect x="8" y="8" width="8" height="8" class="f-karo"/></pattern>'+
+    '<radialGradient id="faura"><stop offset="0" stop-color="#fff6b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff6b0" stop-opacity="0"/></radialGradient>'+
+    '<radialGradient id="fglanz" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
+  let s = '<svg viewBox="0 0 200 200" class="f-svg stufe-'+stufe+(extra ? " "+extra : "")+'" role="img" aria-label="Dein Karo-Freund">'+defs+'<ellipse class="f-schatten" cx="100" cy="186" rx="50" ry="8"/><g class="f-hops">';
   if(stufe === 0){
     const risse = level(S.xp).n >= 2;
-    s += '<g class="f-koerper-g f-ei"><path class="f-eischale" d="M100 42c-36 0-58 52-58 88 0 32 26 52 58 52s58-20 58-52c0-36-22-88-58-88z"/>'+
-      '<path fill="url(#fkaro)" opacity=".5" d="M100 42c-36 0-58 52-58 88 0 32 26 52 58 52s58-20 58-52c0-36-22-88-58-88z"/>'+
-      (risse ? '<path class="f-riss" d="M58 118l14-10 10 12 12-14 12 12 12-10 12 12 14-8"/>'+augen(84, 116, 104, 7) : '')+'</g>';
-    return s + '</svg>';
+    const ei = 'M100 42c-36 0-58 52-58 88 0 32 26 52 58 52s58-20 58-52c0-36-22-88-58-88z';
+    s += '<g class="f-koerper-g f-ei"><path class="f-eischale" d="'+ei+'"/><path fill="url(#fkaro)" opacity=".5" d="'+ei+'"/><path fill="url(#fglanz)" d="'+ei+'"/>'+
+      (risse ? '<path class="f-riss" d="M58 118l14-10 10 12 12-14 12 12 12-10 12 12 14-8"/><g class="f-gesicht">'+augen(84, 116, 104, 7)+'</g>' : '')+'</g>';
+    return s + '</g></svg>';
   }
   const kopfY = stufe === 1 ? 118 : 100;
   s += '<g class="f-koerper-g">';
@@ -22574,23 +22638,27 @@ function freundSvg(stufe, laune){
     s += '<g class="f-fluegel-g"><path class="f-fluegel" d="'+fl+'"/><path class="f-feder" d="M20 112q14 0 28 2M24 128q12-4 24-8M38 138q6-8 12-14"/></g>'+
       '<g class="f-fluegel-g rechts" transform="translate(200 0) scale(-1 1)"><path class="f-fluegel" d="'+fl+'"/><path class="f-feder" d="M20 112q14 0 28 2M24 128q12-4 24-8M38 138q6-8 12-14"/></g>'; }
   const mitCap = hat("a500") && !(hat("serie30") || stufe >= 4);
-  if(stufe >= 2 && !mitCap) s += '<path class="f-strich dick" d="M100 '+(kopfY-52)+' q-4 -16 6 -24"/><circle class="f-antenne" cx="107" cy="'+(kopfY-78)+'" r="8"/>';
-  if(stufe === 1) s += '<ellipse class="f-fuss" cx="80" cy="176" rx="14" ry="8"/><ellipse class="f-fuss" cx="120" cy="176" rx="14" ry="8"/><path class="f-koerper" d="M100 70c34 0 52 30 52 62 0 30-22 46-52 46s-52-16-52-46c0-32 18-62 52-62z"/>';
+  if(stufe >= 2 && !mitCap) s += '<g class="f-antenne-g"><path class="f-strich dick" d="M100 '+(kopfY-52)+' q-4 -16 6 -24"/><circle class="f-antenne" cx="107" cy="'+(kopfY-78)+'" r="8"/></g>';
+  if(stufe === 1) s += '<ellipse class="f-fuss" cx="80" cy="176" rx="14" ry="8"/><ellipse class="f-fuss" cx="120" cy="176" rx="14" ry="8"/>'+
+    '<g class="f-arm-g links"><ellipse class="f-arm" cx="52" cy="140" rx="9" ry="13" transform="rotate(25 52 140)"/></g><g class="f-arm-g rechts"><ellipse class="f-arm" cx="148" cy="140" rx="9" ry="13" transform="rotate(-25 148 140)"/></g>'+
+    '<path class="f-koerper" d="M100 70c34 0 52 30 52 62 0 30-22 46-52 46s-52-16-52-46c0-32 18-62 52-62z"/><path fill="url(#fglanz)" d="M100 70c34 0 52 30 52 62 0 30-22 46-52 46s-52-16-52-46c0-32 18-62 52-62z"/>';
   else {
     s += '<ellipse class="f-fuss" cx="78" cy="178" rx="16" ry="9"/><ellipse class="f-fuss" cx="122" cy="178" rx="16" ry="9"/>'+
-      '<ellipse class="f-arm" cx="46" cy="132" rx="12" ry="20" transform="rotate(20 46 132)"/><ellipse class="f-arm" cx="154" cy="132" rx="12" ry="20" transform="rotate(-20 154 132)"/>'+
-      '<rect class="f-koerper" x="48" y="'+(kopfY-50)+'" width="104" height="'+(178-kopfY+50)+'" rx="46"/>'+
+      '<g class="f-arm-g links"><ellipse class="f-arm" cx="46" cy="132" rx="12" ry="20" transform="rotate(20 46 132)"/></g><g class="f-arm-g rechts"><ellipse class="f-arm" cx="154" cy="132" rx="12" ry="20" transform="rotate(-20 154 132)"/></g>'+
+      '<rect class="f-koerper" x="48" y="'+(kopfY-50)+'" width="104" height="'+(178-kopfY+50)+'" rx="46"/><rect fill="url(#fglanz)" x="48" y="'+(kopfY-50)+'" width="104" height="'+(178-kopfY+50)+'" rx="46"/>'+
       '<rect x="72" y="'+(kopfY+26)+'" width="56" height="44" rx="16" fill="url(#fkaro)" opacity=".55"/>';
   }
-  s += augen(80, 120, kopfY - 6, stufe === 1 ? 11 : 12) + backen(66, 134, kopfY + 12) + mund(100, kopfY + 12, 9);
+  s += '<g class="f-gesicht">'+augen(80, 120, kopfY - 6, stufe === 1 ? 11 : 12) + backen(66, 134, kopfY + 12) + mund(100, kopfY + 12, 9);
   if(hat("eins")) s += '<g class="f-brille"><circle cx="80" cy="'+(kopfY-6)+'" r="16"/><circle cx="120" cy="'+(kopfY-6)+'" r="16"/><path d="M96 '+(kopfY-6)+'h8"/></g>';
+  s += '</g>';
   if(hat("vok50")) s += '<path class="f-schal" d="M58 '+(kopfY+34)+'q42 16 84 0v12q-42 16-84 0z"/><path class="f-schal" d="M128 '+(kopfY+42)+'l10 26-14 2z"/>';
   const kopfOben = stufe === 1 ? 72 : kopfY - 50;
   if(hat("serie30") || stufe >= 4) s += '<path class="f-krone" d="M76 '+(kopfOben+4)+'l6-24 12 14 6-18 6 18 12-14 6 24z"/>';
-  else if(hat("a500")) s += '<path class="f-cap" d="M64 '+(kopfOben+12)+'q36-34 72 0z"/><path class="f-cap" d="M126 '+(kopfOben+10)+'h28q2 6-6 8h-22z"/>';
+  else if(mitCap) s += '<path class="f-cap" d="M64 '+(kopfOben+12)+'q36-34 72 0z"/><path class="f-cap" d="M126 '+(kopfOben+10)+'h28q2 6-6 8h-22z"/>';
   if(hat("blitz300")) s += '<path class="f-sticker" d="M'+(stufe === 1 ? 128 : 132)+' '+(kopfY+40)+'l-10 14h7l-3 12 11-15h-7z"/>';
-  s += '</g>';
-  if(laune === "schlaf") s += '<text class="f-zzz" x="140" y="60">z</text><text class="f-zzz z2" x="152" y="44">Z</text>';
+  s += '</g></g>';
+  if(extra && extra.indexOf("akt-geschluepft") >= 0) s += '<g class="f-schalen"><path class="f-eischale" d="M44 150c0-20 10-40 26-48l8 12 10-10 10 12 4 34z"/><path class="f-eischale" d="M156 150c0-20-10-40-26-48l-8 12-10-10-10 12-4 34z"/></g>';
+  if(schlaf) s += '<text class="f-zzz" x="140" y="60">z</text><text class="f-zzz z2" x="152" y="44">Z</text>';
   return s + '</svg>';
 }
 function freundSpruch(stufe, laune){
@@ -22604,25 +22672,139 @@ function freundSpruch(stufe, laune){
   }[laune];
   return K.pick(liste).replace("{name}", f.name);
 }
+/* Leben für den Karo-Freund: Augen folgen dem Finger, Blinzeln, eigene Aktionen, Reaktionen aufs Antippen.
+   Läuft nur, solange die Karte im Bild ist, und gar nicht bei „weniger Bewegung“. */
+function freundLeben(knopf, st){
+  const svg = () => knopf.querySelector(".f-svg");
+  const api = {mach(){}, sprechen(){}, kauen(){}, schwindel(){}, blick(){}};
+  if(ruhig()) return api;
+  let ziel = {x:0, y:0}, jetzt = {x:0, y:0}, zuletzt = 0, schwindelBis = 0, aktion = null;
+  const t0 = performance.now();
+  let blinzeln = t0 + 1200 + Math.random()*2500, naechste = t0 + 3000 + Math.random()*2500, blickNeu = 0;
+  const bewegt = e => {
+    const r = knopf.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height*0.45;
+    const dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy) || 1, k = Math.min(1, d/180);
+    ziel = {x:dx/d*k, y:dy/d*k}; zuletzt = performance.now();
+  };
+  window.addEventListener("pointermove", bewegt, {passive:true});
+  window.addEventListener("pointerdown", bewegt, {passive:true});
+  function mach(name, dauer){
+    const s = svg(); if(!s) return;
+    if(aktion) s.classList.remove("akt-"+aktion);
+    void s.getBoundingClientRect();
+    aktion = name; s.classList.add("akt-"+name);
+    setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("akt-"+name); if(aktion === name) aktion = null; }, dauer);
+  }
+  function blinzel(){ const s = svg(); if(!s) return; s.classList.add("blinzelt"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("blinzelt"); }, 120); }
+  function vonSelbst(){
+    if(st.stufe === 0){ mach(level(S.xp).n >= 2 ? "wackeln-stark" : "wackeln", 900); return; }
+    if(st.laune === "schlaf"){ mach("schnarchen", 1800); return; }
+    const liste = ["hops", "umschauen", "umschauen", "drehen"];
+    if(st.stufe >= 1) liste.push("winken", "winken");
+    if(st.laune === "satt") liste.push("tanzen", "tanzen", "tanzen");
+    if(st.laune === "froh") liste.push("tanzen", "hops");
+    if(st.laune === "hunger") liste.push("gaehnen", "bauch", "bauch");
+    const a = K.pick(liste);
+    if(a === "umschauen"){ [[-1, 0.1], [1, 0.1], [0, 0]].forEach((z, i) => setTimeout(() => { ziel = {x:z[0], y:z[1]}; zuletzt = performance.now(); }, i*650)); return; }
+    mach(a, {hops:750, winken:1500, tanzen:2000, gaehnen:1700, drehen:900, bauch:1400}[a]);
+  }
+  (function bild(t){
+    if(!document.body.contains(knopf)){ window.removeEventListener("pointermove", bewegt); window.removeEventListener("pointerdown", bewegt); return; }
+    const s = svg();
+    if(s){
+      if(t < schwindelBis){ const w = t/110; ziel = {x:Math.cos(w), y:Math.sin(w)}; }
+      else if(t - zuletzt > 2600 && t > blickNeu){ ziel = {x:(Math.random()-0.5)*1.3, y:(Math.random()-0.5)*0.7}; blickNeu = t + 1400 + Math.random()*2200; }
+      jetzt.x += (ziel.x - jetzt.x) * 0.16; jetzt.y += (ziel.y - jetzt.y) * 0.16;
+      const p = s.querySelector(".f-pupillen"), g = s.querySelector(".f-gesicht");
+      if(p) p.setAttribute("transform", "translate("+(jetzt.x*4.2).toFixed(2)+" "+(jetzt.y*3.6).toFixed(2)+")");
+      if(g) g.setAttribute("transform", "translate("+(jetzt.x*3.2).toFixed(2)+" "+(jetzt.y*2.2).toFixed(2)+")");
+      if(t > blinzeln && st.laune !== "schlaf"){ blinzel(); if(Math.random() < 0.25) setTimeout(blinzel, 260); blinzeln = t + 2000 + Math.random()*4200; }
+      if(t > naechste && !aktion){ vonSelbst(); naechste = t + 4500 + Math.random()*5000; }
+    }
+    requestAnimationFrame(bild);
+  })(t0);
+  api.mach = mach;
+  api.sprechen = ms => { const s = svg(); if(!s) return; s.classList.add("spricht"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("spricht"); }, ms || 1100); };
+  api.kauen = ms => { const s = svg(); if(!s) return; s.classList.add("kaut"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("kaut"); }, ms || 1300); };
+  api.schwindel = ms => { schwindelBis = performance.now() + (ms || 2200); mach("schwindel", ms || 2200); };
+  api.blick = (x, y) => { ziel = {x:x, y:y}; zuletzt = performance.now(); };
+  return api;
+}
 function freundKarte(){
-  const f = freund(), stufe = freundStufe(), laune = freundLaune();
-  const neu = f.stufe !== null && stufe > f.stufe;
-  if(f.stufe === null || stufe > f.stufe){ f.stufe = stufe; speichern(); }
-  const n = heuteN(), satt = Math.min(1, n / TAGESZIEL);
+  const f = freund(), stufe = freundStufe();
+  let laune = freundLaune();
+  const vorher = f.stufe, neu = vorher !== null && vorher !== undefined && stufe > vorher;
+  if(vorher === null || vorher === undefined || stufe > vorher){ f.stufe = stufe; }
+  const n = heuteN(), heute = datum(0);
+  const futterAlt = f.futter && f.futter.tag === heute ? f.futter.n : 0, futterNeu = Math.max(0, n - futterAlt);
+  f.futter = {tag:heute, n:n}; speichern();
+  const futterAnimiert = !neu && futterNeu > 0 && (neu ? vorher : stufe) > 0 && !ruhig();
   const c = el("section","card freund-karte laune-"+laune);
   c.style.setProperty("--pet", f.farbe);
-  c.innerHTML = '<button type="button" class="freund-tier" aria-label="'+esc(f.name)+' antippen">'+freundSvg(stufe, laune)+'</button>'+
-    '<div class="freund-info"><div class="eyebrow">Dein Karo-Freund · '+FREUND_STUFEN[stufe]+'</div><h3>'+esc(f.name)+'</h3>'+
-    '<div class="freund-blase">'+esc(neu ? "✨ Ich hab mich entwickelt! Jetzt bin ich "+["", "geschlüpft", "ein Kind", "groß und hab Flügel", "eine Legende"][stufe]+"!" : freundSpruch(stufe, laune))+'</div>'+
-    (stufe > 0 ? '<div class="freund-futter"><span>Futter heute</span><div class="bar"><i style="width:'+Math.round(satt*100)+'%"></i></div><b class="num">'+Math.min(n, TAGESZIEL)+'/'+TAGESZIEL+'</b></div>' : '')+
+  const zeigeStufe = neu ? vorher : stufe;
+  c.innerHTML = '<button type="button" class="freund-tier" aria-label="'+esc(f.name)+' antippen">'+freundSvg(zeigeStufe, zeigeStufe === 0 ? laune : laune)+'</button>'+
+    '<div class="freund-info"><div class="eyebrow">Dein Karo-Freund · <span class="f-stufenname">'+FREUND_STUFEN[zeigeStufe]+'</span></div><h3>'+esc(f.name)+'</h3>'+
+    '<div class="freund-blase">'+esc(freundSpruch(zeigeStufe, laune))+'</div>'+
+    '<div class="freund-futter"'+(zeigeStufe > 0 ? '' : ' hidden')+'><span>Futter heute</span><div class="bar"><i style="width:'+Math.round(Math.min(1, (futterAnimiert ? n - futterNeu : n)/TAGESZIEL)*100)+'%"></i></div><b class="num">'+Math.min(n, TAGESZIEL)+'/'+TAGESZIEL+'</b></div>'+
     '<a class="link-btn freund-anpassen" href="#/profil">Name und Farbe ändern</a></div>';
-  const tier = c.querySelector(".freund-tier"), blase = c.querySelector(".freund-blase");
+  const tier = c.querySelector(".freund-tier"), blase = c.querySelector(".freund-blase"), futter = c.querySelector(".freund-futter");
+  const st = {stufe:zeigeStufe, laune:laune};
+  const leben = freundLeben(tier, st);
+  const sag = text => { blase.textContent = text; blase.classList.remove("neu"); void blase.offsetWidth; blase.classList.add("neu"); leben.sprechen(Math.min(2400, 500 + text.length*25)); };
+  const herz = (zeichen) => { const h = el("span","freund-herz", zeichen || K.pick(["❤️","💛","💙","💚","💜","⭐"])); h.style.left = (30 + Math.random()*40)+"%"; tier.appendChild(h); setTimeout(() => h.remove(), 1000); };
+  /* Antippen: jedes Mal etwas anderes, ganz oft hintereinander macht schwindelig */
+  const klicks = []; let wachBis = 0;
   tier.addEventListener("click", () => {
-    tier.classList.remove("hops"); void tier.offsetWidth; tier.classList.add("hops");
-    blase.textContent = freundSpruch(stufe, laune); blase.classList.remove("neu"); void blase.offsetWidth; blase.classList.add("neu");
-    const h = el("span","freund-herz", K.pick(["❤️","💛","💙","💚","💜","⭐"])); h.style.left = (40 + Math.random()*40)+"%"; tier.appendChild(h); setTimeout(() => h.remove(), 1000);
+    const t = performance.now(); klicks.push(t); while(klicks.length && t - klicks[0] > 2500) klicks.shift();
+    if(st.stufe === 0){ leben.mach("wackeln-stark", 900); herz("✨"); sag(freundSpruch(0, laune)); return; }
+    if(st.laune === "schlaf" && t > wachBis){
+      st.laune = "hunger"; wachBis = t + 6000;
+      tier.innerHTML = freundSvg(st.stufe, "hunger"); c.classList.remove("laune-schlaf"); c.classList.add("laune-hunger");
+      leben.mach("gaehnen", 1700); sag("Huch! Ich bin wach! Lass uns ein bisschen üben?");
+      setTimeout(() => { if(!document.body.contains(tier)) return; st.laune = "schlaf"; tier.innerHTML = freundSvg(st.stufe, "schlaf"); c.classList.remove("laune-hunger"); c.classList.add("laune-schlaf"); }, 6000);
+      return;
+    }
+    if(klicks.length >= 6){ klicks.length = 0; leben.schwindel(2300); sag("Hihi, mir ist ganz schwindelig! 😵‍💫"); herz("💫"); return; }
+    const a = K.pick(["hops","hops","drehen","winken","tanzen"]);
+    leben.mach(a, {hops:750, drehen:900, winken:1500, tanzen:2000}[a]); herz();
+    sag(freundSpruch(st.stufe, st.laune));
   });
-  if(neu) setTimeout(() => konfetti(false), 400);
+  /* Verwandlung: Ei platzt auf oder Wesen leuchtet auf und verwandelt sich */
+  if(neu){
+    const text = "✨ Ich hab mich entwickelt! Jetzt bin ich "+["", "geschlüpft", "ein Kind", "groß und hab Flügel", "eine Legende"][stufe]+"!";
+    const vorspiel = vorher === 0 ? "schluepfen" : "leuchten";
+    setTimeout(() => leben.mach(vorspiel, 1500), 350);
+    setTimeout(() => {
+      if(!document.body.contains(tier)) return;
+      tier.innerHTML = freundSvg(stufe, laune, vorher === 0 ? "akt-geschluepft" : "akt-verwandelt");
+      st.stufe = stufe; c.querySelector(".f-stufenname").textContent = FREUND_STUFEN[stufe];
+      futter.hidden = false; sag(text); konfetti(false);
+      setTimeout(() => { const s = tier.querySelector(".f-svg"); if(s){ s.classList.remove("akt-geschluepft"); s.classList.remove("akt-verwandelt"); const sch = s.querySelector(".f-schalen"); if(sch) sch.remove(); } }, 1600);
+    }, 1900);
+  }
+  /* Füttern: Aufgaben seit dem letzten Besuch fliegen als Essen in den Mund */
+  else if(futterAnimiert){
+    const essen = ["🍎","🥕","🍪","🍌","🍓","🧀","🥨","🍕"];
+    setTimeout(() => {
+      if(!document.body.contains(tier)) return;
+      const kr = c.getBoundingClientRect(), tr = tier.getBoundingClientRect(), fr = futter.getBoundingClientRect();
+      const mundX = tr.left - kr.left + tr.width*0.5, mundY = tr.top - kr.top + tr.height*((zeigeStufe === 1 ? 130 : 112)/200);
+      const stueck = Math.min(6, futterNeu);
+      leben.blick(-0.2, 0.9);
+      for(let i = 0; i < stueck; i++) setTimeout(() => {
+        const e = el("span","freund-essen", K.pick(essen));
+        const sx = fr.left - kr.left + fr.width*(0.3 + Math.random()*0.5), sy = fr.top - kr.top;
+        e.style.left = sx+"px"; e.style.top = sy+"px"; c.appendChild(e);
+        requestAnimationFrame(() => requestAnimationFrame(() => { e.style.transform = "translate("+(mundX - sx - 12)+"px,"+(mundY - sy - 14)+"px) scale(.45) rotate("+(Math.random()*80-40)+"deg)"; e.style.opacity = "0.2"; }));
+        setTimeout(() => { e.remove(); leben.kauen(700); }, 620);
+      }, i*230);
+      setTimeout(() => {
+        const bar = futter.querySelector(".bar i"); if(bar) bar.style.width = Math.round(Math.min(1, n/TAGESZIEL)*100)+"%";
+        sag(futterNeu === 1 ? "Mampf! Danke für das Futter!" : "Mampf mampf! Danke für "+futterNeu+" Aufgaben Futter! 😋");
+        herz("😋");
+      }, stueck*230 + 650);
+    }, 700);
+  }
   return c;
 }
 function freundEinstellungen(){

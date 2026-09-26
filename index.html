@@ -663,6 +663,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @media (min-width:1000px){
   body{padding-left:252px}
   .top{display:none}
+  .blitz-top{top:8px}
   .seite{display:flex; flex-direction:column; gap:4px; position:fixed; left:0; top:0; bottom:0; width:252px; z-index:30; overflow-y:auto;
     padding:22px 14px calc(16px + env(safe-area-inset-bottom, 0px)); padding-top:calc(22px + env(safe-area-inset-top, 0px)); background:var(--paper); border-right:1px solid var(--line)}
   .seite .logo{margin:0 10px 22px}
@@ -851,6 +852,24 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes sprechen{from{transform:scale(1,1)} to{transform:scale(.8,1.7)}}
 .kaut .f-mund-g{animation:kauen .22s ease-in-out infinite alternate}
 @keyframes kauen{from{transform:scale(1.2,.5)} to{transform:scale(.9,1.3)}}
+/* Karo-Freund: Schwindel, Kitzeln, Streicheln, Ziehen */
+.freund-tier{touch-action:none; user-select:none; -webkit-user-select:none}
+.freund-tier.gesperrt{cursor:not-allowed}
+.f-spirale{display:none; fill:none; stroke:#1b2233; stroke-width:2.2; stroke-linecap:round; transform-box:fill-box; transform-origin:center}
+.schwindlig .f-spirale{display:block; animation:spirale .7s linear infinite}
+.schwindlig .f-pupillen{display:none}
+@keyframes spirale{to{transform:rotate(360deg)}}
+.f-froh{display:none; fill:none; stroke:#1b2233; stroke-width:3.5; stroke-linecap:round}
+.gluecklich .f-lider{display:none} .gluecklich .f-froh{display:block}
+.gluecklich .f-backe{opacity:.95}
+.f-sterne text{font-size:15px; text-anchor:middle; dominant-baseline:middle}
+.akt-schwindel-dreh .f-hops{transform-origin:100px 120px; animation:schwindel-dreh 3.6s cubic-bezier(.35,0,.25,1)}
+@keyframes schwindel-dreh{0%{transform:none} 32%{transform:rotate(720deg)} 42%{transform:rotate(700deg) translateX(-6px)} 52%{transform:rotate(738deg) translateX(6px)} 62%{transform:rotate(708deg) translateX(-4px)} 72%{transform:rotate(730deg) translateX(3px)} 84%{transform:rotate(714deg)} 100%{transform:rotate(720deg)}}
+.akt-kopfschuetteln .f-gesicht, .akt-kopfschuetteln .f-hops{animation:kopfschuetteln .7s ease-in-out}
+@keyframes kopfschuetteln{0%,100%{transform:none} 20%{transform:rotate(-7deg)} 45%{transform:rotate(6deg)} 70%{transform:rotate(-3deg)}}
+.akt-kitzeln .f-hops{animation:kitzeln .12s ease-in-out 13 alternate}
+@keyframes kitzeln{from{transform:rotate(-6deg) translateY(-2px)} to{transform:rotate(6deg) translateY(2px)}}
+.akt-kitzeln .f-mund-g{animation:sprechen .12s ease-in-out infinite alternate}
 .freund-einst .freund-vorschau{width:120px; height:120px; align-self:center}
 .freund-farben{display:flex; gap:10px; flex-wrap:wrap}
 .freund-farbe{width:40px; height:40px; border-radius:50%; border:3px solid var(--paper); box-shadow:0 0 0 2px var(--line-2); cursor:pointer}
@@ -872,7 +891,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .blitz-wer{font-family:var(--display); font-size:24px; font-weight:800; color:var(--ink-2)}
 .blitz-zahl{font-family:var(--display); font-size:140px; font-weight:800; line-height:1; color:#ff5a3c; animation:count-pop .7s cubic-bezier(.2,1.5,.4,1)}
 @keyframes count-pop{0%{transform:scale(2.2); opacity:0} 40%{opacity:1} 100%{transform:scale(1); opacity:.9}}
-.blitz-top{position:sticky; top:8px; z-index:5; background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:10px 14px; box-shadow:var(--shadow-1); margin-bottom:14px}
+.blitz-top{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 70px); z-index:5; background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:10px 14px; box-shadow:var(--shadow-1); margin-bottom:14px}
 .blitz-zeit{height:10px; border-radius:99px; background:var(--line); overflow:hidden}
 .blitz-zeit i{display:block; height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg, #ffb020, #ff5a3c); transition:width .1s linear}
 .blitz-zeit i.knapp{background:#e5484d; animation:puls .6s ease-in-out infinite}
@@ -918,6 +937,14 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .pbar i.jetzt{animation:puls 1.4s ease-in-out infinite}
 .toast, .toast.abz-toast{animation:toast-rein .38s cubic-bezier(.2,1.3,.4,1)}
 .konfetti{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:90}
+/* ================= Nichts breiter als der Bildschirm ================= */
+.q, .th-head h1, .th-head p, .material, .fb p{overflow-wrap:break-word; hyphens:auto; -webkit-hyphens:auto}
+.th-head > div{min-width:0}
+.feld-row{flex-wrap:wrap; max-width:100%}
+.b-item > *, .antwort, .ganz, .an{min-width:0; max-width:100%}
+.nl-pick{max-width:100%}
+.felder-liste label{flex-wrap:wrap; max-width:100%}
+
 /* ================= Hintergründe ================= */
 #hintergrund{position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none}
 #hintergrund > *{position:absolute}
@@ -961,7 +988,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes blase-wackeln{from{transform:translateX(-10px)} to{transform:translateX(10px)}}
 .hg-fisch-weg{left:-80px; animation:fisch-schwimmen linear infinite; will-change:transform}
 .hg-fisch-weg.rueck{left:auto; right:-80px; animation-name:fisch-rueck}
-.hg-fisch-weg.rueck .hg-fisch{transform:scaleX(-1)}
+.hg-fisch{transform:scaleX(-1)} .hg-fisch-weg.rueck .hg-fisch{transform:none}
 @keyframes fisch-schwimmen{from{transform:translateX(0)} 50%{transform:translate(55vw, -3vh)} to{transform:translateX(calc(100vw + 160px))}}
 @keyframes fisch-rueck{from{transform:translateX(0)} 50%{transform:translate(-55vw, 3vh)} to{transform:translateX(calc(-100vw - 160px))}}
 .hg-fisch{display:block; opacity:.85}
@@ -983,6 +1010,8 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes kugel{from{transform:translate(0, 0) rotate(0)} to{transform:translate(4vw, -6vh) rotate(25deg)}}
 .glas-leinwand{position:absolute; left:0; top:0}
 :root[data-hg="glas"] .card, :root[data-hg="glas"] .th, :root[data-hg="glas"] .top, :root[data-hg="glas"] .seite, :root[data-hg="glas"] .tabbar{background:rgba(255,255,255,.52); backdrop-filter:blur(18px) saturate(1.5); -webkit-backdrop-filter:blur(18px) saturate(1.5); border-color:rgba(255,255,255,.75)}
+:root[data-hg="glas"] .th{backdrop-filter:none; -webkit-backdrop-filter:none; background:rgba(255,255,255,.74)}
+:root[data-hg="glas"][data-theme="dark"] .th{background:rgba(20,27,45,.78)}
 :root[data-hg="glas"][data-theme="dark"] .card, :root[data-hg="glas"][data-theme="dark"] .th, :root[data-hg="glas"][data-theme="dark"] .top, :root[data-hg="glas"][data-theme="dark"] .seite, :root[data-hg="glas"][data-theme="dark"] .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)}
 @media (prefers-color-scheme: dark){ :root[data-hg="glas"]:not([data-theme="light"]) .card, :root[data-hg="glas"]:not([data-theme="light"]) .th, :root[data-hg="glas"]:not([data-theme="light"]) .top, :root[data-hg="glas"]:not([data-theme="light"]) .seite, :root[data-hg="glas"]:not([data-theme="light"]) .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)} }
 /* Bauplan */
@@ -1025,14 +1054,15 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes vt-da-links{from{opacity:0; transform:translateX(-64px)}}
 .vt #app > *{animation:none}
 /* Wellen beim Antippen */
-.btn, .opt, .th, .fach-chip, .taste, .ki-zeile, .ohne-ki-link, .t-toggle, .wiederholen .card, .blitz-banner{position:relative; overflow:hidden; isolation:isolate}
-.welle{position:absolute; border-radius:50%; background:currentColor; opacity:.16; transform:scale(0); pointer-events:none; z-index:-1; animation:welle .6s ease-out forwards}
+.btn, .opt, .th, .fach-chip, .taste, .ki-zeile, .ohne-ki-link, .t-toggle, .wiederholen .card, .blitz-banner{position:relative; isolation:isolate}
+.wellen{position:absolute; inset:0; border-radius:inherit; overflow:hidden; pointer-events:none; z-index:-1}
+.welle{position:absolute; border-radius:50%; background:currentColor; opacity:.16; transform:scale(0); pointer-events:none; animation:welle .6s ease-out forwards}
 .btn.primary .welle, .btn.brand .welle{background:#fff; opacity:.3}
 @keyframes welle{to{transform:scale(1); opacity:0}}
 /* Glanz über Hauptknöpfe */
-.btn.primary::after{content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-18deg); pointer-events:none}
-.btn.primary:hover::after{animation:glanz .8s ease-out}
-@keyframes glanz{to{left:130%}}
+.btn.primary{background-image:linear-gradient(100deg, transparent 35%, rgba(255,255,255,.32) 50%, transparent 65%); background-size:300% 100%; background-position:120% 0; background-repeat:no-repeat}
+.btn.primary:hover{animation:glanz .8s ease-out}
+@keyframes glanz{from{background-position:120% 0} to{background-position:-20% 0}}
 /* Richtig / falsch */
 .funken{position:relative; width:0; height:0; display:inline-block}
 .funken i{position:absolute; left:10px; top:0; width:6px; height:6px; border-radius:50%; background:var(--ok); animation:funke .7s ease-out forwards}
@@ -1048,7 +1078,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @keyframes opt-pop{0%{transform:scale(.94)} 60%{transform:scale(1.04)} 100%{transform:none}}
 .t-toggle[aria-pressed="true"] .box .ic{animation:plopp .35s cubic-bezier(.2,1.6,.4,1)}
 /* Menü, XP, Ring */
-.nav-link[aria-current] .ic, .tab-link[aria-current] .ic{animation:menue-hops .45s cubic-bezier(.2,1.6,.4,1)}
+.nav-link[data-hops] .ic, .tab-link[data-hops] .ic{animation:menue-hops .45s cubic-bezier(.2,1.6,.4,1)}
 @keyframes menue-hops{0%{transform:scale(.7)} 60%{transform:scale(1.15) translateY(-2px)} 100%{transform:none}}
 .lv-karte .bar i{transition:width .8s cubic-bezier(.2,.8,.2,1)}
 .bump{animation:bump .45s cubic-bezier(.2,1.6,.4,1)}
@@ -1555,6 +1585,7 @@ K.fmtIn = n => {
 };
 const zahlAnz = (x, st) => st !== undefined ? K.fmtD(x, st) : K.fmt(x);
 /* Musterlösung als HTML */
+const escH = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 K.solHtml = function(it){
   const u = x => x ? " "+x : "";
   switch(it.t){
@@ -1564,8 +1595,8 @@ K.solHtml = function(it){
     case "expr": return it.a;
     case "choice": return it.a;
     case "sign": return it.a === "<" ? "&lt;" : (it.a === ">" ? "&gt;" : "=");
-    case "text": return it.a[0];
-    case "gaps": { let k = 0; return String(it.q).replace(/\[\]/g, () => { const f = it.felder[k++]; return f ? "<b>" + f.a[0] + "</b>" : ""; }); }
+    case "text": return escH(it.a[0]);
+    case "gaps": { let k = 0; return String(it.q).replace(/\[\]/g, () => { const f = it.felder[k++]; return f ? "<b>" + escH(f.a[0]) + "</b>" : ""; }); }
     case "satz": return it.a[0] + (it.ende || "");
     case "set": return it.a.map(K.fmt).join("; ");
     case "multi": return it.a.join(" und ");
@@ -19867,21 +19898,22 @@ document.addEventListener("pointerdown", e => {
   const b = e.target.closest && e.target.closest(".btn, .opt, .th, .fach-chip, .taste, .ki-zeile, .ohne-ki-link, .t-toggle, .wiederholen .card, .blitz-banner");
   if(!b || b.disabled) return;
   const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2.2;
+  let box = b.querySelector(":scope > .wellen"); if(!box){ box = document.createElement("span"); box.className = "wellen"; b.appendChild(box); }
   const w = document.createElement("span"); w.className = "welle";
   w.style.cssText = "width:"+d+"px;height:"+d+"px;left:"+(e.clientX - r.left - d/2)+"px;top:"+(e.clientY - r.top - d/2)+"px";
-  b.appendChild(w); setTimeout(() => w.remove(), 650);
+  box.appendChild(w); setTimeout(() => w.remove(), 650);
 }, {passive:true});
 /* Karten weiter unten tauchen beim Scrollen sanft auf */
 function einblenden(){
   if(ruhig() || !("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting){ x.target.classList.add("sichtbar"); io.unobserve(x.target); } }), {rootMargin:"0px 0px -6% 0px"});
-  app.querySelectorAll(".card, .th, .hefte > *, .kapitel > h2").forEach(x => { if(x.getBoundingClientRect().top > innerHeight + 10){ x.classList.add("einblend"); io.observe(x); } });
+  app.querySelectorAll(".card:not(.freund-karte), .th, .hefte > *, .kapitel > h2").forEach(x => { if(x.getBoundingClientRect().top > innerHeight + 10){ x.classList.add("einblend"); io.observe(x); } });
 }
 function hochzaehlen(el, ziel, dauer){
   if(!el || ruhig() || !ziel){ return; }
   const t0 = performance.now(), vor = el.textContent.replace(/[\d.]+/, "{}");
   (function schritt(t){ const a = Math.min(1, (t - t0) / (dauer || 700)), w = Math.round(ziel * (1 - Math.pow(1 - a, 3)));
-    el.textContent = vor.replace("{}", w); if(a < 1) requestAnimationFrame(schritt); })(t0);
+    el.textContent = vor.replace("{}", K.fmt(w)); if(a < 1) requestAnimationFrame(schritt); })(t0);
 }
 function toast(text){
   const alt = document.querySelector(".toast"); if(alt) alt.remove();
@@ -19945,7 +19977,8 @@ function datum(off){
 }
 function heuteN(){ return S.heute.datum === datum(0) ? S.heute.n : 0; }
 function serieTage(){ return (S.serie.letzter === datum(0) || S.serie.letzter === datum(-1)) ? S.serie.tage : 0; }
-function aufgabeGeschafft(xp){
+let topnavBereich = null;
+function aufgabeGeschafft(xp, still){
   const d = datum(0);
   if(S.heute.datum !== d) S.heute = {datum:d, n:0};
   S.heute.n++;
@@ -19958,7 +19991,7 @@ function aufgabeGeschafft(xp){
   zaehler().aufgaben++;
   if(level(S.xp).n > lvVorher){ const n = level(S.xp).n; setTimeout(() => levelFeier(n), 700); }
   if(S.heute.n === TAGESZIEL) setTimeout(()=> toast("Tagesziel geschafft! 20 Aufgaben heute."), 400);
-  zeigeTopnav();
+  if(!still) zeigeTopnav();
 }
 /* ================= Abzeichen =================
    Beim allerersten Prüfen werden schon verdiente Abzeichen still vergeben (keine Toast-Flut). */
@@ -20017,7 +20050,7 @@ function abzeichenHtml(){
 function fehlerMerken(thId, titel, it){
   if(!it || thId === "fehler") return;
   if(!Array.isArray(S.fehler)) S.fehler = [];
-  const alt = S.fehler.find(f => f.th === thId && f.it.q === it.q);
+  const alt = S.fehler.find(f => f.th === thId && f.it.q === it.q && K.solHtml(f.it) === K.solHtml(it));
   if(alt){ alt.gut = 0; alt.am = datum(0); return; }
   const x = JSON.parse(JSON.stringify(it)); delete x.fid; delete x.thId; x.herkunft = titel;
   S.fehler.unshift({id:"f"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), th:thId, titel:titel, it:x, am:datum(0), gut:0});
@@ -20406,13 +20439,15 @@ function zeigeTopnav(){
   const zahl = k => (k === "heft" && offen) ? '<span class="zahl" aria-label="'+offen+' offen">'+offen+'</span>' : '';
   const logo = '<a class="logo" href="#/" aria-label="Karo Startseite"><span class="logo-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3z M3 7.7h14 M3 12.3h14 M7.7 3v14 M12.3 3v14" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12.3 12.3h4.7v4.7h-4.7z" fill="#fff"/></svg></span>Karo</a>';
   const leiste = document.getElementById("seitenleiste");
-  if(leiste) leiste.innerHTML = logo + MENUE.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
+  const wechsel = topnavBereich !== bereich; topnavBereich = bereich;
+  const hops = k => (wechsel && bereich === k) ? ' data-hops="1"' : '';
+  if(leiste) leiste.innerHTML = logo + MENUE.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
     '<div class="unten"><a class="lv-karte" href="#/profil"><div class="row"><span class="row" style="gap:6px">'+ic("blitz")+'Level '+lv.n+'</span><span class="num">'+K.fmt(S.xp)+' XP</span></div>'+
     '<div class="bar"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></a>'+
     '<a class="profil-link" href="#/profil"'+akt("profil")+'><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span><span>'+(name ? esc(name) : "Profil")+
     '<small>'+(S.profil.klasse ? "Klasse "+S.profil.klasse+" · " : "")+'Einstellungen</small></span></a></div>';
   const tab = document.getElementById("tabbar");
-  if(tab) tab.innerHTML = MENUE.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
+  if(tab) tab.innerHTML = MENUE.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
   const nav = document.getElementById("topnav");
   if(nav) nav.innerHTML = '<a class="xp-pill" href="#/profil" style="text-decoration:none" title="Level '+lv.n+' · '+K.fmt(S.xp)+' XP">'+ic("blitz")+'<span class="num">Level '+lv.n+'</span></a>'+
     '<a class="icon-btn" href="#/profil" aria-label="Profil"><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span></a>';
@@ -20753,7 +20788,9 @@ function seiteProfil(){
   box.querySelector("#intro").addEventListener("click", () => einfuehrung());
   box.querySelector("#reset").addEventListener("click", async () => {
     if(!await frage("Wirklich alles zurücksetzen? XP, Noten, Serie und laufende Runden werden gelöscht. Name und Klasse bleiben.", "Zurücksetzen")) return;
-    const p = S.profil, t = S.theme; S = leer(); S.profil = p; S.theme = t; speichern(); toast("Fortschritt zurückgesetzt"); route();
+    const behalten = {profil:S.profil, theme:S.theme, hg:S.hg, intro:S.intro, glasTipp:S.glasTipp, freund:S.freund ? {name:S.freund.name, farbe:S.freund.farbe, stufe:null} : undefined};
+    S = leer(); Object.keys(behalten).forEach(k => { if(behalten[k] !== undefined) S[k] = behalten[k]; });
+    speichern(); themaSetzen(); hintergrundSetzen(); toast("Fortschritt zurückgesetzt"); route();
   });
 }
 function themaSetzen(){ const t = HG_DUNKEL.indexOf(S.hg) >= 0 ? "dark" : S.theme; if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
@@ -20778,12 +20815,13 @@ function seiteZeugnis(){
     html += '<section class="z-klasse" data-k="'+k+'"><h3><span>Klasse '+k+'</span><span class="leise">'+(schnitt ? "Durchschnitt "+K.fmtD(schnitt,1) : "noch keine Tests")+'</span></h3>'+
       zeilen.map(z => '<div class="z-zeile"><a href="'+z.href+'">'+esc(z.t)+'</a>'+(z.n ? '<span class="z-note">'+z.n+' <span style="font-size:20px">'+NOTENWORT[z.n]+'</span></span>' : '<span class="z-note leer">–</span>')+'</div>').join("")+'</section>';
   });
-  const kis = (Array.isArray(S.ki) ? S.ki : []).filter(A => A.ab);
+  const besteProz = A => Math.max.apply(null, (A.ab ? [A.proz] : []).concat((A.versuche || []).map(v => v.proz || 0)));
+  const kis = (Array.isArray(S.ki) ? S.ki : []).filter(A => A.art !== "blatt" && (A.ab || (A.versuche && A.versuche.length)));
   if(kis.length){
     irgendwas = true;
-    kis.forEach(A => alle.push(K.noteVon(A.proz).n));
+    kis.forEach(A => alle.push(K.noteVon(besteProz(A)).n));
     html += '<section class="z-klasse"><h3><span>KI-Klassenarbeiten</span><span class="leise">'+kis.length+' geschrieben</span></h3>'+
-      kis.map(A => { const n = K.noteVon(A.proz).n; return '<div class="z-zeile"><a href="#/ki/'+A.id+'">'+esc(A.fach)+' · '+A.titel+'</a><span class="z-note">'+n+' <span style="font-size:20px">'+NOTENWORT[n]+'</span></span></div>'; }).join("")+'</section>';
+      kis.map(A => { const n = K.noteVon(besteProz(A)).n; return '<div class="z-zeile"><a href="#/ki/'+A.id+'">'+esc(A.fach)+' · '+A.titel+'</a><span class="z-note">'+n+' <span style="font-size:20px">'+NOTENWORT[n]+'</span></span></div>'; }).join("")+'</section>';
   }
   if(!irgendwas && !S.profil.klasse) html += '<p class="weich" style="text-align:center;margin-top:10px">Noch keine Noten. Schreib bei einem Thema einen Test, dann steht deine Note hier.</p>';
   const schnitt = alle.length ? alle.reduce((a,b)=>a+b,0)/alle.length : null;
@@ -21161,6 +21199,7 @@ function zeigeUeben(th, box){
     card.innerHTML = '<div class="a-meta"><span class="eyebrow">Aufgabe '+(R.i+1)+' von '+R.items.length+(it.herkunft ? ' · '+esc(it.herkunft) : '')+'</span>'+
       '<span class="stufe">'+["leicht","mittel","schwer"][(it.lvl||1)-1]+' <i class="an"></i><i class="'+(it.lvl>=2?"an":"")+'"></i><i class="'+(it.lvl>=3?"an":"")+'"></i></span></div>';
     w = widget(it, {minus: th.klasse >= 7, onChange: () => { res.e = w.get(); speichern(); if(info){ info.remove(); info = null; } }, onEnter: haupt});
+    if(it.material) card.appendChild(el("div","material", it.material));
     if(w.eigeneFrage) card.appendChild(w.el); else card.appendChild(el("div","q", it.q));
     if(it.fig){ const f = el("div","fig"); f.innerHTML = it.fig; card.appendChild(f); }
     if(!w.eigeneFrage) card.appendChild(w.el);
@@ -21295,7 +21334,7 @@ function zeigeTest(th, box){
     neu: () => { S.sitz[key] = neuerTest(th); speichern(); box.innerHTML = ""; zeigeTest(th, box); },
     uebenHref: thHref(th)+"/ueben",
     quelle: {id:th.id, titel:th.titel},
-    abgegeben: n => { const s = st(th.id); s.tests++; s.letzte = n; s.note = s.note ? Math.min(s.note, n) : n; },
+    abgegeben: (n, nurNote) => { const s = st(th.id); if(!nurNote) s.tests++; s.letzte = n; s.note = s.note ? Math.min(s.note, n) : n; },
     neuZeichnen: () => { box.innerHTML = ""; zeigeTest(th, box); }
   });
 }
@@ -21307,7 +21346,7 @@ function pruefungAnsicht(box, T, o){
   if(T.ab && !T.pk){   /* ältere Arbeiten: Teilpunkte nachträglich vergeben */
     T.pk = T.items.map((it, i) => T.ok[i] ? it.p : Math.round(it.p * K.anteil(it, T.ans[i]) * 2) / 2);
     const neu = T.pk.reduce((a, b) => a + b, 0);
-    if(neu !== T.punkte){ T.punkte = neu; T.proz = Math.round(neu/max*100); if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n); }
+    if(neu !== T.punkte){ T.punkte = neu; T.proz = Math.round(neu/max*100); if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n, true); }
     speichern();
   }
   if(T.ab){
@@ -21353,7 +21392,7 @@ function pruefungAnsicht(box, T, o){
         '<details'+(gut ? "" : " open")+'><summary class="link-btn" style="display:inline">Lösungsweg</summary><div style="margin-top:10px">'+wegHtml(it)+'</div></details>';
       c.appendChild(d);
       /* KI nachprüfen lassen, wenn eine eigene Antwort als falsch gewertet wurde (z. B. London statt Greenwich) */
-      if(!gut && (it.t === "text" || it.t === "gaps") && !K.leer(it, T.ans[i]) && !(T.nach && T.nach[i])){
+      if(claudeRT && !gut && (it.t === "text" || it.t === "gaps") && !K.leer(it, T.ans[i]) && !(T.nach && T.nach[i])){
         const nb = btn("btn klein", ic("ki")+"Stimmt meine Antwort doch?", async () => {
           nb.disabled = true; nb.innerHTML = "KI prüft …";
           const r = await nachpruefen(it, T.ans[i]);
@@ -21362,7 +21401,7 @@ function pruefungAnsicht(box, T, o){
             T.nach[i] = "Nachgeprüft: " + (r.grund || "Deine Antwort ist auch richtig.");
             T.punkte += it.p - T.pk[i]; T.pk[i] = it.p; T.ok[i] = true; T.proz = Math.round(T.punkte/max*100);
             if(it.t === "text") it.a = it.a.concat([String(T.ans[i]).slice(0, 60)]);
-            if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n);
+            if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n, true);
           }else T.nach[i] = r ? "Nachgeprüft: " + (r.grund || "Die Antwort passt leider nicht.") : "Nachprüfen geht gerade nicht (die KI ist nicht erreichbar).";
           speichern(); o.neuZeichnen();
         });
@@ -22666,7 +22705,7 @@ function druckAufgabe(it){
 }
 function druckLoesung(it){
   if(it.t === "gaps") return K.solHtml(it);
-  if(it.t === "text" && it.a.length > 1) return '<b>'+it.a[0]+'</b> <span style="color:#666">(auch richtig: '+it.a.slice(1, 4).join(", ")+')</span>';
+  if(it.t === "text" && it.a.length > 1) return '<b>'+esc(it.a[0])+'</b> <span style="color:#666">(auch richtig: '+it.a.slice(1, 4).map(esc).join(", ")+')</span>';
   return '<b>'+K.solHtml(it)+'</b>';
 }
 function blattHtml(o){
@@ -22706,13 +22745,16 @@ function blattHtml(o){
   }
   return h+'</div>';
 }
+let druckFertig = null;
 function drucken(html, titel){
+  if(druckFertig) druckFertig();
   let d = document.getElementById("druckblatt");
   if(!d){ d = el("div"); d.id = "druckblatt"; document.body.appendChild(d); }
   d.innerHTML = html;
   document.body.classList.add("druckt");
   const alt = document.title; document.title = String(titel).replace(/<[^>]+>/g,"");
-  const fertig = () => { document.title = alt; document.body.classList.remove("druckt"); window.removeEventListener("afterprint", fertig); };
+  const fertig = () => { document.title = alt; document.body.classList.remove("druckt"); window.removeEventListener("afterprint", fertig); druckFertig = null; };
+  druckFertig = fertig;
   window.addEventListener("afterprint", fertig);
   try{ window.print(); }catch(e){ fertig(); toast("Drucken geht hier nicht. Speichere das Blatt als Datei."); }
 }
@@ -22751,6 +22793,10 @@ function druckLeiste(bau, titel, o){
   const l = btn("t-toggle", '<span class="box">'+ic("haken")+'</span><span><b>Lösungen hinten anhängen</b><small>Auf einer eigenen Seite, zum Selbst-Kontrollieren</small></span>', () => { loes = !loes; l.setAttribute("aria-pressed", loes ? "true" : "false"); if(o.onLoes) o.onLoes(loes); });
   l.setAttribute("aria-pressed", loes ? "true" : "false");
   const r = el("div","row");
+  if(nativ){
+    d.appendChild(el("p","weich","In der Handy-App kann Karo leider nicht drucken. Öffne Karo im Browser auf <b>elias1234491.github.io</b>, dort geht Drucken und Speichern. Hier kannst du das Blatt aber am Bildschirm lösen."));
+    return d;
+  }
   const gezaehlt = () => { zaehler().blatt++; speichern(); };
   r.appendChild(btn("btn primary", ic("drucker")+"Drucken", () => { gezaehlt(); drucken(bau(loes), titel); }));
   r.appendChild(btn("btn", ic("laden")+"Als Datei speichern", () => { gezaehlt(); alsDatei(bau(loes), titel); }));
@@ -22995,12 +23041,21 @@ const Glas = {
   }
 };
 window.addEventListener("resize", () => Glas.groesse());
+let glasDruck = null;
 document.addEventListener("pointerdown", e => {
+  glasDruck = null;
   if(!Glas.an() || !Glas.c) return;
   if(e.target.closest && e.target.closest(".card, a, button, input, textarea, select, label, summary, .th, .seite, .top, .tabbar, .overlay, .levelup, .dialog, .fig, .leiste, .toast, .pill")) return;
+  glasDruck = {x:e.clientX, y:e.clientY, t:performance.now(), id:e.pointerId};
+}, {passive:true});
+document.addEventListener("pointerup", e => {
+  const d = glasDruck; glasDruck = null;
+  if(!d || d.id !== e.pointerId || !Glas.an() || !Glas.c) return;
+  if(Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12 || performance.now() - d.t > 600) return;
   Glas.schlag(e.clientX, e.clientY);
   if(!S.glasTipp){ S.glasTipp = true; speichern(); }
 }, {passive:true});
+document.addEventListener("pointercancel", () => { glasDruck = null; }, {passive:true});
 
 function hintergrundWahl(){
   const d = el("div");
@@ -23044,8 +23099,10 @@ function freundSvg(stufe, laune, extra){
   const augen = (x1, x2, y, r) => {
     const pupille = x => '<circle class="f-pupille" cx="'+(x+r*0.12)+'" cy="'+(y+r*0.12)+'" r="'+(r*0.58)+'"/><circle class="f-glanz" cx="'+(x+r*0.34)+'" cy="'+(y-r*0.22)+'" r="'+(r*0.22)+'"/><circle class="f-glanz klein" cx="'+(x-r*0.1)+'" cy="'+(y+r*0.35)+'" r="'+(r*0.1)+'"/>';
     if(schlaf) return '<g class="f-augen"><path class="f-strich" d="M'+(x1-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0 M'+(x2-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0"/></g>';
+    const spirale = x => { let d = "M"+x+" "+y; for(let w = 0.3; w <= 5.5*Math.PI; w += 0.3){ const rr = r*0.82*w/(5.5*Math.PI); d += " L"+(x + Math.cos(w)*rr).toFixed(1)+" "+(y + Math.sin(w)*rr).toFixed(1); } return '<path class="f-spirale" d="'+d+'"/>'; };
+    const froh = x => 'M'+(x - r*0.8)+' '+(y + r*0.25)+' q'+(r*0.8)+' -'+(r*1.3)+' '+(r*1.6)+' 0';
     return '<g class="f-augen"><g class="f-lider"><ellipse class="f-weiss" cx="'+x1+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/><ellipse class="f-weiss" cx="'+x2+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/>'+
-      '<g class="f-pupillen">'+pupille(x1)+pupille(x2)+'</g></g></g>';
+      '<g class="f-pupillen">'+pupille(x1)+pupille(x2)+'</g>'+spirale(x1)+spirale(x2)+'</g><path class="f-froh" d="'+froh(x1)+' '+froh(x2)+'"/></g>';
   };
   const mund = (x, y, b) => '<g class="f-mund-g">'+(laune === "satt" || laune === "froh"
     ? '<path class="f-mund" d="M'+(x-b)+' '+y+' q'+b+' '+(b*0.95)+' '+(2*b)+' 0 q-'+b+' '+(b*0.35)+' -'+(2*b)+' 0z"/><path class="f-zunge" d="M'+(x-b*0.45)+' '+(y+b*0.55)+' q'+(b*0.45)+' -'+(b*0.3)+' '+(b*0.9)+' 0 q-'+(b*0.45)+' '+(b*0.25)+' -'+(b*0.9)+' 0z"/>'
@@ -23140,11 +23197,27 @@ function freundLeben(knopf, st){
     if(a === "umschauen"){ [[-1, 0.1], [1, 0.1], [0, 0]].forEach((z, i) => setTimeout(() => { ziel = {x:z[0], y:z[1]}; zuletzt = performance.now(); }, i*650)); return; }
     mach(a, {hops:750, winken:1500, tanzen:2000, gaehnen:1700, drehen:900, bauch:1400}[a]);
   }
-  (function bild(t){
-    if(!document.body.contains(knopf)){ window.removeEventListener("pointermove", bewegt); window.removeEventListener("pointerdown", bewegt); return; }
+  let drin = false, sichtbar = true, laeuft = false, warten = 0;
+  const io = ("IntersectionObserver" in window) ? new IntersectionObserver(es => { sichtbar = es[es.length-1].isIntersecting; if(sichtbar) weiterLeben(); }) : null;
+  const aufhoeren = () => { window.removeEventListener("pointermove", bewegt); window.removeEventListener("pointerdown", bewegt); if(io) io.disconnect(); laeuft = false; };
+  function weiterLeben(){ if(!laeuft){ laeuft = true; requestAnimationFrame(bild); } }
+  function bild(t){
+    if(!document.body.contains(knopf)){
+      if(drin || ++warten > 600){ aufhoeren(); return; }   /* noch nicht eingefügt: kurz warten */
+      requestAnimationFrame(bild); return;
+    }
+    if(!drin){ drin = true; if(io) io.observe(knopf); }
+    if(!sichtbar){ laeuft = false; return; }
     const s = svg();
     if(s){
-      if(t < schwindelBis){ const w = t/110; ziel = {x:Math.cos(w), y:Math.sin(w)}; }
+      const sterne = s.querySelector(".f-sterne");
+      if(sterne){
+        const cy = st.stufe === 1 ? 66 : 44;
+        sterne.querySelectorAll("text").forEach((z, i) => {
+          const w = t/260 + i*Math.PI*2/3, x = 100 + Math.cos(w)*52, y = cy + Math.sin(w)*13, vorn = Math.sin(w) > 0;
+          z.setAttribute("transform", "translate("+x.toFixed(1)+" "+y.toFixed(1)+") scale("+(vorn ? 1 : 0.7)+")"); z.style.opacity = vorn ? 1 : 0.55;
+        });
+      }
       else if(t - zuletzt > 2600 && t > blickNeu){ ziel = {x:(Math.random()-0.5)*1.3, y:(Math.random()-0.5)*0.7}; blickNeu = t + 1400 + Math.random()*2200; }
       jetzt.x += (ziel.x - jetzt.x) * 0.16; jetzt.y += (ziel.y - jetzt.y) * 0.16;
       const p = s.querySelector(".f-pupillen"), g = s.querySelector(".f-gesicht");
@@ -23154,11 +23227,20 @@ function freundLeben(knopf, st){
       if(t > naechste && !aktion){ vonSelbst(); naechste = t + 4500 + Math.random()*5000; }
     }
     requestAnimationFrame(bild);
-  })(t0);
+  }
+  weiterLeben();
   api.mach = mach;
   api.sprechen = ms => { const s = svg(); if(!s) return; s.classList.add("spricht"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("spricht"); }, ms || 1100); };
   api.kauen = ms => { const s = svg(); if(!s) return; s.classList.add("kaut"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("kaut"); }, ms || 1300); };
-  api.schwindel = ms => { schwindelBis = performance.now() + (ms || 2200); mach("schwindel", ms || 2200); };
+  api.schwindel = (ms, fertig) => {
+    ms = ms || 3600; schwindelBis = performance.now() + ms;
+    const s = svg(); if(!s) return;
+    s.classList.add("schwindlig");
+    s.insertAdjacentHTML("beforeend", '<g class="f-sterne"><text>⭐</text><text>💫</text><text>⭐</text></g>');
+    mach("schwindel-dreh", ms);
+    setTimeout(() => { const s2 = svg(); if(s2){ s2.classList.remove("schwindlig"); const g = s2.querySelector(".f-sterne"); if(g) g.remove(); } mach("kopfschuetteln", 700); if(fertig) fertig(); }, ms);
+  };
+  api.gluecklich = ms => { const s = svg(); if(!s) return; s.classList.add("gluecklich"); setTimeout(() => { const s2 = svg(); if(s2) s2.classList.remove("gluecklich"); }, ms || 1800); };
   api.blick = (x, y) => { ziel = {x:x, y:y}; zuletzt = performance.now(); };
   return api;
 }
@@ -23185,9 +23267,11 @@ function freundKarte(){
   const sag = text => { blase.textContent = text; blase.classList.remove("neu"); void blase.offsetWidth; blase.classList.add("neu"); leben.sprechen(Math.min(2400, 500 + text.length*25)); };
   const herz = (zeichen) => { const h = el("span","freund-herz", zeichen || K.pick(["❤️","💛","💙","💚","💜","⭐"])); h.style.left = (30 + Math.random()*40)+"%"; tier.appendChild(h); setTimeout(() => h.remove(), 1000); };
   /* Antippen: jedes Mal etwas anderes, ganz oft hintereinander macht schwindelig */
-  const klicks = []; let wachBis = 0;
+  const klicks = []; let wachBis = 0, gesperrtBis = 0, klickSperre = 0;
   tier.addEventListener("click", () => {
-    const t = performance.now(); klicks.push(t); while(klicks.length && t - klicks[0] > 2500) klicks.shift();
+    const t = performance.now();
+    if(t < gesperrtBis || t < klickSperre) return;
+    klicks.push(t); while(klicks.length && t - klicks[0] > 2500) klicks.shift();
     if(st.stufe === 0){ leben.mach("wackeln-stark", 900); herz("✨"); sag(freundSpruch(0, laune)); return; }
     if(st.laune === "schlaf" && t > wachBis){
       st.laune = "hunger"; wachBis = t + 6000;
@@ -23196,13 +23280,76 @@ function freundKarte(){
       setTimeout(() => { if(!document.body.contains(tier)) return; st.laune = "schlaf"; tier.innerHTML = freundSvg(st.stufe, "schlaf"); c.classList.remove("laune-hunger"); c.classList.add("laune-schlaf"); }, 6000);
       return;
     }
-    if(klicks.length >= 6){ klicks.length = 0; leben.schwindel(2300); sag("Hihi, mir ist ganz schwindelig! 😵‍💫"); herz("💫"); return; }
+    if(klicks.length >= 6){
+      klicks.length = 0; gesperrtBis = t + 3700; tier.classList.add("gesperrt");
+      leben.schwindel(3600, () => { tier.classList.remove("gesperrt"); if(document.body.contains(tier)) sag(K.pick(["Puh … jetzt ist alles wieder gerade! 😅","Uff, die Welt dreht sich nicht mehr!","Nochmal? Nee, lieber nicht! 😵"])); });
+      sag("Hihi, mir ist ganz schwindelig! 😵‍💫"); herz("💫"); return;
+    }
     const a = K.pick(["hops","hops","drehen","winken","tanzen"]);
     leben.mach(a, {hops:750, drehen:900, winken:1500, tanzen:2000}[a]); herz();
     sag(freundSpruch(st.stufe, st.laune));
   });
-  /* Verwandlung: Ei platzt auf oder Wesen leuchtet auf und verwandelt sich */
-  if(neu){
+  /* Anfassen: ziehen und loslassen (federt zurück), lange drücken (kitzeln), hin und her reiben (streicheln) */
+  let druck = null, kitzelUhr = null, streichelWeg = 0, streichelZeit = 0, streichelPause = 0;
+  const streicheln = () => {
+    const t = performance.now(); if(t < streichelPause || st.stufe === 0) return; streichelPause = t + 4000;
+    leben.gluecklich(2200); for(let i = 0; i < 4; i++) setTimeout(() => herz(K.pick(["❤️","💕","💖"])), i*180);
+    sag(K.pick(["Mmmh, das ist schön … ☺️","Mehr streicheln, bitte! 🥰","Du bist mein Lieblingsmensch! 💕"]));
+  };
+  const federn = (x, y) => {
+    const s = tier.querySelector(".f-svg"); if(!s) return;
+    let vx = 0, vy = 0;
+    (function schritt(){
+      vx = (vx - x*0.2) * 0.78; vy = (vy - y*0.2) * 0.78; x += vx; y += vy;
+      const quetsch = Math.min(0.12, Math.hypot(vx, vy)*0.006);
+      s.style.transform = "translate("+x.toFixed(1)+"px,"+y.toFixed(1)+"px) rotate("+(x*0.15).toFixed(1)+"deg) scale("+(1 + quetsch)+","+(1 - quetsch)+")";
+      if(Math.hypot(x, y) > 0.3 || Math.hypot(vx, vy) > 0.3) requestAnimationFrame(schritt); else s.style.transform = "";
+    })();
+  };
+  if(!ruhig()){
+    tier.addEventListener("pointerdown", e => {
+      if(performance.now() < gesperrtBis || st.stufe === 0) return;
+      druck = {x:e.clientX, y:e.clientY, lx:0, ly:0, weg:0, maxAbstand:0, px:e.clientX, py:e.clientY, gezogen:false, gekitzelt:false};
+      try{ tier.setPointerCapture(e.pointerId); }catch(x){}
+      clearTimeout(kitzelUhr);
+      kitzelUhr = setTimeout(() => {
+        if(!druck || druck.gezogen) return;
+        druck.gekitzelt = true; leben.mach("kitzeln", 1600); leben.gluecklich(1600); herz("🤭");
+        sag(K.pick(["Hihihi, das kitzelt! 🤭","Hahaha, aufhören! 😂","Nicht kitzeln, hihi!"]));
+      }, 600);
+    });
+    tier.addEventListener("pointermove", e => {
+      if(!druck){
+        if(e.pointerType === "mouse"){ const t = performance.now(); if(t - streichelZeit > 1500) streichelWeg = 0; streichelZeit = t; streichelWeg += Math.abs(e.movementX || 0) + Math.abs(e.movementY || 0); if(streichelWeg > 700){ streichelWeg = 0; streicheln(); } }
+        return;
+      }
+      const dx = e.clientX - druck.x, dy = e.clientY - druck.y;
+      druck.weg += Math.hypot(e.clientX - druck.px, e.clientY - druck.py); druck.px = e.clientX; druck.py = e.clientY;
+      druck.maxAbstand = Math.max(druck.maxAbstand, Math.hypot(dx, dy));
+      if(!druck.gezogen && Math.hypot(dx, dy) > 10){ druck.gezogen = true; clearTimeout(kitzelUhr); }
+      if(druck.gezogen){
+        const s = tier.querySelector(".f-svg"); if(!s) return;
+        const x = Math.max(-140, Math.min(140, dx*0.65)), y = Math.max(-90, Math.min(90, dy*0.65));
+        druck.lx = x; druck.ly = y;
+        s.style.transform = "translate("+x+"px,"+y+"px) rotate("+(x*0.15)+"deg)";
+      }
+    });
+    const los = () => {
+      clearTimeout(kitzelUhr);
+      if(!druck) return;
+      const d = druck; druck = null;
+      if(d.gezogen || d.gekitzelt) klickSperre = performance.now() + 350;
+      if(d.gezogen){
+        federn(d.lx, d.ly);
+        if(d.weg > 320 && d.maxAbstand < 70) streicheln();
+        else if(Math.hypot(d.lx, d.ly) > 60){ leben.mach("hops", 750); herz("💨"); sag(K.pick(["Huiiii! 🎢","Hey, nicht so wild! 😆","Boing! Wieder da!"])); }
+      }
+    };
+    tier.addEventListener("pointerup", los);
+    tier.addEventListener("pointercancel", los);
+  }
+  /* Verwandlung: Ei platzt auf oder Wesen leuchtet auf und verwandelt sich. Erst wenn Karli zu sehen ist (am Handy scrollt Karo hin). */
+  if(neu) wennSichtbar(c, () => {
     const text = "✨ Ich hab mich entwickelt! Jetzt bin ich "+["", "geschlüpft", "ein Kind", "groß und hab Flügel", "eine Legende"][stufe]+"!";
     const vorspiel = vorher === 0 ? "schluepfen" : "leuchten";
     setTimeout(() => leben.mach(vorspiel, 1500), 350);
@@ -23213,9 +23360,9 @@ function freundKarte(){
       futter.hidden = false; sag(text); konfetti(false);
       setTimeout(() => { const s = tier.querySelector(".f-svg"); if(s){ s.classList.remove("akt-geschluepft"); s.classList.remove("akt-verwandelt"); const sch = s.querySelector(".f-schalen"); if(sch) sch.remove(); } }, 1600);
     }, 1900);
-  }
+  }, true);
   /* Füttern: Aufgaben seit dem letzten Besuch fliegen als Essen in den Mund */
-  else if(futterAnimiert){
+  else if(futterAnimiert) wennSichtbar(c, () => {
     const essen = ["🍎","🥕","🍪","🍌","🍓","🧀","🥨","🍕"];
     setTimeout(() => {
       if(!document.body.contains(tier)) return;
@@ -23235,9 +23382,18 @@ function freundKarte(){
         sag(futterNeu === 1 ? "Mampf! Danke für das Futter!" : "Mampf mampf! Danke für "+futterNeu+" Aufgaben Futter! 😋");
         herz("😋");
       }, stueck*230 + 650);
-    }, 700);
-  }
+    }, 400);
+  });
   return c;
+}
+/* fn einmal ausführen, sobald el zur Hälfte zu sehen ist; hinscrollen = true scrollt nach kurzer Zeit dorthin */
+function wennSichtbar(e, fn, hinscrollen){
+  let fertig = false;
+  const mach = () => { if(!fertig){ fertig = true; fn(); } };
+  if(!("IntersectionObserver" in window)){ setTimeout(mach, 300); return; }
+  const io = new IntersectionObserver(es => { if(es.some(x => x.isIntersecting && x.intersectionRatio >= 0.5)){ io.disconnect(); mach(); } }, {threshold:[0.5]});
+  let n = 0;
+  (function warte(){ if(document.body.contains(e)){ io.observe(e); if(hinscrollen) setTimeout(() => { if(!fertig && document.body.contains(e)) e.scrollIntoView({behavior:ruhig() ? "auto" : "smooth", block:"center"}); }, 900); } else if(++n < 600) requestAnimationFrame(warte); })();
 }
 function freundEinstellungen(){
   const f = freund();
@@ -23409,7 +23565,7 @@ function seiteBlitz(){
     if(rekord) S.blitz.best[key] = E.punkte;
     S.blitz.spiele = (S.blitz.spiele || 0) + 1;
     E.falscheItems.forEach(it => fehlerMerken(it.thId, it.herkunft, it));
-    for(let i = 0; i < E.richtig; i++) aufgabeGeschafft(2);
+    for(let i = 0; i < E.richtig; i++) aufgabeGeschafft(2, i < E.richtig - 1);
     speichern();
     wrap.innerHTML = '<section class="card ende blitz-ende"><div class="blitz-logo gross">'+ic("blitz")+'</div>'+
       '<div class="eyebrow">'+(rekord ? "Neuer Rekord!" : "Zeit ist um")+'</div><h1 class="blitz-gross num">0</h1><p class="weich">Punkte'+(!rekord && alt ? " · Rekord: "+alt : "")+'</p>'+statistik(E)+

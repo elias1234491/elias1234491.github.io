@@ -774,6 +774,13 @@ table.tab tr.klickbar:hover td{background:var(--brand-soft)}
 .treffer b{color:var(--brand); margin-right:6px}
 @media (max-width:560px){ .buch-ab{padding:18px 16px} .verse{font-size:18px} }
 @media print{ .top, .leiste, .fuss, .no-print{display:none !important} body{background:#fff} .card{box-shadow:none} }
+/* KI-Trainer ohne KI */
+.ohne-ki{display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:10px; margin-top:4px}
+.ohne-ki-link{display:flex; gap:12px; align-items:flex-start; padding:14px 16px; border-radius:14px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); text-decoration:none}
+.ohne-ki-link:hover{border-color:var(--brand); background:var(--brand-soft)}
+.ohne-ki-link .ic{width:24px; height:24px; flex:none; color:var(--brand); margin-top:1px}
+.ohne-ki-link b{display:block; font-size:16.5px}
+.ohne-ki-link small{display:block; color:var(--ink-3); font-size:13.5px; margin-top:2px}
 /* Übungsblätter */
 .blatt-h{display:flex; align-items:center; gap:9px; font-family:var(--display); font-size:21px}
 .blatt-h .ic{width:22px; height:22px; color:var(--kd)}
@@ -19230,8 +19237,10 @@ function seiteStart(){
       '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div>'
       : '<p class="weich" style="font-size:15px">Keine offenen Hausaufgaben. Trag ein, was ihr im Unterricht gemacht habt.</p>')+
     '<div><a class="btn" href="#/heft">'+(offen.length ? "Alle "+offen.length+" ansehen" : ic("plus")+"Eintragen")+'</a></div></div>'+
-    '<div class="card ki-karte"><h3>'+ic("ki")+'KI-Trainer</h3><p style="font-size:15px">Foto von Arbeitsblatt, Buch oder Tafel machen: Die KI macht daraus Lernzettel, Übungen mit Tipps und eine Probe-Arbeit. Für jedes Fach.</p>'+
-    '<div class="row"><a class="btn brand" href="#/ki">'+ic("kamera")+'Foto-Trainer</a></div></div></section>';
+    (claudeRT ? '<div class="card ki-karte"><h3>'+ic("ki")+'KI-Trainer</h3><p style="font-size:15px">Foto von Arbeitsblatt, Buch oder Tafel machen: Die KI macht daraus Lernzettel, Übungen mit Tipps und eine Probe-Arbeit. Für jedes Fach.</p>'+
+    '<div class="row"><a class="btn brand" href="#/ki">'+ic("kamera")+'Foto-Trainer</a></div></div>'
+    : '<div class="card ki-karte"><h3>'+ic("drucker")+'Übungsblätter</h3><p style="font-size:15px">Zu jedem Thema ein Blatt zum Ausdrucken, mit Lösungsseite. Oder gleich hier am Bildschirm lösen.</p>'+
+    '<div class="row"><a class="btn brand" href="'+blattZiel()+'">'+ic("drucker")+'Übungsblatt</a></div></div>')+'</section>';
   app.innerHTML = html + fuss();
 }
 function heftHtml(k, fach){
@@ -20217,7 +20226,7 @@ function seiteHeft(){
   crumbs([{t:"Start", href:"#/"}, {t:"Hausaufgaben"}]);
   const wrap = el("div","runner");
   wrap.innerHTML = '<div class="th-head">'+icoHtml("heft")+'<div><div class="eyebrow">Alle Fächer</div><h1>Hausaufgaben-Heft</h1>'+
-    '<p>Trag ein, was ihr in der Stunde gemacht habt. Aus diesen Themen schreibt dir die KI später eine passende Klassenarbeit.</p></div></div>';
+    '<p>Trag ein, was ihr in der Stunde gemacht habt.'+(claudeRT ? ' Aus diesen Themen schreibt dir die KI später eine passende Klassenarbeit.' : '')+'</p></div></div>';
   const form = el("form","card pad formular");
   const letztesFach = S.letztesFach || "Mathematik";
   form.innerHTML = '<h3 style="font-size:20px">Neuer Eintrag</h3>'+
@@ -20756,8 +20765,30 @@ function kiPrompt(){
       : '{"titel":"Klassenarbeit: <kurzer Titel>","hinweis":"<ein Satz an die Schüler>","aufgaben":[ … genau '+kiWahl.umfang+' Aufgaben … ]}');
   return p;
 }
+/* Ohne Claude-Konto (Webseite, Handy-App) gibt es keine KI: erklären und zu den Sachen führen, die ohne KI gehen */
+function blattZiel(){ const t = empfehlungen(S.profil.klasse || 5, 1)[0]; return t ? thHref(t)+"/blatt" : "#/lernen"; }
+function seiteKiOhne(){
+  const k = S.profil.klasse || 5, tipp = empfehlungen(k, 1)[0], ka = KA.find(b => b.klasse === k);
+  const wrap = el("div","runner stack");
+  const karte = (href, icon, titel, text) => '<a class="ohne-ki-link" href="'+href+'">'+ic(icon)+'<span><b>'+titel+'</b><small>'+text+'</small></span></a>';
+  wrap.innerHTML = '<div class="th-head"><span class="fachtag gross" style="--f:linear-gradient(135deg,var(--k10),var(--k9))">'+ic("ki")+'</span><div><div class="eyebrow">Alle Fächer</div><h1>KI-Trainer</h1>'+
+    '<p>Die KI gibt es nur in der claude.ai-Version von Karo.</p></div></div>'+
+    '<section class="card pad stack"><h2 class="blatt-h">'+ic("ki")+'Warum geht die KI hier nicht?</h2>'+
+    '<p class="weich" style="font-size:15.5px">Foto-Trainer, KI-Klassenarbeit und KI-Übungsblatt brauchen eine KI. Die läuft über ein Claude-Konto, deshalb gibt es sie nur in der claude.ai-Version. '+
+    'Hier geht alles andere, und das ist eine ganze Menge:</p>'+
+    '<div class="ohne-ki">'+
+      karte(tipp ? thHref(tipp)+"/blatt" : "#/lernen", "drucker", "Übungsblatt drucken", "Zu jedem Thema, mit Lösungsseite"+(tipp ? ". Zum Beispiel: "+esc(tipp.titel) : ""))+
+      karte(tipp ? thHref(tipp)+"/test" : "#/lernen", "test", "Test mit Note", "8 Aufgaben wie in einer Klassenarbeit")+
+      (ka ? karte("#/blatt/"+ka.id, "stift", "Probe-Klassenarbeit", esc(ka.titel)+", mit Punkten und Note") : "")+
+      karte("#/vokabeln", "karten", "Vokabeln lernen", "Englisch-Karteikasten zum Anhören und Tippen")+
+      karte(klasseHref(k), "buch", "Alle Themen", "Klasse "+k+": Erklärungen, Übungen mit Tipps")+
+    '</div>'+
+    '<p class="leise">Du hast Zugang zur claude.ai-Version? <a href="'+KARO_LINK+'" target="_blank" rel="noopener">Dort gibt es die KI.</a></p></section>';
+  app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
+}
 function seiteKi(){
   crumbs([{t:"Start", href:"#/"}, {t:"KI-Trainer"}]);
+  if(!claudeRT){ seiteKiOhne(); return; }
   if(!kiWahl.klasse) kiWahl.klasse = S.profil.klasse || 7;
   const alle = Heft.sortiert();
   if(!kiWahl.fach){ kiWahl.fach = (alle[0] && alle[0].fach) || "Mathematik"; }

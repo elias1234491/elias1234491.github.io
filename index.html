@@ -17,7 +17,7 @@
   --label:#fffdf7; --label-ink:#1c2436;
   --k5:#e5484d; --k6:#f2711c; --k7:#f0b400; --k8:#2e9e62; --k9:#1f78d1; --k10:#7d4fc9;
   --k5d:#c02d33; --k6d:#bf5210; --k7d:#8c6400; --k8d:#1c7747; --k9d:#155fa8; --k10d:#6135a6;
-  --ke5:#0f9591; --ke6:#3d5bd9; --kev:#b3307c; --ke5d:#0a6f6c; --ke6d:#2b44ad; --kevd:#8f2263;
+  --ke5:#0f9591; --ke6:#3d5bd9; --ke7:#b8621b; --kev:#b3307c; --ke5d:#0a6f6c; --ke6d:#2b44ad; --ke7d:#8f4a12; --kevd:#8f2263;
   --k:var(--brand); --kd:var(--brand); --k-ink:#ffffff;
   --shadow-1:0 1px 2px rgba(19,32,58,.06), 0 2px 8px rgba(19,32,58,.05);
   --shadow-2:0 2px 4px rgba(19,32,58,.06), 0 14px 32px -10px rgba(19,32,58,.18);
@@ -36,7 +36,7 @@
     --pen:#ff6e64; --gold:#f5c24f; --gold-soft:#342a10;
     --label:#f3efe4; --label-ink:#1c2436;
     --k5d:#ff8a8e; --k6d:#ffa368; --k7d:#ffd257; --k8d:#62d69a; --k9d:#72b6ff; --k10d:#bc99ff;
-    --ke5d:#5fd6d2; --ke6d:#9fb2ff; --kevd:#f59ccf;
+    --ke5d:#5fd6d2; --ke6d:#9fb2ff; --ke7d:#f3b27a; --kevd:#f59ccf;
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 2px 4px rgba(0,0,0,.35), 0 14px 32px -10px rgba(0,0,0,.6);
     color-scheme:dark;
   }
@@ -49,7 +49,7 @@
   --pen:#ff6e64; --gold:#f5c24f; --gold-soft:#342a10;
   --label:#f3efe4; --label-ink:#1c2436;
   --k5d:#ff8a8e; --k6d:#ffa368; --k7d:#ffd257; --k8d:#62d69a; --k9d:#72b6ff; --k10d:#bc99ff;
-  --ke5d:#5fd6d2; --ke6d:#9fb2ff; --kevd:#f59ccf;
+  --ke5d:#5fd6d2; --ke6d:#9fb2ff; --ke7d:#f3b27a; --kevd:#f59ccf;
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 2px 4px rgba(0,0,0,.35), 0 14px 32px -10px rgba(0,0,0,.6);
   color-scheme:dark;
 }
@@ -61,6 +61,7 @@
 [data-k="10"]{--k:var(--k10); --kd:var(--k10d); --k-ink:#fff}
 [data-k="e5"]{--k:var(--ke5); --kd:var(--ke5d); --k-ink:#fff}
 [data-k="e6"]{--k:var(--ke6); --kd:var(--ke6d); --k-ink:#fff}
+[data-k="e7"]{--k:var(--ke7); --kd:var(--ke7d); --k-ink:#fff}
 [data-k="ev"]{--k:var(--kev); --kd:var(--kevd); --k-ink:#fff}
 [data-k]{--k-soft:color-mix(in srgb, var(--k) 13%, var(--paper)); --k-line:color-mix(in srgb, var(--k) 35%, var(--line))}
 
@@ -2362,6 +2363,681 @@ thema({id:"e6-past-progressive", kapitel:"Zeiten", titel:"Past Progressive: I wa
   erklaerung: `
 <div class="merke"><h4>Merke</h4><p><b>was / were + -ing</b>: I was reading. They were playing.</p><p>für Handlungen, die zu einem Zeitpunkt in der Vergangenheit <b>gerade im Gange</b> waren.</p><p>Oft mit einer plötzlichen Handlung im Simple Past: I <b>was having</b> a shower when the phone <b>rang</b>.</p></div>`,
   aufgaben:[genPastProg, genWasWere, genPastProgBau]});
+})(typeof window !== "undefined" ? window.Karo : globalThis.Karo);
+
+</script>
+<script>
+/* Karo – Englisch Klasse 7: Grammatik mit Erklärung und Übungen in drei Stufen.
+   Eigene Erklärungen und Beispielsätze (kein Schulbuch-Text). */
+(function(K){
+"use strict";
+const E = K.en, pick = K.pick, shuffle = K.shuffle;
+const B = E.B, cap = E.cap, kl = E.klein;
+const thema = def => K.thema(Object.assign({fach:"Englisch", klasse:7}, def));
+const hint = s => " <i>(" + s + ")</i>";
+
+/* Zusätzliche Verbformen, die in E.VERBEN fehlen: 3. Person, -ing, Simple Past, Partizip */
+const XV = {
+  feed:["feeds","feeding","fed","fed"], pack:["packs","packing","packed","packed"], book:["books","booking","booked","booked"],
+  water:["waters","watering","watered","watered"], wait:["waits","waiting","waited","waited"], talk:["talks","talking","talked","talked"],
+  practise:["practises","practising","practised","practised"], learn:["learns","learning","learned","learned"], collect:["collects","collecting","collected","collected"],
+  rain:["rains","raining","rained","rained"], snow:["snows","snowing","snowed","snowed"], miss:["misses","missing","missed","missed"],
+  say:["says","saying","said","said"], ask:["asks","asking","asked","asked"], call:["calls","calling","called","called"],
+  arrive:["arrives","arriving","arrived","arrived"], explain:["explains","explaining","explained","explained"], hear:["hears","hearing","heard","heard"],
+  pass:["passes","passing","passed","passed"], grow:["grows","growing","grew","grown"], travel:["travels","travelling","travelled","travelled"],
+  understand:["understands","understanding","understood","understood"], deliver:["delivers","delivering","delivered","delivered"],
+  empty:["empties","emptying","emptied","emptied"], serve:["serves","serving","served","served"], paint:["paints","painting","painted","painted"],
+  plant:["plants","planting","planted","planted"], destroy:["destroys","destroying","destroyed","destroyed"], invent:["invents","inventing","invented","invented"]
+};
+const vf = v => E.verb(v) || (XV[v] ? {v:v, s:XV[v][0], ing:XV[v][1], past:XV[v][2], pp:XV[v][3]} : null);
+const anders = h => h === "has" ? "have" : "has";
+/* Pronomen für eine Person aus E.PERSONEN (für Satzfortsetzungen wie „…, but he would love to.“) */
+const SUBJ = {I:"I", you:"you", he:"he", she:"she", we:"we", they:"they", Tom:"he", Emma:"she", Ben:"he", "my sister":"she", "my brother":"he", "our teacher":"she", "my parents":"they", "the children":"they", "Mia and Leo":"they", "my friends":"they"};
+/* Simple-Present-Form zu einer Person (für Distraktoren und if-Sätze) */
+const dritteS = s => !/^(I|you|we|they)$/.test(s) && !/( and |children|parents|people|friends)/.test(s);
+function praesens(subj, base){
+  if(base === "be") return subj === "I" ? "am" : dritteS(subj) ? "is" : "are";
+  if(base === "can") return "can";
+  if(!dritteS(subj)) return base;
+  if(base === "have") return "has";
+  const v = vf(base);
+  return v ? v.s : E.sForm(base);
+}
+function vergangen(subj, base){
+  if(base === "be") return (subj === "I" || dritteS(subj)) ? "was" : "were";
+  if(base === "can") return "could";
+  return vf(base).past;
+}
+
+/* ================= Present Perfect oder Simple Past ================= */
+const AUFGABE = [["clean","the kitchen"],["tidy","the living room"],["wash","the car"],["fix","the bike"],["feed","the cat"],["make","a cake"],["write","the email"],
+  ["read","the new book"],["watch","the new film"],["buy","a present for Grandma"],["send","the invitations"],["pack","the bags"],["book","the tickets"],
+  ["sell","the old bike"],["take","the dog for a walk"],["finish","the project"],["do","the shopping"],["do","the washing-up"],["cook","dinner"],["water","the plants"]];
+const ERLEBNIS = [["ride","a horse"],["swim","in the sea"],["eat","sushi"],["climb","a mountain"],["see","a whale"],["sleep","in a tent"],["win","a prize"],
+  ["meet","a famous person"],["fly","in a helicopter"],["try","Indian food"],["visit","a castle"],["write","a poem"],["sing","in a choir"]];
+const PAST_A = ["yesterday","last Saturday","two days ago","an hour ago","yesterday evening","on Monday"];
+const PAST_E = ["last summer","in 2023","two years ago","last year","on holiday last year"];
+
+const SF = {
+  lang: {saetze:["We have lived in this town","I have known Ben","Emma has had her dog","My dad has worked at the hospital","Our teacher has taught at this school","Mia and Leo have been best friends"],
+    since:["2019","2021","last summer","Christmas","January"], for:["three years","a long time","ten years","six months","ages"]},
+  mittel: {saetze:["Tom has been ill","My sister has been in London","The swimming pool has been closed","Grandma has stayed with us"],
+    since:["Monday","last week","the weekend","Friday","my birthday"], for:["three days","a week","two weeks","five days"]},
+  kurz: {saetze:["I have been at the bus stop","We have been in the museum","The baby has been asleep","Mia has been on the phone"],
+    since:["nine o'clock","lunchtime","half past two","ten o'clock"], for:["twenty minutes","two hours","half an hour","ten minutes"]}
+};
+const SF3 = [["Tom got ill {z}.","Tom has been ill","mittel"],["We moved to this town {z}.","We have lived in this town","lang"],["I met Ben {z}.","I have known Ben","lang"],
+  ["Emma got her dog {z}.","Emma has had her dog","lang"],["My dad started at the hospital {z}.","My dad has worked at the hospital","lang"],
+  ["Mia arrived at the bus stop {z}.","Mia has been at the bus stop","kurz"],["The baby fell asleep {z}.","The baby has been asleep","kurz"],
+  ["Grandma came to stay with us {z}.","Grandma has stayed with us","mittel"]];
+const ZP = {
+  lang: {since:[["in 2021","2021"],["in 2019","2019"],["last summer","last summer"],["in January","January"]], for:[["three years ago","three years"],["six years ago","six years"],["two years ago","two years"]]},
+  mittel: {since:[["on Monday","Monday"],["last Friday","last Friday"],["on Saturday","Saturday"]], for:[["three days ago","three days"],["a week ago","a week"],["two weeks ago","two weeks"]]},
+  kurz: {since:[["at nine o'clock","nine o'clock"],["at half past two","half past two"],["at ten o'clock","ten o'clock"]], for:[["twenty minutes ago","twenty minutes"],["two hours ago","two hours"],["half an hour ago","half an hour"]]}
+};
+function genSinceFor(stufe){
+  if(stufe <= 2){
+    const g = SF[pick(["lang","mittel","kurz"])], s = pick(g.saetze), since = Math.random() < 0.5, z = pick(since ? g.since : g.for), w = since ? "since" : "for";
+    const weg = [since ? B(z) + " ist ein Zeitpunkt (wann hat es angefangen?) → since." : B(z) + " ist ein Zeitraum (wie lange schon?) → for.", s + " " + B(w) + " " + z + "."];
+    if(stufe === 1) return E.wahl(s + " ___ " + z + ".", ["since","for"], w, weg, "Zeitpunkt → since, Zeitraum → for.");
+    return E.luecken(s + " [] " + z + ".", [[w]], weg, "Seit wann? → since. Wie lange schon? → for.", {genau:true});
+  }
+  const [fakt, perf, art] = pick(SF3), since = Math.random() < 0.5, [z, rest] = pick(ZP[art][since ? "since" : "for"]), w = since ? "since" : "for";
+  return E.luecken("Schreib den zweiten Satz mit <b>since</b> oder <b>for</b> zu Ende.<br>" + fakt.replace("{z}", z) + "<br>" + perf + " [].", [[w + " " + rest]],
+    [since ? "„" + z + "“ nennt den Zeitpunkt, an dem es angefangen hat → since." : "„" + z + "“ heißt: Es hat vor diesem Zeitraum angefangen und dauert bis jetzt → for.", perf + " " + B(w + " " + rest) + "."],
+    "Zeitpunkt (in 2021, on Monday, at nine) → since. „… ago“ → for + Zeitraum.");
+}
+function genZeitform(stufe){
+  const p = pick(E.PERSONEN), erl = Math.random() < 0.4, [vv, o] = pick(erl ? ERLEBNIS : AUFGABE), v = vf(vv), h = E.hat(p), P = cap(p[0]);
+  const past = Math.random() < 0.5, z = pick(erl ? PAST_E : PAST_A);
+  const sig = erl ? "never" : pick(["already","just"]);
+  const tipp = "Zeitpunkt in der Vergangenheit → Simple Past. Kein Zeitpunkt, Ergebnis zählt → Present Perfect.";
+  if(stufe === 1){
+    if(past) return E.wahl(P + " ___ " + o + " " + z + "." + hint(v.v), [v.past, h + " " + v.pp, v.v], v.past,
+      ["„" + z + "“ ist ein fester Zeitpunkt in der Vergangenheit → Simple Past.", P + " " + B(v.past) + " " + o + " " + z + "."], tipp);
+    const r = h + " " + sig + " " + v.pp;
+    return E.wahl(P + " ___ " + o + "." + hint(v.v), [r, anders(h) + " " + sig + " " + v.pp, h + " " + sig + " " + v.v], r,
+      ["„" + sig + "“ ist ein Signalwort für das Present Perfect: have/has + 3. Form.", P + " " + B(r) + " " + o + "."], tipp);
+  }
+  if(stufe === 2){
+    if(past) return E.luecken(P + " [] " + o + " " + z + "." + hint(v.v), [[v.past]],
+      ["„" + z + "“ → Simple Past.", E.regelEd(v), P + " " + B(v.past) + " " + o + " " + z + "."], tipp, {genau:true});
+    if(erl){
+      const pn = pick(E.PERSONEN.filter(x => x[0] !== "I")), hn = E.hat(pn);
+      return E.luecken("[] " + kl(pn[0]) + " ever [] " + o + "?" + hint(v.v), [[cap(hn)], [v.pp]],
+        ["Frage nach Erfahrungen mit ever → Present Perfect: Have/Has + Person + ever + 3. Form.", B(cap(hn)) + " " + kl(pn[0]) + " ever " + B(v.pp) + " " + o + "?"], "Have you ever …? = Hast du jemals …?", {genau:true});
+    }
+    return E.luecken(P + " [] " + sig + " [] " + o + "." + hint(v.v), [[h], [v.pp]],
+      ["„" + sig + "“ → Present Perfect: have/has + 3. Form.", v.v + " – " + v.past + " – " + v.pp, P + " " + B(h) + " " + sig + " " + B(v.pp) + " " + o + "."], tipp, {genau:true});
+  }
+  const pn = pick(E.PERSONEN.filter(x => x[0] !== "I")), hn = E.hat(pn);
+  const art = erl ? pick(["never","pastNeg","when"]) : pick(["yetQ","yetNeg","pastNeg","when"]);
+  if(art === "yetQ") return E.luecken("[] " + kl(pn[0]) + " [] " + o + " yet?" + hint(v.v), [[cap(hn)], [v.pp]],
+    ["„yet“ am Ende einer Frage (schon?) → Present Perfect.", B(cap(hn)) + " " + kl(pn[0]) + " " + B(v.pp) + " " + o + " yet?"], "yet gehört zum Present Perfect.", {genau:true});
+  if(art === "yetNeg") return E.luecken(P + " [] [] " + o + " yet." + hint(v.v + ", verneint"), [[h + "n't", h + " not"], [v.pp]],
+    ["„not … yet“ (noch nicht) → Present Perfect: haven't/hasn't + 3. Form.", P + " " + B(h + "n't " + v.pp) + " " + o + " yet."], "noch nicht = not … yet → Present Perfect.", {genau:true});
+  if(art === "pastNeg") return E.luecken(P + " [] [] " + o + " " + z + "." + hint(v.v + ", verneint"), [["didn't","did not"], [v.v]],
+    ["„" + z + "“ → Simple Past. Verneint: didn't + Grundform.", P + " " + B("didn't " + v.v) + " " + o + " " + z + "."], "Achte auf das Zeitsignal am Satzende.", {genau:true});
+  if(art === "when") return E.luecken("When [] " + kl(pn[0]) + " [] " + o + "?" + hint(v.v), [["did"], [v.v]],
+    ["Mit When fragst du nach einem Zeitpunkt → immer Simple Past.", "Frage: When did + Person + Grundform.", "When " + B("did") + " " + kl(pn[0]) + " " + B(v.v) + " " + o + "?"], "Nach When steht nie das Present Perfect.", {genau:true});
+  return E.luecken(P + " [] never [] " + o + "." + hint(v.v), [[h], [v.pp]],
+    ["never (noch nie) → Present Perfect.", P + " " + B(h) + " never " + B(v.pp) + " " + o + "."], "never = noch nie → have/has + 3. Form.", {genau:true});
+}
+function genAlreadyYet(stufe){
+  const arten = stufe === 1 ? ["already","yetQ","yetNeg"] : stufe === 2 ? ["already","yetQ","yetNeg","ever","never"] : ["already","yetQ","yetNeg","ever","never","ago"];
+  const art = pick(arten), p = pick(E.PERSONEN), P = cap(p[0]), h = E.hat(p);
+  const pn = pick(E.PERSONEN.filter(x => x[0] !== "I")), hn = E.hat(pn);
+  const [vv, o] = pick(art === "ever" || art === "never" ? ERLEBNIS : AUFGABE), v = vf(vv);
+  const tipp = "already: Aussage · yet: Frage/Verneinung am Ende · ever: Frage · never: noch nie · ago: vor (Simple Past)";
+  if(art === "already") return E.wahl(P + " " + h + " ___ " + v.pp + " " + o + ".", ["already","yet","ever","ago"], "already",
+    ["Bejahte Aussage, „schon“ → already, zwischen have/has und der 3. Form.", P + " " + h + " " + B("already") + " " + v.pp + " " + o + "."], tipp);
+  if(art === "yetQ") return E.wahl(cap(hn) + " " + kl(pn[0]) + " " + v.pp + " " + o + " ___?", ["yet","ago","never","since"], "yet",
+    ["In Fragen heißt „schon“ meist yet – es steht am Satzende.", cap(hn) + " " + kl(pn[0]) + " " + v.pp + " " + o + " " + B("yet") + "?"], tipp);
+  if(art === "yetNeg") return E.wahl(P + " " + h + "n't " + v.pp + " " + o + " ___.", ["yet","already","ago","ever"], "yet",
+    ["not … yet = noch nicht. yet steht am Satzende.", P + " " + h + "n't " + v.pp + " " + o + " " + B("yet") + "."], tipp);
+  if(art === "ever") return E.wahl(cap(hn) + " " + kl(pn[0]) + " ___ " + v.pp + " " + o + "?", ["ever","yet","ago","since"], "ever",
+    ["Frage nach einer Erfahrung: „jemals“ → ever.", cap(hn) + " " + kl(pn[0]) + " " + B("ever") + " " + v.pp + " " + o + "?"], tipp);
+  if(art === "never"){ const pr = SUBJ[p[0]];
+    return E.wahl(P + " " + h + " ___ " + v.pp + " " + o + ", but " + pr + " would love to.", ["never","ever","yet","ago"], "never",
+      ["„noch nie“ → never (zwischen have/has und der 3. Form).", P + " " + h + " " + B("never") + " " + v.pp + " " + o + ", but " + pr + " would love to."], tipp); }
+  const z = pick(["two days","three weeks","an hour","ten minutes"]);
+  return E.wahl(P + " " + v.past + " " + o + " " + z + " ___.", ["ago","since","for","yet"], "ago",
+    ["„vor zwei Tagen“ = two days " + B("ago") + ". ago steht hinter der Zeitangabe und gehört zum Simple Past.", P + " " + v.past + " " + o + " " + z + " " + B("ago") + "."], tipp);
+}
+function genSignal(stufe){
+  const pp = ["already","yet","ever","never","just","since 2020","so far"], past = ["yesterday","last week","two days ago","in 2019","last Saturday","when I was six"];
+  const nPp = stufe === 1 ? 2 : 3, nPast = stufe === 3 ? 3 : 2;
+  const a = shuffle(stufe === 3 ? pp : pp.filter(x => !/since|so far/.test(x))).slice(0, nPp);
+  const b = shuffle(stufe === 3 ? past : past.filter(x => !/when|in 2019/.test(x))).slice(0, nPast);
+  return {t:"multi", q:"Welche Signalwörter gehören typischerweise zum <b>Present Perfect</b>? (Mehrere Antworten)", options:shuffle(a.concat(b)), a:a,
+    weg:["Present Perfect: kein fester Zeitpunkt, oder etwas dauert bis jetzt an: " + a.join(", ") + ".", "Simple Past: fester Zeitpunkt in der Vergangenheit: " + b.join(", ") + ".", "Richtig: " + B(a.join(", "))],
+    tip:"Nennt das Wort einen festen Zeitpunkt in der Vergangenheit? Dann gehört es zum Simple Past."};
+}
+thema({id:"e7-perfect-past", kapitel:"Zeiten", titel:"Present Perfect oder Simple Past?", kurz:"since, for, already, yet, ever – und die richtige Zeitform", icon:"perfekt",
+  erklaerung: `
+<p>Beide Zeitformen erzählen von Vergangenem. Entscheidend ist: Wird ein <b>fester Zeitpunkt</b> genannt – oder zählt das <b>Ergebnis jetzt</b> bzw. die Dauer <b>bis jetzt</b>?</p>
+<div class="merke"><h4>Merke</h4><p><b>Simple Past</b>: abgeschlossen, mit Zeitpunkt: yesterday, last week, two days <b>ago</b>, in 2020, <b>When</b> …?</p><p><b>Present Perfect</b> (have / has + 3. Form): Ergebnis oder Erfahrung zählt, oder etwas dauert bis jetzt: already, just, yet, ever, never, so far, since, for.</p></div>
+<div class="merke"><h4>since oder for?</h4><p><b>since</b> + Zeitpunkt (seit wann?): since Monday, since 2020, since nine o'clock</p><p><b>for</b> + Zeitraum (wie lange schon?): for two days, for ten minutes, for years</p></div>
+<div class="merke"><h4>already, yet, ever, never</h4><p><b>already</b> (schon) in Aussagen: She has already finished.</p><p><b>yet</b> am Satzende in Fragen (schon?) und Verneinungen (noch nicht): Have you finished yet? I haven't finished yet.</p><p><b>ever</b> (jemals) in Fragen, <b>never</b> (noch nie) in Aussagen.</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Ich wohne seit 2020 hier.</p><ol><li>„seit“ und es gilt immer noch → Present Perfect.</li><li>2020 ist ein Zeitpunkt → since.</li><li><b>I have lived here since 2020.</b> – aber: I moved here three years ago. (Zeitpunkt → Simple Past)</li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>„I live here since 2020“ – im Deutschen steht Präsens, im Englischen braucht man das <b>Present Perfect</b>: I have lived here since 2020. Und nach <b>When …?</b> steht immer Simple Past: When did you see the film?</p></div>`,
+  aufgaben:[genSinceFor, genZeitform, genAlreadyYet, genSignal]});
+
+/* ================= Present Perfect Progressive ================= */
+const PPP_KURZ = [["play","football"],["watch","TV"],["read","a book"],["clean","the kitchen"],["wait","for the bus"],["cook","dinner"],["talk","on the phone"],
+  ["practise","the piano"],["swim","in the lake"],["listen","to music"],["wash","the car"],["fix","the bike"],["study","for the test"],["tidy","the garage"]];
+const PPP_LANG = [["learn","English"],["play","the guitar"],["take","dance lessons"],["live","in Frankfurt"],["collect","stamps"]];
+const DAUER = {kurz:{for:["twenty minutes","half an hour","an hour","two hours"], since:["three o'clock","four o'clock","half past two","five o'clock"]},
+  lang:{for:["three years","six months","two years","a long time"], since:["2021","last summer","January","2019"]}};
+function pppWahl(){
+  const regen = Math.random() < 0.12, lang = !regen && Math.random() < 0.3;
+  const p = regen ? ["it",3] : pick(E.PERSONEN), [vv, o] = regen ? ["rain",""] : pick(lang ? PPP_LANG : PPP_KURZ), v = vf(vv);
+  const d = DAUER[lang ? "lang" : "kurz"], since = Math.random() < 0.5, z = (since ? "since " : "for ") + pick(since ? d.since : d.for);
+  return {p:p, v:v, o:o ? " " + o : "", z:z, h:E.hat(p), P:cap(p[0]), since:since};
+}
+function genPppForm(stufe){
+  const s = pppWahl(), ing = s.v.ing;
+  if(stufe === 1) return E.luecken(s.P + " [] been " + ing + s.o + " " + s.z + ".", [[s.h]],
+    ["Present Perfect Progressive: have / has + been + -ing.", "he / she / it → has, sonst have.", s.P + " " + B(s.h) + " been " + ing + s.o + " " + s.z + "."], "has bei he / she / it, sonst have.", {genau:true});
+  if(stufe === 2) return E.luecken(s.P + " [] []" + s.o + " " + s.z + "." + hint(s.v.v), [[s.h + " been"], [ing]],
+    ["Es hat angefangen und dauert bis jetzt → have/has + been + -ing.", E.regelIng(s.v), s.P + " " + B(s.h + " been " + ing) + s.o + " " + s.z + "."], "Drei Teile: have/has – been – Verb mit -ing.", {genau:true});
+  const q = pppWahl(), pn = q.p[0] === "I" ? ["you",2] : q.p, hn = E.hat(pn);
+  return E.luecken("How long [] " + kl(pn[0]) + " [] []" + q.o + "?" + hint(q.v.v), [[hn], ["been"], [q.v.ing]],
+    ["Frage nach der Dauer bis jetzt: How long + have/has + Person + been + -ing?", "How long " + B(hn) + " " + kl(pn[0]) + " " + B("been " + q.v.ing) + q.o + "?"], "Das have/has rückt vor die Person, been + -ing bleibt dahinter.", {genau:true});
+}
+function genPppWahl(stufe){
+  const jetzt = stufe >= 2 && Math.random() < 0.4;
+  if(jetzt){
+    const p = pick(E.PERSONEN.filter(x => x[0] !== "I" && x[0] !== "you")), [vv, o] = pick(PPP_KURZ), v = vf(vv), be = E.be(p), r = be + " " + v.ing;
+    return E.wahl("Look! " + cap(p[0]) + " ___ " + o + " right now." + hint(vv), [r, E.hat(p) + " been " + v.ing, praesens(p[0], vv)], r,
+      ["Keine Dauer (since/for), sondern „Look! … right now“ → es passiert gerade → Present Progressive.", "Look! " + cap(p[0]) + " " + B(r) + " " + o + " right now."], "Dauer bis jetzt oder nur gerade im Moment?");
+  }
+  const s = pppWahl(), r = s.h + " been " + s.v.ing, be = s.p[0] === "it" ? "is" : E.be(s.p);
+  const opts = [r, be + " " + s.v.ing, s.h + " " + s.v.ing];
+  if(stufe === 3) opts.push(be + " been " + s.v.ing);
+  return E.wahl(s.P + " ___" + s.o + " " + s.z + "." + hint(s.v.v), opts, r,
+    ["„" + s.z + "“: Es hat angefangen und dauert bis jetzt → Present Perfect Progressive.", s.P + " " + B(r) + s.o + " " + s.z + "."], "Im Deutschen steht hier Präsens („seit …“), im Englischen nicht!");
+}
+function genPppFehler(){
+  const s = pppWahl(), be = s.p[0] === "it" ? "is" : E.be(s.p), rest = s.o + " " + s.z + ".";
+  const r = s.P + " " + s.h + " been " + s.v.ing + rest;
+  return E.wahl("Welcher Satz ist richtig?", [r, s.P + " " + be + " " + s.v.ing + rest, s.P + " " + s.h + " " + s.v.ing + rest, s.P + " " + s.h + " been " + s.v.v + rest], r,
+    ["Mit since / for und Dauer bis jetzt: have/has + been + -ing.", "Richtig: " + r], "Es braucht alle drei Teile: have/has – been – -ing.");
+}
+function genPppBau(stufe){
+  const s = pppWahl();
+  if(stufe === 1 && s.o.split(" ").length > 3) return genPppBau(stufe);
+  const satz = s.P + " " + s.h + " been " + s.v.ing + s.o + " " + s.z;
+  const alt = cap(s.z) + " " + kl(s.p[0]) + " " + s.h + " been " + s.v.ing + s.o;
+  return E.satz("Bring die Wörter in die richtige Reihenfolge.", satz, ".", ["Person – have/has – been – -ing – Rest – since/for.", "Richtig: " + satz + "."], "Die Zeitangabe mit since/for steht meist am Ende.", [alt]);
+}
+thema({id:"e7-perfect-progressive", kapitel:"Zeiten", titel:"Present Perfect Progressive", kurz:"Wie lange etwas schon dauert: have / has been + -ing", icon:"zeit",
+  erklaerung: `
+<p>Mit dem <b>Present Perfect Progressive</b> sagst du, dass etwas in der Vergangenheit angefangen hat und <b>bis jetzt andauert</b> – oft mit since oder for.</p>
+<div class="merke"><h4>Merke</h4><p><b>have / has + been + -ing</b></p><p>I have been waiting for twenty minutes. · She has been playing the piano since three o'clock.</p><p>Frage: <b>How long have</b> you <b>been</b> learning English?</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Wir warten seit zehn Minuten auf den Bus.</p><ol><li>Es hat vor zehn Minuten angefangen und dauert noch an.</li><li>ten minutes ist ein Zeitraum → for.</li><li><b>We have been waiting for the bus for ten minutes.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>„I am waiting since ten minutes“ – das ist wörtlich aus dem Deutschen übersetzt und falsch. Richtig: <b>I have been waiting for ten minutes.</b></p></div>`,
+  aufgaben:[genPppForm, genPppWahl, genPppFehler, genPppBau]});
+
+/* ================= if-Sätze ================= */
+/* is/iv/ib/ir: if-Satz (Person, Verbform(en), Grundform, Rest) · ms/mv/mr: Hauptsatz · mneg: Hauptsatz verneint */
+const IF1 = [
+  {is:"it", iv:["rains"], ib:"rain", ir:"tomorrow", ms:"we", mv:"stay", mr:"at home"},
+  {is:"you", iv:["hurry"], ib:"hurry", ir:"", ms:"you", mv:"catch", mr:"the bus"},
+  {is:"Tom", iv:["studies"], ib:"study", ir:"for the test", ms:"he", mv:"get", mr:"a good mark"},
+  {is:"we", iv:["miss"], ib:"miss", ir:"the bus", ms:"we", mv:"be", mr:"late for school"},
+  {is:"the weather", iv:["is"], ib:"be", ir:"nice on Sunday", ms:"we", mv:"have", mr:"a picnic"},
+  {is:"my parents", iv:["say"], ib:"say", ir:"yes", ms:"I", mv:"go", mr:"to the party"},
+  {is:"Emma", iv:["finds"], ib:"find", ir:"her phone", ms:"she", mv:"call", mr:"you"},
+  {is:"I", iv:["have"], ib:"have", ir:"time after school", ms:"I", mv:"help", mr:"you with your homework"},
+  {is:"the shop", iv:["is"], ib:"be", ir:"still open", ms:"I", mv:"buy", mr:"some milk"},
+  {is:"we", iv:["leave"], ib:"leave", ir:"now", ms:"we", mv:"arrive", mr:"on time"},
+  {is:"Mia", iv:["practises"], ib:"practise", ir:"every day", ms:"she", mv:"win", mr:"the competition"},
+  {is:"it", iv:["snows"], ib:"snow", ir:"tonight", ms:"we", mv:"build", mr:"a snowman tomorrow"},
+  {is:"you", iv:["ask"], ib:"ask", ir:"Mr Brown", ms:"he", mv:"explain", mr:"it again"},
+  {is:"Ben", iv:["eats"], ib:"eat", ir:"all the sweets", ms:"he", mv:"feel", mr:"sick"},
+  {is:"you", iv:["go"], ib:"go", ir:"to bed late", ms:"you", mv:"be", mr:"tired tomorrow"}
+];
+const IF1N = [
+  {is:"you", iv:["don't hurry","do not hurry"], ib:"hurry", neg:true, ir:"", ms:"you", mv:"miss", mr:"the bus"},
+  {is:"it", iv:["doesn't rain","does not rain"], ib:"rain", neg:true, ir:"tomorrow", ms:"we", mv:"play", mr:"tennis"},
+  {is:"Tom", iv:["doesn't study","does not study"], ib:"study", neg:true, ir:"for the test", ms:"he", mv:"pass", mr:"it", mneg:true},
+  {is:"you", iv:["wear"], ib:"wear", ir:"a jacket", ms:"you", mv:"be", mr:"cold", mneg:true},
+  {is:"we", iv:["don't leave","do not leave"], ib:"leave", neg:true, ir:"now", ms:"we", mv:"be", mr:"late"},
+  {is:"Emma", iv:["doesn't feed","does not feed"], ib:"feed", neg:true, ir:"the cat", ms:"it", mv:"be", mr:"hungry"},
+  {is:"it", iv:["is"], ib:"be", ir:"too cold", ms:"we", mv:"go", mr:"swimming", mneg:true}
+];
+const ifTeil = d => "If " + d.is + " " + d.iv[0] + (d.ir ? " " + d.ir : "");
+const haupt1 = d => d.ms + " " + (d.mneg ? "won't " : "will ") + d.mv + " " + d.mr;
+const satz1 = d => ifTeil(d) + ", " + haupt1(d) + ".";
+const will1 = d => d.mneg ? ["won't " + d.mv, "will not " + d.mv] : ["will " + d.mv, "'ll " + d.mv];
+const tipIf1 = "Im if-Satz: Simple Present (kein will!). Im Hauptsatz: will + Grundform.";
+function genIf1Luecke(stufe){
+  const d = pick(stufe === 3 ? IF1N : IF1);
+  if(stufe === 1) return E.luecken(ifTeil(d) + ", " + d.ms + " [] " + d.mv + " " + d.mr + ".", [["will","'ll"]],
+    ["if-Satz Typ 1: Im Hauptsatz steht will + Grundform.", satz1(d).replace(" will ", " " + B("will") + " ")], tipIf1);
+  const hi = (d.neg ? "not " : "") + d.ib + ", " + (d.mneg ? "not " : "") + d.mv;
+  return E.luecken("If " + d.is + " []" + (d.ir ? " " + d.ir : "") + ", " + d.ms + " [] " + d.mr + "." + hint(hi), [d.iv, will1(d)],
+    ["if-Satz: Simple Present → " + B(d.iv[0]) + (d.neg ? " (verneint mit don't/doesn't)." : "."), "Hauptsatz: " + (d.mneg ? "won't" : "will") + " + Grundform → " + B(will1(d)[0]) + ".", satz1(d)], tipIf1, {genau:true});
+}
+function genIf1Wahl(stufe){
+  const d = pick(IF1), wo = stufe === 1 ? "haupt" : pick(["if","haupt"]);
+  if(wo === "if"){
+    const opts = [d.iv[0], "will " + d.ib, vergangen(d.is, d.ib)];
+    return E.wahl("If " + d.is + " ___" + (d.ir ? " " + d.ir : "") + ", " + haupt1(d) + "." + hint(d.ib), opts, d.iv[0],
+      ["Im if-Satz steht das Simple Present – nie will.", satz1(d)], tipIf1);
+  }
+  const r = "will " + d.mv;
+  return E.wahl(ifTeil(d) + ", " + d.ms + " ___ " + d.mr + "." + hint(d.mv), [r, "would " + d.mv, vergangen(d.ms, d.mv)], r,
+    ["Typ 1 (gut möglich): Hauptsatz mit will + Grundform.", satz1(d)], tipIf1);
+}
+function genIf1Fehler(stufe){
+  const d = pick(stufe === 3 ? IF1.concat(IF1N.filter(x => !x.neg)) : IF1), r = satz1(d), rest = d.ir ? " " + d.ir : "";
+  const f = ["If " + d.is + " will " + d.ib + rest + ", " + haupt1(d) + ".", ifTeil(d) + ", " + d.ms + " " + (d.mneg ? "wouldn't " : "would ") + d.mv + " " + d.mr + "."];
+  if(d.iv[0] !== d.ib && d.iv[0] !== "are") f.push("If " + d.is + " " + d.ib + rest + ", " + haupt1(d) + ".");
+  else f.push(ifTeil(d) + ", " + d.ms + " will " + praesens("he", d.mv) + " " + d.mr + ".");
+  return E.wahl("Welcher Satz ist richtig?", [r].concat(f), r, ["if-Satz: Simple Present, Hauptsatz: will + Grundform.", "Richtig: " + r], "Im if-Satz steht nie will.");
+}
+function genIf1Bau(stufe){
+  const d = pick(stufe === 3 ? IF1N : IF1);
+  const satz = ifTeil(d) + ", " + haupt1(d), alt = cap(haupt1(d)) + " if " + d.is + " " + d.iv[0] + (d.ir ? " " + d.ir : "");
+  return E.satz("Bring die Wörter in die richtige Reihenfolge.", satz, ".", ["Erst der if-Satz (Simple Present), dann Komma, dann der Hauptsatz mit will.", "Richtig: " + satz + "."], "If + Person + Verb …, Person + will + Verb …", [alt]);
+}
+thema({id:"e7-if1", kapitel:"Sätze", titel:"if-Sätze Typ 1", kurz:"If it rains, we will stay at home.", icon:"if",
+  erklaerung: `
+<p>Mit dem <b>if-Satz Typ 1</b> sagst du, was passiert, <b>wenn</b> eine Bedingung erfüllt wird – und das ist gut möglich.</p>
+<div class="merke"><h4>Merke</h4><p><b>If + Simple Present, … will + Grundform</b></p><p>If it rains, we will stay at home.</p><p>Der Hauptsatz darf auch vorne stehen, dann ohne Komma: We will stay at home if it rains.</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Wenn du dich beeilst, erwischst du den Bus.</p><ol><li>if-Satz: Simple Present → If you hurry,</li><li>Hauptsatz: will + Grundform → you will catch the bus.</li><li><b>If you hurry, you will catch the bus.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>Kein <b>will</b> im if-Satz! Falsch: „If it will rain …“ – richtig: <b>If it rains</b>, … Und bei he / she / it das -s nicht vergessen: If Tom studies …</p></div>`,
+  aufgaben:[genIf1Luecke, genIf1Wahl, genIf1Fehler, genIf1Bau]});
+
+const IF2 = [
+  {is:"I", iv:["had"], ib:"have", ir:"more money", ms:"I", mv:"buy", mr:"a new bike"},
+  {is:"I", iv:["were"], ib:"be", ir:"you", ms:"I", mv:"ask", mr:"the teacher for help"},
+  {is:"we", iv:["lived"], ib:"live", ir:"by the sea", ms:"we", mv:"go", mr:"swimming every day"},
+  {is:"Tom", iv:["had"], ib:"have", ir:"a dog", ms:"he", mv:"walk", mr:"it every day"},
+  {is:"I", iv:["could"], ib:"can", ir:"fly", ms:"I", mv:"visit", mr:"my cousins in Canada"},
+  {is:"it", iv:["was","were"], ib:"be", ir:"warmer", ms:"we", mv:"eat", mr:"outside"},
+  {is:"my sister", iv:["knew"], ib:"know", ir:"the answer", ms:"she", mv:"tell", mr:"us"},
+  {is:"you", iv:["went"], ib:"go", ir:"to bed earlier", ms:"you", mv:"be", mr:"less tired"},
+  {is:"I", iv:["won"], ib:"win", ir:"a lot of money", ms:"I", mv:"travel", mr:"around the world"},
+  {is:"we", iv:["had"], ib:"have", ir:"a car", ms:"we", mv:"drive", mr:"to the mountains more often"},
+  {is:"Emma", iv:["spoke"], ib:"speak", ir:"French", ms:"she", mv:"understand", mr:"her new neighbours"},
+  {is:"our school", iv:["had"], ib:"have", ir:"a pool", ms:"we", mv:"have", mr:"swimming lessons there"},
+  {is:"Ben", iv:["lived"], ib:"live", ir:"closer to school", ms:"he", mv:"walk", mr:"there"}
+];
+const IF2N = [
+  {is:"I", iv:["didn't have","did not have"], ib:"have", neg:true, ir:"so much homework", ms:"I", mv:"come", mr:"to the cinema"},
+  {is:"it", iv:["wasn't","weren't","was not","were not"], ib:"be", neg:true, ir:"so late", ms:"we", mv:"watch", mr:"another film"},
+  {is:"Tom", iv:["didn't live","did not live"], ib:"live", neg:true, ir:"so far away", ms:"we", mv:"see", mr:"him more often"},
+  {is:"I", iv:["had"], ib:"have", ir:"a phone", ms:"I", mv:"be", mr:"so bored on the bus", mneg:true},
+  {is:"you", iv:["ate"], ib:"eat", ir:"more vegetables", ms:"you", mv:"feel", mr:"so tired", mneg:true}
+];
+const haupt2 = d => d.ms + " " + (d.mneg ? "wouldn't " : "would ") + d.mv + " " + d.mr;
+const satz2 = d => ifTeil(d) + ", " + haupt2(d) + ".";
+const would2 = d => d.mneg ? ["wouldn't " + d.mv, "would not " + d.mv] : ["would " + d.mv, "'d " + d.mv];
+const tipIf2 = "Typ 2 (unwahrscheinlich): if + Simple Past, Hauptsatz: would + Grundform.";
+function genIf2Luecke(stufe){
+  const d = pick(stufe === 3 ? IF2N.concat(IF2.filter(x => x.ib === "be")) : IF2);
+  if(stufe === 1) return E.luecken(ifTeil(d) + ", " + d.ms + " [] " + d.mv + " " + d.mr + ".", [d.mneg ? ["wouldn't","would not"] : ["would","'d"]],
+    ["if-Satz Typ 2: Im Hauptsatz steht would + Grundform.", satz2(d)], tipIf2);
+  const hi = (d.neg ? "not " : "") + d.ib + ", " + (d.mneg ? "not " : "") + d.mv;
+  const extra = d.ir === "you" ? "Feste Wendung: If I were you … (Wenn ich du wäre …) – hier immer were." : "if-Satz: Simple Past → " + B(d.iv[0]) + ".";
+  return E.luecken("If " + d.is + " []" + (d.ir ? " " + d.ir : "") + ", " + d.ms + " [] " + d.mr + "." + hint(hi), [d.iv, would2(d)],
+    [extra, "Hauptsatz: " + (d.mneg ? "wouldn't" : "would") + " + Grundform → " + B(would2(d)[0]) + ".", satz2(d)], tipIf2, {genau:true});
+}
+const SIT2 = [
+  {real:"Deine Eltern überlegen noch, ob ihr einen Hund bekommt.", rs:"If we get a dog, I will walk it every day.", unreal:"Deine Eltern erlauben auf keinen Fall einen Hund.", us:"If we had a dog, I would walk it every day.", mix:"If we had a dog, I will walk it every day."},
+  {real:"Laut Wetterbericht wird es morgen vielleicht sonnig.", rs:"If it is sunny tomorrow, we will go to the beach.", unreal:"Es ist Winter und eiskalt. Du träumst vom Sommer.", us:"If it was warmer, we would go to the beach.", mix:"If it was warmer, we will go to the beach."},
+  {real:"Vielleicht wirst du heute früh mit den Hausaufgaben fertig.", rs:"If I finish my homework early, I will come to the park.", unreal:"Du hast heute so viele Hausaufgaben, dass du sicher nicht fertig wirst.", us:"If I didn't have so much homework, I would come to the park.", mix:"If I didn't have so much homework, I will come to the park."},
+  {real:"Dein Fahrrad ist kaputt, aber Opa kann es heute vielleicht reparieren.", rs:"If Grandpa fixes my bike, I will ride to school tomorrow.", unreal:"Du hast gar kein Fahrrad.", us:"If I had a bike, I would ride to school.", mix:"If I had a bike, I will ride to school."},
+  {real:"Nächste Woche fahrt ihr ans Meer. Vielleicht ist das Wasser schon warm.", rs:"If the water is warm, we will swim in the sea.", unreal:"Ihr wohnt weit weg vom Meer.", us:"If we lived by the sea, we would swim every day.", mix:"If we lived by the sea, we will swim every day."},
+  {real:"Morgen schreibst du einen Test. Heute Abend hast du noch Zeit zum Lernen.", rs:"If I study tonight, I will pass the test.", unreal:"Du kannst leider nicht zaubern.", us:"If I could do magic, I would never do homework again.", mix:"If I could do magic, I will never do homework again."}
+];
+function genIf2Typ(stufe){
+  const s = pick(SIT2), real = Math.random() < 0.5, r = real ? s.rs : s.us;
+  const opts = stufe === 1 ? [r, real ? s.us : s.rs] : [s.rs, s.us, s.mix];
+  return E.wahl("Situation: " + (real ? s.real : s.unreal) + "<br>Welcher Satz passt?", opts, r,
+    [real ? "Die Bedingung kann gut eintreten → Typ 1: if + Simple Present, will + Grundform." : "Die Bedingung ist unwahrscheinlich oder unmöglich → Typ 2: if + Simple Past, would + Grundform.", "Richtig: " + r],
+    "Kann das wirklich passieren (Typ 1) oder ist es nur ausgedacht (Typ 2)?");
+}
+function genIf2Fehler(stufe){
+  const d = pick(stufe === 3 ? IF2.concat(IF2N) : IF2), r = satz2(d), rest = d.ir ? " " + d.ir : "";
+  const f = ["If " + d.is + " would " + (d.neg ? "not " : "") + d.ib + rest + ", " + haupt2(d) + ".",
+    ifTeil(d) + ", " + d.ms + " " + (d.mneg ? "won't " : "will ") + d.mv + " " + d.mr + "."];
+  if(!d.neg && d.ib !== "can") f.push("If " + d.is + " " + praesens(d.is, d.ib) + rest + ", " + haupt2(d) + ".");
+  return E.wahl("Welcher Satz ist richtig?", [r].concat(f), r, ["Typ 2: if + Simple Past, Hauptsatz: would + Grundform. Im if-Satz steht nie would.", "Richtig: " + r], "would gehört nur in den Hauptsatz.");
+}
+function genIf2Bau(stufe){
+  const d = pick(stufe === 3 ? IF2N : IF2);
+  const satz = ifTeil(d) + ", " + haupt2(d), alt = cap(haupt2(d)) + " if " + d.is + " " + d.iv[0] + (d.ir ? " " + d.ir : "");
+  return E.satz("Bring die Wörter in die richtige Reihenfolge.", satz, ".", ["If + Simple Past …, Person + would + Grundform …", "Richtig: " + satz + "."], "Der if-Satz mit der Vergangenheitsform kommt zuerst.", [alt]);
+}
+thema({id:"e7-if2", kapitel:"Sätze", titel:"if-Sätze Typ 2", kurz:"If I had more time, I would … – Unwahrscheinliches", icon:"if",
+  erklaerung: `
+<p>Mit dem <b>if-Satz Typ 2</b> stellst du dir etwas vor, das <b>unwahrscheinlich oder unmöglich</b> ist – so wie im Deutschen „Wenn ich … hätte, würde ich …“.</p>
+<div class="merke"><h4>Merke</h4><p><b>If + Simple Past, … would + Grundform</b></p><p>If I had more money, I would buy a new bike. (Ich habe aber nicht mehr Geld.)</p><p>Kurzform: I'd = I would · Verneinung: wouldn't</p><p>Feste Wendung für Ratschläge: <b>If I were you</b>, I would …</p></div>
+<div class="merke"><h4>Typ 1 oder Typ 2?</h4><p>Gut möglich → Typ 1: If it rains, we <b>will</b> stay at home.</p><p>Unwahrscheinlich / nur ausgedacht → Typ 2: If I lived by the sea, I <b>would</b> swim every day.</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Wenn Tom einen Hund hätte, würde er jeden Tag mit ihm spazieren gehen.</p><ol><li>if-Satz: Simple Past → If Tom had a dog,</li><li>Hauptsatz: would + Grundform → he would walk it every day.</li><li><b>If Tom had a dog, he would walk it every day.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>Kein <b>would</b> im if-Satz! Falsch: „If I would have more money …“ – richtig: <b>If I had</b> more money …</p></div>`,
+  aufgaben:[genIf2Luecke, genIf2Typ, genIf2Fehler, genIf2Bau]});
+
+/* ================= Passiv ================= */
+/* [Subjekt, Mehrzahl?, Verb, Rest] */
+const PAS_PRES = [["Cheese",0,"make","from milk"],["Paper",0,"make","from wood"],["English",0,"speak","in many countries"],["Football",0,"play","all over the world"],
+  ["Rice",0,"grow","in many hot countries"],["The classroom",0,"clean","every evening"],["The windows",1,"clean","once a month"],["The post",0,"deliver","every morning"],
+  ["The bins",1,"empty","every Tuesday"],["Newspapers",1,"sell","at the kiosk"],["Many toys",1,"make","of plastic"],["Lunch",0,"serve","at one o'clock in the canteen"],
+  ["Pizza",0,"eat","all over the world"],["Bananas",1,"grow","in hot countries"]];
+const PAS_PAST = [["The Eiffel Tower",0,"build","in 1889"],["Our school",0,"build","in 1975"],["The window",0,"break","by a football yesterday"],
+  ["Romeo and Juliet",0,"write","by Shakespeare"],["The Mona Lisa",0,"paint","by Leonardo da Vinci"],["The thief",0,"catch","by the police"],
+  ["Two new trees",1,"plant","in the park last week"],["The photos",1,"take","by my uncle"],["The letters",1,"send","yesterday"],["Many houses",1,"destroy","by the storm"],
+  ["The keys",1,"find","under the sofa"],["The cake",0,"eat","by the children in ten minutes"],["The match",0,"win","by the team from Frankfurt"],
+  ["The first moon landing",0,"watch","by millions of people in 1969"]];
+const PAS3 = [
+  ["When [] the Eiffel Tower []? – In 1889.", "was", "build", "When was the Eiffel Tower built?"],
+  ["When [] your school []? – In 1975.", "was", "build", "When was your school built?"],
+  ["What [] cheese [] from? – From milk.", "is", "make", "What is cheese made from?"],
+  ["Where [] rice []? – In many hot countries.", "is", "grow", "Where is rice grown?"],
+  ["Who [] the Mona Lisa [] by? – By Leonardo da Vinci.", "was", "paint", "Who was the Mona Lisa painted by?"],
+  ["Which languages [] [] in Switzerland? – German, French, Italian and Romansh.", "are", "speak", "Which languages are spoken in Switzerland?"],
+  ["How often [] the bins []? – Every Tuesday.", "are", "empty", "How often are the bins emptied?"],
+  ["The post [] [] on Sundays.", "isn't", "deliver", "The post isn't delivered on Sundays."],
+  ["The windows [] [] last month.", "weren't", "clean", "The windows weren't cleaned last month."],
+  ["The thief [] [] – he got away.", "wasn't", "catch", "The thief wasn't caught – he got away."]
+];
+const beP = (pl, past) => past ? (pl ? "were" : "was") : (pl ? "are" : "is");
+const lang1 = s => s.replace(/^(The|Many|This|Two|A|Our)\b/, m => m.toLowerCase());
+function genPassivForm(stufe){
+  if(stufe === 3){
+    const [q, be, vv, ganz] = pick(PAS3), v = vf(vv), neg = /n't/.test(be);
+    const bes = neg ? [be, be.replace("n't", " not")] : [be];
+    return E.luecken(q + hint(vv + (neg ? ", verneint" : "")), [bes, [v.pp]],
+      ["Passiv: Form von be + 3. Form. " + (neg ? "Verneint: isn't / aren't / wasn't / weren't." : "In der Frage steht die Form von be vor dem Subjekt."), "Richtig: " + ganz],
+      "Welche Zeit? Welche Person? Dann be + 3. Form.", {genau:true});
+  }
+  const past = Math.random() < 0.5, [s, pl, vv, rest] = pick(past ? PAS_PAST : PAS_PRES), v = vf(vv), be = beP(pl, past);
+  const ganz = s + " " + be + " " + v.pp + " " + rest + ".";
+  if(stufe === 1) return E.luecken(s + " " + be + " [] " + rest + "." + hint(vv), [[v.pp]],
+    ["Passiv: be + 3. Form (Partizip).", vv + " – " + v.past + " – " + B(v.pp), ganz], "Nach is/are/was/were kommt die 3. Form.", {genau:true});
+  return E.luecken(s + " [] [] " + rest + "." + hint(vv + ", " + (past ? "Simple Past" : "Simple Present")), [[be], [v.pp]],
+    [(past ? "Simple Past Passiv: was / were" : "Simple Present Passiv: is / are") + " + 3. Form.", (pl ? "Mehrzahl → " : "Einzahl → ") + be + ".", ganz], "Einzahl oder Mehrzahl? Gegenwart oder Vergangenheit?", {genau:true});
+}
+/* a: Aktivsatz · s: Subjekt im Passiv · by: Handelnde(r) · apl: Handelnde Mehrzahl? */
+const AKTPAS = [
+  {a:"The police caught the thief.", s:"The thief", pl:0, v:"catch", by:"the police", apl:1, past:1, r:""},
+  {a:"Shakespeare wrote Romeo and Juliet.", s:"Romeo and Juliet", pl:0, v:"write", by:"Shakespeare", apl:0, past:1, r:""},
+  {a:"My uncle took the photos.", s:"The photos", pl:1, v:"take", by:"my uncle", apl:0, past:1, r:""},
+  {a:"The storm destroyed many houses.", s:"Many houses", pl:1, v:"destroy", by:"the storm", apl:0, past:1, r:""},
+  {a:"Leonardo da Vinci painted the Mona Lisa.", s:"The Mona Lisa", pl:0, v:"paint", by:"Leonardo da Vinci", apl:0, past:1, r:""},
+  {a:"The children ate the cake.", s:"The cake", pl:0, v:"eat", by:"the children", apl:1, past:1, r:""},
+  {a:"A football broke the window.", s:"The window", pl:0, v:"break", by:"a football", apl:0, past:1, r:""},
+  {a:"Mr Smith cleans the classroom every evening.", s:"The classroom", pl:0, v:"clean", by:"Mr Smith", apl:0, past:0, r:" every evening"},
+  {a:"The postman delivers the letters every morning.", s:"The letters", pl:1, v:"deliver", by:"the postman", apl:0, past:0, r:" every morning"},
+  {a:"Millions of people watch this show.", s:"This show", pl:0, v:"watch", by:"millions of people", apl:1, past:0, r:""},
+  {a:"My grandma makes the best pancakes.", s:"The best pancakes", pl:1, v:"make", by:"my grandma", apl:0, past:0, r:""}
+];
+function genAktivPassiv(stufe){
+  const d = pick(AKTPAS), v = vf(d.v), be = beP(d.pl, d.past);
+  const r = d.s + " " + be + " " + v.pp + " by " + d.by + d.r + ".";
+  const f = [d.s + " " + beP(d.pl, !d.past) + " " + v.pp + " by " + d.by + d.r + ".", cap(d.by) + " " + beP(d.apl, d.past) + " " + v.pp + " by " + lang1(d.s) + d.r + "."];
+  f.push(v.v !== v.pp ? d.s + " " + be + " " + v.v + " by " + d.by + d.r + "." : d.s + " " + v.pp + " by " + d.by + d.r + ".");
+  return E.wahl("Aktiv: <b>" + d.a + "</b><br>Welcher Passivsatz ist richtig?", stufe === 1 ? [r, f[1], f[2]] : [r].concat(f), r,
+    ["Das Objekt des Aktivsatzes (" + lang1(d.s) + ") wird zum Subjekt.", "Die Zeit bleibt gleich (" + (d.past ? "Simple Past → was/were" : "Simple Present → is/are") + ") + 3. Form, der Handelnde kommt mit by.", "Richtig: " + r],
+    "Wer tut etwas, und mit wem passiert es? Die Zeit bleibt gleich.");
+}
+function genAktivOderPassiv(stufe){
+  const d = pick(AKTPAS), v = vf(d.v), pas = Math.random() < 0.5, be = beP(d.pl, d.past);
+  const akt = d.past ? v.past : (d.apl ? v.v : v.s), pform = be + " " + v.pp;
+  const q = pas ? d.s + " ___ by " + d.by + d.r + "." : cap(d.by) + " ___ " + lang1(d.s) + d.r + ".";
+  const r = pas ? pform : akt, opts = [akt, pform];
+  if(stufe >= 2 && v.v !== v.pp) opts.push(be + " " + v.v);
+  return E.wahl(q + hint(d.v), opts, r,
+    [pas ? "Das Subjekt (" + lang1(d.s) + ") tut nichts selbst – mit ihm passiert etwas, und „by …“ nennt den Handelnden → Passiv." : "Das Subjekt (" + d.by + ") tut selbst etwas → Aktiv.", "Richtig: " + (pas ? d.s + " " + B(pform) + " by " + d.by + d.r + "." : cap(d.by) + " " + B(akt) + " " + lang1(d.s) + d.r + ".")],
+    "Tut das Subjekt selbst etwas (Aktiv) oder passiert etwas mit ihm (Passiv)?");
+}
+function genPassivBau(stufe){
+  const past = stufe === 1 ? false : Math.random() < 0.6, [s, pl, vv, rest] = pick(past ? PAS_PAST : PAS_PRES), v = vf(vv);
+  const satz = s + " " + beP(pl, past) + " " + v.pp + " " + rest;
+  return E.satz("Bring die Wörter in die richtige Reihenfolge.", satz, ".", ["Subjekt – is/are/was/were – 3. Form – Rest (by …).", "Richtig: " + satz + "."], "Die Form von be steht direkt vor der 3. Form.");
+}
+thema({id:"e7-passiv", kapitel:"Sätze", titel:"Passiv: is made, was built", kurz:"Das Passiv im Simple Present und Simple Past", icon:"passiv",
+  erklaerung: `
+<p>Im <b>Passiv</b> ist wichtig, <b>was mit etwas passiert</b> – nicht, wer es tut. Deshalb findest du es oft in Sachtexten, Nachrichten und Anleitungen.</p>
+<div class="merke"><h4>Merke</h4><p><b>Form von be + 3. Form (Partizip)</b></p><p>Simple Present: <b>is / are</b> + 3. Form: Cheese is made from milk.</p><p>Simple Past: <b>was / were</b> + 3. Form: The Eiffel Tower was built in 1889.</p><p>Wer es getan hat, steht mit <b>by</b>: The Mona Lisa was painted by Leonardo da Vinci.</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Aktiv: The police caught the thief.</p><ol><li>Das Objekt (the thief) wird zum Subjekt.</li><li>Die Zeit bleibt: Simple Past, Einzahl → was + caught.</li><li>Der Handelnde kommt mit by: <b>The thief was caught by the police.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>Die Form von <b>be</b> nicht vergessen und die <b>3. Form</b> nehmen: Falsch: „The window broken.“ oder „The window was break.“ – richtig: <b>The window was broken.</b> Und „by“ heißt hier „von“, nicht „from“.</p></div>`,
+  aufgaben:[genPassivForm, genAktivPassiv, genAktivOderPassiv, genPassivBau]});
+
+/* ================= Relativsätze ================= */
+/* [vorne, "p" Person / "t" Sache, hinten, Objekt-Relativsatz?, zwei einzelne Sätze] */
+const REL = [
+  ["The girl","p","lives next door is in my class",0,"The girl is in my class. She lives next door."],
+  ["I have a friend","p","speaks three languages",0,"I have a friend. She speaks three languages."],
+  ["The man","p","fixed our car was very friendly",0,"The man was very friendly. He fixed our car."],
+  ["Do you know the boy","p","won the race",0,"Do you know the boy? He won the race."],
+  ["A vet is a person","p","helps sick animals",0,"A vet is a person. This person helps sick animals."],
+  ["A pilot is a person","p","flies planes",0,"A pilot is a person. This person flies planes."],
+  ["We have a neighbour","p","plays the drums every evening",0,"We have a neighbour. He plays the drums every evening."],
+  ["A dictionary is a book","t","explains words",0,"A dictionary is a book. It explains words."],
+  ["The bus","t","goes to the station leaves every ten minutes",0,"The bus leaves every ten minutes. It goes to the station."],
+  ["I like films","t","have a happy ending",0,"I like films. They have a happy ending."],
+  ["A fridge is a machine","t","keeps food cold",0,"A fridge is a machine. It keeps food cold."],
+  ["The cake","t","is on the table is for Grandma",0,"The cake is for Grandma. It is on the table."],
+  ["The book","t","I'm reading is really exciting",1,"The book is really exciting. I'm reading it."],
+  ["The girl","p","we met at the party is from Ireland",1,"The girl is from Ireland. We met her at the party."],
+  ["The jacket","t","Mia bought yesterday was very cheap",1,"The jacket was very cheap. Mia bought it yesterday."],
+  ["The film","t","we watched last night was really funny",1,"The film was really funny. We watched it last night."],
+  ["The people","p","we visited in London were very nice",1,"The people were very nice. We visited them in London."],
+  ["The pizza","t","my dad makes is the best",1,"The pizza is the best. My dad makes it."],
+  ["The boy","p","you saw in the park is my cousin",1,"The boy is my cousin. You saw him in the park."],
+  ["The song","t","we sang at the concert was very old",1,"The song was very old. We sang it at the concert."]
+];
+const relPron = d => d[1] === "p" ? "who" : "which";
+const relEnde = d => /^(Do|Is) /.test(d[0]) ? "?" : ".";
+const relSatz = (d, pr) => d[0] + " " + (pr === "" ? "" : (pr || relPron(d)) + " ") + d[2];
+const relWeg = d => d[1] === "p" ? "Es geht um eine Person (" + d[0].split(" ").slice(-2).join(" ") + ") → who (oder that)." : "Es geht um eine Sache oder ein Tier (" + d[0].split(" ").slice(-2).join(" ") + ") → which (oder that).";
+function genRelWahl(stufe){
+  const d = pick(REL), r = relPron(d);
+  if(stufe === 3) return {t:"multi", q:"Welche Relativpronomen passen? (Mehrere Antworten)<br>" + d[0] + " ___ " + d[2] + relEnde(d), options:shuffle(["who","which","that","what"]), a:[r, "that"],
+    weg:[relWeg(d), "that passt bei Personen und Sachen. what ist kein Relativpronomen.", "Richtig: " + B(r) + " und " + B("that")], tip:"Person oder Sache? Und welches Wort passt immer?"};
+  return E.wahl(d[0] + " ___ " + d[2] + relEnde(d), stufe === 1 ? ["who","which"] : ["who","which","what"], r,
+    [relWeg(d), relSatz(d) + relEnde(d)], "who für Personen, which für Sachen und Tiere.");
+}
+function genRelLuecke(stufe){
+  const d = pick(stufe === 1 ? REL.filter(x => !x[3]) : REL), r = relPron(d);
+  return E.luecken(d[0] + " [] " + d[2] + relEnde(d), [[r, "that"]], [relWeg(d), relSatz(d) + relEnde(d)], "Person → who, Sache → which. that geht bei beiden.", {genau:true});
+}
+function genContact(stufe){
+  if(stufe <= 2){
+    const d = pick(REL), weg = d[3];
+    return E.wahl("Kann man das Relativpronomen in diesem Satz weglassen?<br>" + relSatz(d, B(relPron(d))) + relEnde(d), ["Ja","Nein"], weg ? "Ja" : "Nein",
+      [weg ? "Nach " + relPron(d) + " kommt eine neue Person (" + d[2].split(" ")[0] + ") → das Relativpronomen ist Objekt und kann wegfallen (contact clause)." : "Nach " + relPron(d) + " kommt direkt ein Verb → das Relativpronomen ist Subjekt und muss bleiben.",
+        weg ? "Auch richtig: " + relSatz(d, "") + relEnde(d) : "Richtig: " + relSatz(d) + relEnde(d)],
+      "Folgt auf who/which direkt ein Verb? Dann muss es bleiben.");
+  }
+  const obj = shuffle(REL.filter(x => x[3])).slice(0, 2), sub = shuffle(REL.filter(x => !x[3])).slice(0, 2);
+  const s = d => relSatz(d) + relEnde(d);
+  return {t:"multi", q:"In welchen Sätzen kann man das Relativpronomen weglassen? (Mehrere Antworten)", options:shuffle(obj.concat(sub).map(s)), a:obj.map(s),
+    weg:["Wegfallen kann es nur, wenn danach eine neue Person oder Sache kommt (Objekt-Relativsatz).", "Folgt direkt ein Verb, muss who/which bleiben.", "Richtig: " + obj.map(s).join(" · ")],
+    tip:"Schau, was direkt nach who/which kommt: ein Verb oder eine Person?"};
+}
+function genRelBau(stufe){
+  const d = pick(stufe === 3 ? REL.filter(x => x[3]) : REL.filter(x => x[2].split(" ").length <= 6)), ohne = stufe === 3;
+  const satz = ohne ? relSatz(d, "") : relSatz(d);
+  return E.satz((ohne ? "Verbinde die beiden Sätze <b>ohne</b> Relativpronomen (contact clause):" : "Verbinde die beiden Sätze mit <b>who</b> oder <b>which</b>:") + "<br>" + d[4], satz, relEnde(d),
+    [ohne ? "Das Relativpronomen ist hier Objekt → es darf wegfallen." : relWeg(d), "Richtig: " + satz + relEnde(d)], ohne ? "Der Relativsatz beginnt direkt mit der neuen Person." : "Das Relativpronomen ersetzt he / she / it / they im zweiten Satz.");
+}
+thema({id:"e7-relativ", kapitel:"Sätze", titel:"Relativsätze: who, which, that", kurz:"Personen und Dinge genauer beschreiben, contact clauses", icon:"relativ",
+  erklaerung: `
+<p>Mit einem <b>Relativsatz</b> sagst du genauer, <b>welche Person oder welche Sache</b> du meinst. So kannst du zwei kurze Sätze zu einem verbinden.</p>
+<div class="merke"><h4>Merke</h4><p><b>who</b> für Personen: The girl who lives next door is in my class.</p><p><b>which</b> für Sachen und Tiere: A fridge is a machine which keeps food cold.</p><p><b>that</b> geht bei Personen und Sachen.</p></div>
+<div class="merke"><h4>Contact clauses</h4><p>Kommt nach who / which / that eine <b>neue Person oder Sache</b>, darf das Relativpronomen wegfallen:</p><p>The book (which) I'm reading is exciting. → <b>The book I'm reading is exciting.</b></p><p>Folgt direkt ein <b>Verb</b>, muss es bleiben: The girl <b>who lives</b> next door …</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>I have a friend. She speaks three languages.</p><ol><li>Es geht um eine Person → who.</li><li>who ersetzt „she“.</li><li><b>I have a friend who speaks three languages.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>„what“ ist kein Relativpronomen: Falsch: „the book what I'm reading“. Und kein zusätzliches Pronomen: Falsch: „the girl who she lives next door“.</p></div>`,
+  aufgaben:[genRelWahl, genRelLuecke, genContact, genRelBau]});
+
+/* ================= Reflexivpronomen ================= */
+const REFL = [["I","myself"],["you (eine Person)","yourself"],["he","himself"],["she","herself"],["it","itself"],["we","ourselves"],["you (mehrere)","yourselves"],["they","themselves"]];
+const REFL_P = [["I","myself"],["you","yourself"],["he","himself"],["she","herself"],["we","ourselves"],["they","themselves"],["Tom","himself"],["Emma","herself"],
+  ["my sister","herself"],["my brother","himself"],["my parents","themselves"],["the children","themselves"],["Mia and Leo","themselves"]];
+const REFL_S = ["{P} hurt {R} playing football.","{P} cut {R} with the bread knife.","{P} enjoyed {R} at the party.","{P} taught {R} to play the guitar.",
+  "{P} looked at {R} in the mirror.","{P} made {R} a sandwich.","{P} bought {R} a new T-shirt.","{P} introduced {R} to the new neighbours."];
+const REFL_BY = ["{P} built the tree house all by {R}.","{P} painted the whole room {R}.","{P} fixed the bike {R}.","{P} baked the birthday cake {R}."];
+const reflA = r => r === "yourself" ? ["yourself","yourselves"] : [r];
+function genReflForm(stufe){
+  if(stufe === 3){
+    const z = shuffle(REFL.filter(x => /ves$/.test(x[1]) || x[0] === "it")).slice(0, 2);
+    return E.luecken(z[0][0] + " → [] · " + z[1][0] + " → []", [[z[0][1]], [z[1][1]]],
+      ["Mehrzahl: -selves statt -self.", z.map(x => x[0] + " → " + B(x[1])).join(" · ")], "Mehrzahl endet auf -selves.", {genau:true});
+  }
+  const z = pick(stufe === 1 ? REFL.filter(x => !/ves$/.test(x[1])) : REFL);
+  return E.text("Wie heißt das Reflexivpronomen (mich selbst, sich …) zu " + B(z[0]) + "?", [z[1]],
+    ["Einzahl: -self, Mehrzahl: -selves.", z[0] + " → " + B(z[1])], "myself, yourself, himself, herself, itself, ourselves, yourselves, themselves", {genau:true});
+}
+function genReflLuecke(stufe){
+  const [p, r] = pick(stufe === 1 ? REFL_P.filter(x => /self$/.test(x[1])) : REFL_P);
+  const s = pick(stufe === 3 ? REFL_S.concat(REFL_BY) : REFL_S), P = cap(p);
+  const allein = /by \{R\}/.test(s), selbst = !allein && REFL_BY.indexOf(s) >= 0;
+  const satz = s.replace("{P}", P).replace("{R}", B(r));
+  return E.luecken(s.replace("{P}", P).replace("{R}", "[]"), [reflA(r)],
+    [(allein ? "by + Reflexivpronomen = ganz allein, ohne Hilfe. " : selbst ? "Das Reflexivpronomen am Ende betont: selbst (niemand hat geholfen). " : "Die Person tut etwas mit sich selbst → Reflexivpronomen. ") + p + " → " + r + ".", satz],
+    "Zu welcher Person gehört das Pronomen? Einzahl -self, Mehrzahl -selves.", {genau:true});
+}
+const EO = [
+  ["Mia and Leo are best friends. They phone ___ every day.", "each other", "themselves"],
+  ["Tom and Ben had a fight. Now they don't talk to ___.", "each other", "themselves"],
+  ["The two girls looked at ___ and laughed.", "each other", "themselves"],
+  ["We have known ___ since primary school.", "each other", "ourselves"],
+  ["The twins often help ___ with their homework.", "each other", "themselves"],
+  ["The children enjoyed ___ at the zoo.", "themselves", "each other"],
+  ["My parents bought ___ a new sofa.", "themselves", "each other"],
+  ["We made ___ some sandwiches for the trip.", "ourselves", "each other"],
+  ["Nobody helped them. The boys taught ___ to juggle.", "themselves", "each other"]
+];
+function genEachOther(stufe){
+  const [q, a, b] = pick(EO), opts = [a, b];
+  if(stufe >= 2) opts.push("each others");
+  return E.wahl(q, opts, a,
+    [a === "each other" ? "each other = sich gegenseitig, einander: Jeder tut es für den anderen." : a + " = sich selbst: Jeder tut es für sich.", "Richtig: " + q.replace("___", B(a))],
+    "Tut jeder etwas für sich selbst oder für den anderen?");
+}
+const OHNE = [
+  ["We met at the station at six.", ["We met ourselves at the station at six.","We met us at the station at six."], "sich treffen = meet"],
+  ["I feel tired today.", ["I feel myself tired today.","I feel me tired today."], "sich fühlen = feel"],
+  ["Hurry up, Tom! The bus is coming.", ["Hurry yourself up, Tom! The bus is coming.","Hurry you up, Tom! The bus is coming."], "sich beeilen = hurry (up)"],
+  ["Can you remember his name?", ["Can you remember yourself his name?","Can you remember you his name?"], "sich erinnern an = remember"],
+  ["She is looking forward to the holidays.", ["She is looking herself forward to the holidays.","She is looking her forward to the holidays."], "sich freuen auf = look forward to"],
+  ["I'm really interested in history.", ["I'm really interesting myself for history.","I interest me for history."], "sich interessieren für = be interested in"],
+  ["He got changed after the match.", ["He changed himself after the match.","He changed him after the match."], "sich umziehen = get changed"],
+  ["We enjoyed ourselves at the party.", ["We enjoyed us at the party.","We enjoyed at the party."], "Spaß haben = enjoy oneself – hier braucht man das Reflexivpronomen!"]
+];
+function genOhneSelf(stufe){
+  const [r, f, de] = pick(OHNE), opts = stufe === 1 ? [r, f[0]] : [r].concat(f);
+  const mit = /ourselves/.test(r);
+  return E.wahl("Welcher Satz ist richtig?" + hint(de.split(" – ")[0]), opts, r,
+    [mit ? "enjoy braucht ein Reflexivpronomen: enjoy myself, enjoy ourselves …" : "Im Deutschen reflexiv, im Englischen nicht: " + de + ".", "Richtig: " + r],
+    "Viele deutsche „sich“-Verben haben im Englischen kein Reflexivpronomen.");
+}
+thema({id:"e7-reflexiv", kapitel:"Wörter", titel:"Reflexivpronomen: myself, yourself", kurz:"sich selbst, allein – und each other", icon:"pron",
+  erklaerung: `
+<p>Mit <b>Reflexivpronomen</b> zeigst du, dass jemand etwas <b>mit sich selbst</b> tut – oder dass jemand etwas <b>selbst</b> gemacht hat.</p>
+<div class="merke"><h4>Merke</h4><p>I → <b>myself</b> · you → <b>yourself</b> · he → <b>himself</b> · she → <b>herself</b> · it → <b>itself</b></p><p>we → <b>ourselves</b> · you → <b>yourselves</b> · they → <b>themselves</b></p><p>Tom hurt himself. · We enjoyed ourselves. · I made it myself. (selbst) · She did it by herself. (allein)</p></div>
+<div class="merke"><h4>each other</h4><p><b>each other</b> = sich gegenseitig, einander: Mia and Leo help <b>each other</b>. (Mia hilft Leo, Leo hilft Mia.)</p><p>Aber: They enjoyed <b>themselves</b>. (Jeder für sich.)</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Emma hat sich beim Fußballspielen verletzt.</p><ol><li>Emma → she → herself</li><li><b>Emma hurt herself playing football.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>Viele deutsche „sich“-Verben sind im Englischen <b>nicht</b> reflexiv: sich treffen = meet, sich fühlen = feel, sich beeilen = hurry, sich erinnern = remember, sich freuen auf = look forward to. Falsch: „We met ourselves.“ – richtig: <b>We met.</b></p></div>`,
+  aufgaben:[genReflForm, genReflLuecke, genEachOther, genOhneSelf]});
+
+/* ================= Modalverben und Ersatzformen ================= */
+const MUSS_T = ["get up at six","tidy the kitchen","walk to school","wait for the bus for half an hour","help in the garden","do the washing-up","take the bus","stay at home"];
+const KANN_T = ["swim","ride a bike","read","play the piano","count to a hundred","tie shoelaces"];
+const KANN_F = ["drive a car","speak English fluently","read this difficult book","swim across the lake"];
+const KINDER = E.PERSONEN.filter(x => /^(I|you|we|Tom|Emma|Ben|my sister|my brother)$/.test(x[0]));
+function genErsatz(stufe){
+  const tip = "must → had to / will have to · can → could, was able to / will be able to";
+  if(stufe === 1){
+    if(Math.random() < 0.5){ const p = pick(E.PERSONEN), t = pick(MUSS_T);
+      return E.luecken("Yesterday " + kl(p[0]) + " [] " + t + "." + hint("müssen"), [["had to"]],
+        ["must hat keine Vergangenheitsform. Ersatz: have to → Simple Past: had to (für alle Personen).", "Yesterday " + kl(p[0]) + " " + B("had to") + " " + t + "."], tip); }
+    const p = pick(E.PERSONEN), t = pick(KANN_T), w = E.wasWere(p);
+    return E.luecken("At the age of six, " + kl(p[0]) + " [] already " + t + "." + hint("können"), [["could", w + " able to"]],
+      ["Vergangenheit von can: could (oder " + w + " able to).", "At the age of six, " + kl(p[0]) + " " + B("could") + " already " + t + "."], tip);
+  }
+  if(stufe === 2){
+    if(Math.random() < 0.5){ const p = pick(E.PERSONEN), t = pick(MUSS_T.filter(x => !/stay/.test(x)));
+      return E.luecken("Tomorrow " + kl(p[0]) + " [] " + t + "." + hint("müssen"), [["will have to","'ll have to"]],
+        ["must hat keine Zukunftsform. Ersatz: will have to.", "Tomorrow " + kl(p[0]) + " " + B("will have to") + " " + t + "."], tip); }
+    const p = pick(KINDER), t = pick(KANN_F);
+    return E.luecken("In a few years, " + kl(p[0]) + " [] " + t + "." + hint("können"), [["will be able to","'ll be able to"]],
+      ["can hat keine Zukunftsform. Ersatz: will be able to.", "In a few years, " + kl(p[0]) + " " + B("will be able to") + " " + t + "."], tip);
+  }
+  const art = pick(["didnt","wont","allowed","couldnt"]);
+  if(art === "didnt"){ const p = pick(E.PERSONEN);
+    return E.luecken("Yesterday was a holiday, so " + kl(p[0]) + " [] go to school." + hint("müssen, verneint"), [["didn't have to","did not have to"]],
+      ["nicht müssen in der Vergangenheit: didn't have to.", "Yesterday was a holiday, so " + kl(p[0]) + " " + B("didn't have to") + " go to school."], "Es war nicht nötig → didn't have to."); }
+  if(art === "wont"){ const p = pick([["I",1],["we",4]]);
+    return E.luecken("Sorry, " + p[0] + " [] come to your party tomorrow. We're visiting Grandma." + hint("können, verneint"), [["won't be able to","will not be able to","can't","cannot"]],
+      ["nicht können in der Zukunft: won't be able to (can't ist hier auch richtig).", "Sorry, " + p[0] + " " + B("won't be able to") + " come to your party tomorrow."], "Zukunft von can't → won't be able to."); }
+  if(art === "allowed"){ const p = pick(KINDER), w = E.wasWere(p);
+    return E.luecken("On New Year's Eve " + kl(p[0]) + " [] stay up until midnight." + hint("dürfen, Vergangenheit"), [[w + " allowed to", "could"]],
+      ["dürfen = be allowed to. Vergangenheit: was / were allowed to.", "On New Year's Eve " + kl(p[0]) + " " + B(w + " allowed to") + " stay up until midnight."], "dürfen → be allowed to."); }
+  const p = pick(E.PERSONEN), w = E.wasWere(p);
+  return E.luecken("At first " + kl(p[0]) + " [] open the door. The key was stuck." + hint("können, verneint"), [["couldn't","could not", w + "n't able to", w + " not able to"]],
+    ["nicht können in der Vergangenheit: couldn't (oder " + w + "n't able to).", "At first " + kl(p[0]) + " " + B("couldn't") + " open the door."], "Vergangenheit von can't → couldn't.");
+}
+const MN = [
+  ["You ___ use your phone in the exam. It isn't allowed.", "v", 0],
+  ["You ___ bring any food. We have lots of sandwiches.", "n", 0],
+  ["We ___ make any noise. The baby is asleep.", "v", 0],
+  ["You ___ hurry. The film doesn't start until eight.", "n", 0],
+  ["You ___ swim in this river. It's dangerous.", "v", 0],
+  ["You ___ wear a jacket. It's really warm today.", "n", 0],
+  ["Tom ___ get up early tomorrow. It's Saturday.", "n", 1],
+  ["You ___ tell anyone. It's a secret!", "v", 0],
+  ["You ___ cross the road when the light is red.", "v", 0],
+  ["We ___ pay. The museum is free.", "n", 0],
+  ["Emma ___ take the bus. Her dad is driving her.", "n", 1],
+  ["Children ___ play with matches.", "v", 0]
+];
+function genMustnt(stufe){
+  const [q, art, drei] = pick(MN), verbot = art === "v";
+  const nicht = drei ? "doesn't have to" : "don't have to";
+  const weg = [verbot ? "Es ist verboten → mustn't (nicht dürfen)." : "Es ist nicht nötig → needn't / " + nicht + " (nicht müssen).", "Richtig: " + q.replace("___", B(verbot ? "mustn't" : stufe === 2 ? nicht : "needn't"))];
+  const tip = "mustn't = nicht dürfen · needn't / don't have to = nicht müssen";
+  if(stufe === 1) return E.wahl(q, ["mustn't","needn't"], verbot ? "mustn't" : "needn't", weg, tip);
+  if(stufe === 2) return E.wahl(q, ["mustn't", nicht], verbot ? "mustn't" : nicht, weg, tip);
+  const a = verbot ? ["mustn't","must not"] : ["needn't","need not", nicht, nicht.replace("n't", " not")];
+  return E.luecken(q.replace("___", "[]"), [a], weg, tip, {genau:true});
+}
+const MW = [
+  ["Next summer I ___ swim across the lake.", "will be able to", ["will can","can","could"], "Zukunft von can → will be able to."],
+  ["When she was four, Emma ___ already ride a bike.", "could", ["can","will can","will be able to"], "Vergangenheit von can → could."],
+  ["Yesterday we ___ stay at school until five.", "had to", ["must","musted","have to"], "Vergangenheit von must → had to."],
+  ["Tomorrow Tom ___ get up at six.", "will have to", ["will must","must to","had to"], "Zukunft von must → will have to."],
+  ["Sorry, I ___ come yesterday. I was ill.", "couldn't", ["can't","won't be able to","mustn't"], "Vergangenheit von can't → couldn't."],
+  ["We ___ go to school tomorrow. It's a holiday!", "won't have to", ["mustn't","didn't have to","won't must"], "nicht müssen in der Zukunft → won't have to."],
+  ["Last year my brother ___ stay up late. Now he is.", "wasn't allowed to", ["isn't allowed to","won't be allowed to","mustn't"], "nicht dürfen in der Vergangenheit → wasn't allowed to."],
+  ["Last weekend Mia ___ help her dad in the garden.", "had to", ["has to","must","will have to"], "Vergangenheit von must → had to."],
+  ["Grandpa is eighty, but he ___ still ride a bike.", "can", ["will can","cans","is able"], "Gegenwart → can (ohne -s, ohne to)."]
+];
+function genModalWahl(stufe){
+  const liste = stufe === 1 ? MW.slice(0, 4).concat(MW.slice(7)) : stufe === 2 ? MW.slice(0, 6).concat(MW.slice(7)) : MW;
+  const [q, r, f, w] = pick(liste);
+  return E.wahl(q, [r].concat(f), r, [w, "Richtig: " + q.replace("___", B(r))], "Welche Zeit? Modalverben haben keine will-Form und keine -ed-Form.");
+}
+const MB = ["We will have to get up early tomorrow","I will be able to swim next summer","You mustn't use your phone in class","She didn't have to wait for the bus",
+  "They had to walk home in the rain","Tom wasn't able to open the door","We weren't allowed to watch the film","You needn't bring any food"];
+function genModalBau(stufe){
+  const liste = stufe === 1 ? MB.slice(0, 5) : MB, satz = pick(liste);
+  return E.satz("Bring die Wörter in die richtige Reihenfolge.", satz, ".", ["Person – Modalverb bzw. Ersatzform – Verb in der Grundform – Rest.", "Richtig: " + satz + "."], "Nach dem Modalverb oder der Ersatzform kommt die Grundform.");
+}
+thema({id:"e7-modal", kapitel:"Wörter", titel:"Modalverben und Ersatzformen", kurz:"can, must, mustn't, needn't – und be able to, have to", icon:"modal",
+  erklaerung: `
+<p><b>can</b> und <b>must</b> gibt es nur in der Gegenwart. Für Vergangenheit und Zukunft brauchst du <b>Ersatzformen</b>.</p>
+<div class="merke"><h4>Merke</h4><p><b>can</b> (können) → Vergangenheit: <b>could</b> / was able to → Zukunft: <b>will be able to</b></p><p><b>must</b> (müssen) → Vergangenheit: <b>had to</b> → Zukunft: <b>will have to</b></p><p><b>may / can</b> (dürfen) → <b>be allowed to</b>: I wasn't allowed to go.</p></div>
+<div class="merke"><h4>mustn't oder needn't?</h4><p><b>mustn't</b> = nicht dürfen (Verbot): You mustn't swim here.</p><p><b>needn't / don't have to</b> = nicht müssen (nicht nötig): You needn't hurry.</p></div>
+<div class="beispiel"><h4>Beispiel</h4><p>Morgen muss ich früh aufstehen.</p><ol><li>Zukunft von must → will have to</li><li><b>Tomorrow I will have to get up early.</b></li></ol></div>
+<div class="achtung"><h4>Typischer Fehler</h4><p>„I will can“ oder „I musted“ gibt es nicht. Und Vorsicht: „mustn't“ heißt <b>nicht dürfen</b>, nicht „nicht müssen“!</p></div>`,
+  aufgaben:[genErsatz, genMustnt, genModalWahl, genModalBau]});
 })(typeof window !== "undefined" ? window.Karo : globalThis.Karo);
 
 </script>
@@ -18785,7 +19461,7 @@ const ic = (n, cls) => '<svg class="ic '+(cls||"")+'" viewBox="0 0 24 24" aria-h
 const GLYPH = {masse:"kg", zahl:"10⁶", runden:"≈", strahl:"0→", plus:"+−", mal:"×", potenz:"aⁿ", diagramm:"▂▅▇", teiler:"ggT", bruch:"½",
   komma:"0,5", flaeche:"cm²", minus:"−3", prozent:"%", dreisatz:"⇄", term:"3x", gleichung:"x=?", winkel:"∠", funktion:"f(x)",
   binom:"(a+b)²", zins:"€", kreis:"π", wurzel:"√", pythagoras:"a²+b²", lgs:"x|y", parabel:"x²", wahrsch:"P", trigo:"sin",
-  blatt:"✎", mix:"Mix", fehler:"✗→✓", wachstum:"2ˣ", koerper:"V", daten:"Ø", ka:"KA", heft:"HA",
+  blatt:"✎", if:"if", passiv:"be+pp", relativ:"who", modal:"can", mix:"Mix", fehler:"✗→✓", wachstum:"2ˣ", koerper:"V", daten:"Ø", ka:"KA", heft:"HA",
   be:"am", have:"has", pron:"me", plural:"-s", present:"-s", frage:"Wh?", ing:"-ing", past:"-ed", uhr:"3:15", haeufig:"often", zeit:"at", genitiv:"'s", futur:"will", steigern:"-er", adverb:"-ly", perfekt:"have", vok:"ABC"};
 function icoHtml(icon, extra){
   const g = GLYPH[icon] || "∑";
@@ -19021,7 +19697,7 @@ const THEMEN = K.themen.slice();
 const KA = K.klassenarbeiten || [];
 const byId = {}; THEMEN.forEach(t => { byId[t.id] = t; });
 const kaById = {}; KA.forEach(b => { kaById[b.id] = b; });
-const FACH_M = "Mathematik", FACH_E = "Englisch", EN_KLASSEN = [5,6];
+const FACH_M = "Mathematik", FACH_E = "Englisch", EN_KLASSEN = [5,6,7];
 const fachVon = t => t.fach || FACH_M;
 const farbeVon = t => fachVon(t) === FACH_E ? "e" + t.klasse : String(t.klasse);
 const klasseHref = (k, fach) => fach === FACH_E ? "#/englisch/"+k : "#/klasse/"+k;
@@ -19406,7 +20082,7 @@ function seiteStart(){
   if(k && themenVon(k).length){
     html += '<div class="section-h"><h2>Für dich in Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(k, 4).map(themaZeile).join("")+'</div>';
-    const ek = EN_KLASSEN.indexOf(k) >= 0 ? k : (k > 6 ? 6 : 5);
+    const ek = EN_KLASSEN.indexOf(k) >= 0 ? k : (k > 7 ? 7 : 5);
     html += '<div class="section-h"><h2>Englisch</h2><a class="btn ghost klein" href="#/englisch/'+ek+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(ek, 3, FACH_E).map(themaZeile).join("")+vokabelZeile()+'</div>';
   }else{

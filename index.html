@@ -774,6 +774,12 @@ table.tab tr.klickbar:hover td{background:var(--brand-soft)}
 .treffer b{color:var(--brand); margin-right:6px}
 @media (max-width:560px){ .buch-ab{padding:18px 16px} .verse{font-size:18px} }
 @media print{ .top, .leiste, .fuss, .no-print{display:none !important} body{background:#fff} .card{box-shadow:none} }
+/* Auf allen Geräten speichern */
+.sync-karte h3{display:flex; align-items:center; gap:8px}
+.sync-karte h3 .ic{width:20px; height:20px; color:var(--brand)}
+.sync-code{font:800 30px/1.1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing:.08em; color:var(--ink); background:var(--brand-soft); border:2px dashed var(--brand); border-radius:12px; padding:12px 16px; text-align:center; user-select:all; word-break:break-all}
+@media (max-width:420px){ .sync-code{font-size:24px} }
+.sync-fehler{color:var(--bad)}
 /* Übungsblätter */
 .blatt-h{display:flex; align-items:center; gap:9px; font-family:var(--display); font-size:21px}
 .blatt-h .ic{width:22px; height:22px; color:var(--kd)}
@@ -18810,7 +18816,139 @@ function laden(){
   return s;
 }
 let S = laden();
-function speichern(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function lokalSpeichern(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function speichern(){
+  const an = !!(S.sync && S.sync.code);
+  if(an){ S.sync.offen = true; S.sync.geaendert = Date.now(); }
+  lokalSpeichern();
+  if(an) Sync.planen();
+}
+
+/* ================= Auf allen Geräten speichern =================
+   Mit einem geheimen Karo-Code liegt der Fortschritt zusätzlich im Karo-Speicher bei Netlify.
+   Kein Name, keine E-Mail. Schulportal-Zugang und Aussehen (hell/dunkel) bleiben auf dem Gerät. */
+const SYNC_URL = /\.netlify\.app$/.test(location.hostname) ? "/api/karo" : "https://karo-lernen.netlify.app/api/karo";
+const SYNC_FEHLER = {
+  netz:"Keine Verbindung zum Karo-Speicher. Bist du online? Karo speichert später automatisch.",
+  unbekannt:"Diesen Karo-Code gibt es nicht. Vielleicht ein Tippfehler?",
+  code:"Ein Karo-Code hat 12 Zeichen, zum Beispiel K7QM-P2XD-9HTR.",
+  zu_gross:"Zu viele Daten zum Speichern. Lösch alte KI-Arbeiten und versuch es noch einmal."
+};
+const Sync = {
+  timer:null, laeuft:false, fehler:null,
+  an(){ return !!(S.sync && S.sync.code); },
+  async rufe(body){
+    let r, j = null;
+    try{ r = await fetch(SYNC_URL, {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(body)}); j = await r.json(); }
+    catch(e){ throw {code:"netz"}; }
+    if(!j) throw {code:"netz"};
+    if(!r.ok) throw Object.assign({}, j, {code:j.fehler || "netz"});
+    return j;
+  },
+  paket(){ const d = JSON.parse(JSON.stringify(S)); delete d.sync; delete d.theme; return d; },
+  uebernehmen(daten, zeit){
+    const code = S.sync.code, theme = S.theme;
+    S = Object.assign(leer(), daten || {});
+    S.sync = {code:code, zeit:zeit, offen:false, geaendert:0, letzt:Date.now()}; S.theme = theme;
+    lokalSpeichern();
+    if(!Heft.db) Heft.liste = Heft.lokal().map(e => Object.assign({}, e));
+  },
+  async hoch(erzwingen){
+    if(!this.an() || this.laeuft) return;
+    this.laeuft = true; let nochmal = false;
+    try{
+      const j = await this.rufe({aktion:"speichern", code:S.sync.code, daten:this.paket(), basis:S.sync.zeit, erzwingen:!!erzwingen});
+      S.sync.zeit = j.zeit; S.sync.offen = false; S.sync.letzt = Date.now(); this.fehler = null; lokalSpeichern();
+    }catch(e){
+      if(e.code === "konflikt"){
+        /* Ein anderes Gerät hat inzwischen gespeichert: die neuere Änderung gewinnt */
+        if(S.sync.geaendert > Date.parse(e.zeit)) nochmal = true;
+        else { this.uebernehmen(e.daten, e.zeit); route(); toast("Neuerer Stand von deinem anderen Gerät geladen"); }
+      }else this.fehler = e.code;
+    }finally{ this.laeuft = false; }
+    if(nochmal) return this.hoch(true);
+  },
+  async runter(){
+    if(!this.an()) return false;
+    try{
+      const j = await this.rufe({aktion:"laden", code:S.sync.code});
+      this.fehler = null;
+      if(!j.zeit || j.zeit === S.sync.zeit || (S.sync.offen && S.sync.geaendert > Date.parse(j.zeit))){ if(S.sync.offen) await this.hoch(!!j.zeit && j.zeit !== S.sync.zeit); return false; }
+      this.uebernehmen(j.daten, j.zeit); return true;
+    }catch(e){ this.fehler = e.code; return false; }
+  },
+  planen(){ clearTimeout(this.timer); this.timer = setTimeout(() => this.hoch(), 4000); },
+  start(){
+    const holen = () => this.runter().then(neu => { if(neu){ route(); toast("Fortschritt von deinem anderen Gerät geladen"); } });
+    holen();
+    document.addEventListener("visibilitychange", () => {
+      if(!this.an()) return;
+      if(document.hidden){ if(S.sync.offen){ clearTimeout(this.timer); this.hoch(); } }
+      else holen();
+    });
+  }
+};
+const codeZeigen = c => { const n = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); return n.length === 12 ? n.slice(0,4)+"-"+n.slice(4,8)+"-"+n.slice(8) : n; };
+function syncKarte(){
+  const c = el("div","card pad stack sync-karte");
+  const fehlerText = code => (claudeRT && code === "netz") ? "In der claude.ai-Ansicht kommt Karo nicht an den Karo-Speicher. Öffne Karo über elias1234491.github.io oder die Handy-App." : (SYNC_FEHLER[code] || SYNC_FEHLER.netz);
+  const zeichne = meldung => {
+    if(Sync.an()){
+      const wann = S.sync.letzt ? new Date(S.sync.letzt).toLocaleString("de-DE", {day:"numeric", month:"numeric", hour:"2-digit", minute:"2-digit"}) : null;
+      c.innerHTML = '<h3>'+ic("haken")+'Auf allen Geräten speichern</h3>'+
+        '<p class="weich">Dein Karo-Code:</p><div class="sync-code" aria-label="Karo-Code">'+esc(codeZeigen(S.sync.code))+'</div>'+
+        '<p class="weich" style="font-size:15px">Gib diesen Code auf deinem anderen Handy, Tablet oder Computer hier im Profil ein. Dann ist überall derselbe Fortschritt. <b>Schreib ihn dir auf und verrate ihn niemandem</b>, denn wer den Code hat, kann deinen Fortschritt sehen.</p>'+
+        '<p class="leise sync-stand">'+(Sync.fehler ? esc(fehlerText(Sync.fehler)) : S.sync.offen ? "Wird gleich gespeichert …" : wann ? "Zuletzt gespeichert: "+esc(wann) : "Verbunden.")+'</p>'+(meldung || "");
+      const r = el("div","row");
+      r.appendChild(btn("btn primary", ic("neu")+"Jetzt abgleichen", async () => {
+        const neu = await Sync.runter(); if(!neu && !Sync.fehler) await Sync.hoch();
+        if(neu){ route(); toast("Fortschritt von deinem anderen Gerät geladen"); return; }
+        zeichne(Sync.fehler ? "" : '<p class="leise">Alles gespeichert.</p>');
+      }));
+      r.appendChild(btn("btn", "Code kopieren", () => { try{ navigator.clipboard.writeText(codeZeigen(S.sync.code)).then(() => toast("Code kopiert"), () => toast("Kopieren geht hier nicht. Schreib den Code ab.")); }catch(e){ toast("Kopieren geht hier nicht. Schreib den Code ab."); } }));
+      r.appendChild(btn("btn ghost", "Trennen", async () => {
+        if(!await frage("Dieses Gerät vom Karo-Code trennen? Dein Fortschritt bleibt hier und im Karo-Speicher, wird aber nicht mehr abgeglichen.", "Trennen")) return;
+        delete S.sync; lokalSpeichern(); zeichne();
+      }));
+      c.appendChild(r);
+      return;
+    }
+    c.innerHTML = '<h3>'+ic("neu")+'Auf allen Geräten speichern</h3>'+
+      '<p class="weich" style="font-size:15px">Mit einem geheimen <b>Karo-Code</b> ist dein Fortschritt auf Handy, Tablet und Computer gleich: Noten, Sterne, Vokabeln und Heft. Ohne Namen und ohne E-Mail.</p>'+(meldung || "");
+    const r = el("div","row");
+    const neuB = btn("btn primary", ic("plus")+"Karo-Code erstellen", async () => {
+      neuB.disabled = true;
+      try{
+        const j = await Sync.rufe({aktion:"neu"});
+        S.sync = {code:j.code, zeit:null, offen:true, geaendert:Date.now()}; lokalSpeichern();
+        await Sync.hoch(); zeichne('<p class="leise">Fertig! Dein Fortschritt ist jetzt im Karo-Speicher.</p>');
+      }catch(e){ zeichne('<p class="leise sync-fehler">'+esc(fehlerText(e.code))+'</p>'); }
+    });
+    r.appendChild(neuB); c.appendChild(r);
+    const f = el("div","formular"); f.style.gap = "8px";
+    f.innerHTML = '<label>Ich habe schon einen Karo-Code<div class="inline-add"><input type="text" id="synccode" maxlength="16" placeholder="z. B. K7QM-P2XD-9HTR" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="btn" type="button" id="syncok">Verbinden</button></div></label>';
+    c.appendChild(f);
+    const inp = f.querySelector("#synccode"), ok = f.querySelector("#syncok");
+    const verbinden = async () => {
+      const code = codeZeigen(inp.value);
+      if(code.replace(/-/g,"").length !== 12){ zeichne('<p class="leise sync-fehler">'+esc(SYNC_FEHLER.code)+'</p>'); return; }
+      ok.disabled = true;
+      try{
+        const j = await Sync.rufe({aktion:"laden", code:code});
+        if(j.daten){
+          if(!await frage("Auf diesem Gerät wird jetzt der Fortschritt von diesem Karo-Code geladen. Was du hier bisher gemacht hast, wird dabei ersetzt.", "Laden")){ ok.disabled = false; return; }
+          S.sync = {code:code}; Sync.uebernehmen(j.daten, j.zeit); route(); toast("Fortschritt geladen");
+        }else{
+          S.sync = {code:code, zeit:j.zeit, offen:true, geaendert:Date.now()}; lokalSpeichern(); await Sync.hoch(); zeichne('<p class="leise">Verbunden.</p>');
+        }
+      }catch(e){ zeichne('<p class="leise sync-fehler">'+esc(fehlerText(e.code))+'</p>'); }
+    };
+    ok.addEventListener("click", verbinden);
+    inp.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); verbinden(); } });
+  };
+  zeichne();
+  return c;
+}
 function st(id){ if(!S.themen[id]) S.themen[id] = {runden:0, sterne:0, tests:0, note:null, letzte:null, richtig:0, gesamt:0}; return S.themen[id]; }
 
 function datum(off){
@@ -19149,7 +19287,7 @@ function crumbs(list){
 }
 function fuss(){
   return '<footer class="fuss"><span>Karo · Mathe und Englisch üben · kostenlos, ohne Werbung, ohne Anmeldung</span>'+
-         '<span>Dein Fortschritt bleibt nur auf diesem Gerät.</span></footer>';
+         '<span>'+(Sync.an() ? "Dein Fortschritt ist mit deinem Karo-Code gespeichert." : "Dein Fortschritt bleibt nur auf diesem Gerät.")+'</span></footer>';
 }
 
 /* ================= Router ================= */
@@ -19423,9 +19561,11 @@ function seiteProfil(){
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen und bei claude.ai anmelden. Dann auf den Startbildschirm legen:</p>'+
     '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
-    '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.</p>'+
+    '<div id="syncplatz"></div>'+
+    '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">'+(Sync.an() ? "Karo speichert alles in diesem Browser und mit deinem Karo-Code im Karo-Speicher. Es gibt kein Konto, und dein Name wird nur mitgespeichert, wenn du oben einen einträgst." : "Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg. Mit einem Karo-Code (oben) ist er zusätzlich sicher gespeichert.")+'</p>'+
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
   app.appendChild(box); app.insertAdjacentHTML("beforeend", fuss());
+  box.querySelector("#syncplatz").replaceWith(syncKarte());
   const nm = box.querySelector("#pname"); nm.value = S.profil.name || "";
   nm.addEventListener("input", () => { S.profil.name = nm.value.trim().slice(0,24); speichern(); zeigeTopnav(); });
   const kl = box.querySelector("#pkl");
@@ -19439,7 +19579,7 @@ function seiteProfil(){
   box.querySelector("#intro").addEventListener("click", () => einfuehrung());
   box.querySelector("#reset").addEventListener("click", async () => {
     if(!await frage("Wirklich alles zurücksetzen? XP, Noten, Serie und laufende Runden werden gelöscht. Name und Klasse bleiben.", "Zurücksetzen")) return;
-    const p = S.profil, t = S.theme; S = leer(); S.profil = p; S.theme = t; speichern(); toast("Fortschritt zurückgesetzt"); route();
+    const p = S.profil, t = S.theme, sy = S.sync; S = leer(); S.profil = p; S.theme = t; if(sy) S.sync = sy; speichern(); toast("Fortschritt zurückgesetzt"); route();
   });
 }
 function themaSetzen(){ if(S.theme) document.documentElement.setAttribute("data-theme", S.theme); else document.documentElement.removeAttribute("data-theme"); }
@@ -21456,6 +21596,7 @@ Heft.init();
 sphAutomatik();
 themaSetzen();
 route();
+Sync.start();
 })(Karo);
 
 </script>

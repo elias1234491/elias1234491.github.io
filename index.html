@@ -1,8 +1,8 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Karo Mathe</title>
-<meta name="description" content="Mathe und Englisch üben: Erklärungen, Übungen mit Lösungsweg, Vokabeltrainer und Tests mit Note.">
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Karo Schlauer</title>
+<meta name="description" content="Karo Schlauer: Mathe und Englisch üben, mit Erklärungen, Übungen mit Lösungsweg, Vokabeltrainer, Übungsblättern und Tests mit Note.">
 <meta name="theme-color" content="#2f5fd0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Karo">
+<meta name="apple-mobile-web-app-title" content="Karo Schlauer">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@600;700&display=swap">
@@ -97,8 +97,11 @@ main{padding-block:20px 120px; display:block}
   -webkit-backdrop-filter:saturate(1.4) blur(10px); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line)}
 .top .wrap{display:flex; align-items:center; gap:10px; height:60px}
 .logo{display:flex; align-items:center; gap:9px; text-decoration:none; font-family:var(--display); font-weight:800; font-size:24px; letter-spacing:-.02em}
-.logo-mark{width:30px; height:30px; border-radius:8px; background:var(--brand); display:grid; place-items:center; box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+.logo-mark{flex:none; width:30px; height:30px; border-radius:8px; background:var(--brand); display:grid; place-items:center; box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
 .logo-mark svg{width:20px; height:20px}
+.logo > span{white-space:nowrap}
+.logo-zwei{color:var(--brand)}
+@media (max-width:420px){ .logo{font-size:21px} }
 .crumbs{display:flex; align-items:center; gap:6px; min-width:0; color:var(--ink-3); font-size:15px}
 .crumbs a{text-decoration:none; color:var(--ink-2); white-space:nowrap}
 .crumbs a:hover{color:var(--ink)}
@@ -667,7 +670,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
   .blitz-top{top:8px}
   .seite{display:flex; flex-direction:column; gap:4px; position:fixed; left:0; top:0; bottom:0; width:252px; z-index:30; overflow-y:auto;
     padding:22px 14px calc(16px + env(safe-area-inset-bottom, 0px)); padding-top:calc(22px + env(safe-area-inset-top, 0px)); background:var(--paper); border-right:1px solid var(--line)}
-  .seite .logo{margin:0 10px 22px}
+  .seite .logo{margin:0 10px 22px; font-size:22px}
   .leiste{left:252px}
 }
 @media (max-width:999.98px){
@@ -1205,9 +1208,9 @@ a.pill{text-decoration:none; color:inherit}
 <aside class="seite" id="seitenleiste" aria-label="Hauptmenü"></aside>
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#/" aria-label="Karo Startseite">
+    <a class="logo" href="#/" aria-label="Karo Schlauer Startseite">
       <span class="logo-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3z M3 7.7h14 M3 12.3h14 M7.7 3v14 M12.3 3v14" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12.3 12.3h4.7v4.7h-4.7z" fill="#fff"/></svg></span>
-      Karo
+      <span>Karo <span class="logo-zwei">Schlauer</span></span>
     </a>
     <div class="top-nav" id="topnav"></div>
   </div>
@@ -20438,7 +20441,7 @@ function zeigeTopnav(){
   const offen = (typeof Heft !== "undefined") ? Heft.liste.filter(e => e.aufgabe && !e.erledigt).length : 0;
   const akt = k => bereich === k ? ' aria-current="page"' : '';
   const zahl = k => (k === "heft" && offen) ? '<span class="zahl" aria-label="'+offen+' offen">'+offen+'</span>' : '';
-  const logo = '<a class="logo" href="#/" aria-label="Karo Startseite"><span class="logo-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3z M3 7.7h14 M3 12.3h14 M7.7 3v14 M12.3 3v14" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12.3 12.3h4.7v4.7h-4.7z" fill="#fff"/></svg></span>Karo</a>';
+  const logo = '<a class="logo" href="#/" aria-label="Karo Schlauer Startseite"><span class="logo-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3z M3 7.7h14 M3 12.3h14 M7.7 3v14 M12.3 3v14" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12.3 12.3h4.7v4.7h-4.7z" fill="#fff"/></svg></span><span>Karo <span class="logo-zwei">Schlauer</span></span></a>';
   const leiste = document.getElementById("seitenleiste");
   const wechsel = topnavBereich !== bereich; topnavBereich = bereich;
   const hops = k => (wechsel && bereich === k) ? ' data-hops="1"' : '';
@@ -20804,7 +20807,7 @@ function seiteZeugnis(){
   let tests = 0, runden = 0; const alle = [];
   Object.keys(S.themen).forEach(id => { const s = S.themen[id]; tests += s.tests||0; runden += s.runden||0; if(s.note) alle.push(s.note); });
   let html = '<article class="card zeugnis schmal" style="margin:10px auto 0"><div class="kopf"><h1>Zeugnis</h1>'+
-    '<p>für <span class="name">'+(name ? esc(name) : "dich")+'</span></p><p class="leise">Karo Mathematik · Stand '+esc(heute)+'</p></div>';
+    '<p>für <span class="name">'+(name ? esc(name) : "dich")+'</span></p><p class="leise">Karo Schlauer · Stand '+esc(heute)+'</p></div>';
   let irgendwas = false;
   KLASSEN.forEach(k => {
     const zeilen = themenVon(k).map(t => ({t:t.titel, href:"#/thema/"+t.id+"/test", n:S.themen[t.id] && S.themen[t.id].note}))
@@ -22763,7 +22766,7 @@ function blattHtml(o){
   let n = 0;
   let h = '<div class="dblatt"><div class="d-kopf"><span>Name: <i></i></span><span class="kurz">Klasse: <i></i></span><span>Datum: <i></i></span></div>'+
     '<div class="d-titel"><div><div class="d-unter">'+esc(o.unter || "")+'</div><h1>'+o.titel+'</h1></div>'+
-    (o.punkte ? '<div class="d-note"><span>Punkte: <b>&nbsp;&nbsp;&nbsp;&nbsp;/ '+K.fmt(max)+'</b></span><span>Note: <b style="min-width:14mm">&nbsp;</b></span></div>' : '<div class="d-logo">Karo · Übungsblatt</div>')+'</div>';
+    (o.punkte ? '<div class="d-note"><span>Punkte: <b>&nbsp;&nbsp;&nbsp;&nbsp;/ '+K.fmt(max)+'</b></span><span>Note: <b style="min-width:14mm">&nbsp;</b></span></div>' : '<div class="d-logo">Karo Schlauer · Übungsblatt</div>')+'</div>';
   if(o.merke) h += '<div class="d-merke">'+o.merke+'</div>';
   teile.forEach(t => {
     const mitTitel = !!t.titel;

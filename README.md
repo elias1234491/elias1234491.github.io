@@ -1,4 +1,4 @@
-# Karo – Mathe und Englisch üben
+# Karo Schlauer
 
 Lern-App für Klasse 5 bis 10: Erklärungen, Übungen mit Tipps und Lösungsweg, Tests mit Note,
 Englisch-Grammatik, Vokabeltrainer und Übungsblätter zum Ausdrucken.

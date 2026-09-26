@@ -199,11 +199,12 @@ main{padding-block:20px 120px; display:block}
 .kapitel{margin-top:30px}
 .kapitel h2{font-size:21px; margin-bottom:12px; display:flex; align-items:center; gap:10px}
 .kapitel h2::after{content:""; flex:1; height:1px; background:var(--line)}
-.themen{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px}
+.themen{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px}
 .th{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:14px 16px; text-decoration:none; background:var(--paper);
   border:1px solid var(--line); border-radius:var(--r-m); box-shadow:var(--shadow-1); transition:border-color .15s, transform .15s, box-shadow .15s}
 .th:hover{border-color:var(--k-line); transform:translateY(-1px); box-shadow:var(--shadow-2)}
-.th h3{font-size:18px; font-weight:700}
+.th h3{font-size:18px; font-weight:700; overflow-wrap:break-word; hyphens:auto}
+.th > div{min-width:0}
 .th p{font-size:14px; color:var(--ink-2); margin-top:2px}
 .ico{width:50px; height:50px; border-radius:13px; background:var(--k-soft, var(--brand-soft)); color:var(--kd); display:grid; place-items:center;
   font-family:var(--display); font-weight:800; font-size:20px; letter-spacing:-.02em; line-height:1; text-align:center; flex:none}
@@ -715,7 +716,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr}
   .hefte{grid-template-columns:repeat(2, 1fr)}
-  .themen{grid-template-columns:1fr}
+  .themen{grid-template-columns:minmax(0, 1fr)}
 }
 @media (max-width:620px){
   body{font-size:16px}
@@ -21740,7 +21741,7 @@ function importKarte(){
     try{
       const opt = {modelTier:"default", signal:ctl.signal, cache:false};
       if(bilder.length) opt.images = bilder;
-      const antwort = await smp.json(prompt, opt);
+      const antwort = await kiJson(smp, prompt, opt);
       const liste = (Array.isArray(antwort) ? antwort : (antwort && antwort.eintraege) || []).slice(0,60).map(e => {
         const fach = FAECHER.some(f => f[0] === e.fach) ? e.fach : "Anderes";
         const d = /^\d{4}-\d{2}-\d{2}$/.test(String(e.datum)) ? String(e.datum) : datum(0);
@@ -21933,13 +21934,59 @@ let kiSampleP = null;
 function kiSample(){ if(!kiSampleP) kiSampleP = claudeRT ? claudeRT.use("sample").catch(() => null) : Promise.resolve(null); return kiSampleP; }
 const kiWahl = {art:"arbeit", fach:null, aus:{}, extra:[], karo:{}, verboten:"", klasse:null, umfang:10, niveau:"normal"};
 let kiLauf = null;
+/* Wird die KI-Antwort am Längenlimit abgeschnitten (oder ist sie leicht kaputt), rettet Karo alles,
+   was vollständig angekommen ist: kaputte Zeichen reparieren, nach der letzten ganzen Aufgabe abschneiden, Klammern schließen. */
+function jsonRetten(roh){
+  if(typeof roh !== "string") return null;
+  const start = roh.search(/[\[{]/);
+  if(start < 0) return null;
+  let out = "", stapel = [], inStr = false, schnitt = null;
+  for(let i = start; i < roh.length; i++){
+    const c = roh[i];
+    if(inStr){
+      if(c === "\\"){
+        const n = roh[i+1];
+        if(n === undefined) break;
+        if('"\\/bfnrt'.indexOf(n) >= 0 || (n === "u" && /^[0-9a-fA-F]{4}$/.test(roh.substr(i+2, 4)))){ out += c+n; i++; }
+        else out += "\\\\";
+      }
+      else if(c === '"'){ out += c; inStr = false; }
+      else if(c === "\n") out += "\\n";
+      else if(c === "\r" || c === "\t") out += " ";
+      else out += c;
+      continue;
+    }
+    if(c === '"'){ out += c; inStr = true; }
+    else if(c === "{" || c === "["){ out += c; stapel.push(c); }
+    else if(c === "}" || c === "]"){
+      if(!stapel.length || (c === "}") !== (stapel[stapel.length-1] === "{")) break;
+      out = out.replace(/,\s*$/, "")+c; stapel.pop();
+      if(!stapel.length){ schnitt = null; break; }
+      if(stapel[stapel.length-1] === "[") schnitt = {len:out.length, stapel:stapel.slice()};
+    }
+    else out += c;
+  }
+  const schliessen = st => st.slice().reverse().map(x => x === "{" ? "}" : "]").join("");
+  const versuche = [];
+  if(!stapel.length && !inStr) versuche.push(out);
+  if(schnitt) versuche.push(out.slice(0, schnitt.len)+schliessen(schnitt.stapel));
+  for(const v of versuche){ try{ return JSON.parse(v); }catch(e){} }
+  return null;
+}
+async function kiJson(smp, prompt, opt){
+  try{ return await smp.json(prompt, opt); }
+  catch(e){
+    if(e && e.code === "invalid_json" && e.text){ const r = jsonRetten(e.text); if(r !== null && typeof r === "object") return r; }
+    throw e;
+  }
+}
 const KI_FEHLER = {
   not_granted:"Du hast der Seite nicht erlaubt, die KI zu benutzen. Lade die Seite neu, wenn du es dir anders überlegst.",
   sampling_disabled:"Die KI ist für dieses Konto nicht verfügbar.", not_declared:"Die KI ist für diese Seite nicht freigeschaltet.",
   capability_disabled:"Die KI ist hier gerade nicht verfügbar.", capability_removed:"Die KI ist hier gerade nicht verfügbar.",
   rate_limited:"Gerade zu viele Anfragen oder dein Claude-Kontingent ist aufgebraucht. Versuch es später noch einmal.",
   session_expired:"Bitte melde dich bei claude.ai neu an.", refused:"Die KI hat diese Anfrage abgelehnt. Formuliere die Themen anders.",
-  invalid_json:"Die KI hat keine lesbare Arbeit geliefert. Versuch es noch einmal.", empty_completion:"Die KI hat nichts geliefert. Versuch es mit weniger Themen.",
+  invalid_json:"Die Antwort der KI war zu lang oder kaputt. Versuch es noch einmal, am besten mit „Kurz“ oder weniger Themen.", empty_completion:"Die KI hat nichts geliefert. Versuch es mit weniger Themen.",
   prompt_too_large:"Zu viele Themen auf einmal. Wähl ein paar ab.", upstream_error:"Die Verbindung zur KI ist abgebrochen. Versuch es noch einmal."
 };
 
@@ -22123,9 +22170,9 @@ function kiPrompt(){
     "- In q, options, weg und material nur Text; erlaubtes HTML: <b>, <i>, <sup>, <sub>, <br>.\n"+
     "- Bei t=\"text\" und bei Lücken: nimm ALLE Antworten in a auf, die auch richtig sind (andere Namen, übergeordnete Orte, Schreibweisen), z. B. Nullmeridian: [\"Greenwich\",\"London\",\"Greenwich (London)\"].\n"+
     "- Antwortformat passend wählen: Ist die Antwort ein Wort oder Begriff, nimm t=\"text\" (oder choice). Zahl-Formate (num, nums, frac, expr, set, sign) nur, wenn die Antwort wirklich eine Zahl oder ein Term ist. Nie eine Zahl als Code für ein Wort (z. B. 1 = parallel). Braucht eine Aufgabe ein Wort UND eine Zahl, mach zwei Aufgaben daraus.\n"+
-    "- \"weg\": 2 bis 4 kurze Schritte, die die Lösung erklären. \"tip\": ein Satz, der hilft, ohne die Lösung zu verraten. \"p\": Punkte 1 bis 4 je nach Aufwand.\n\n"+
+    "- \"weg\": 2 bis 3 kurze Schritte, die die Lösung erklären. \"tip\": ein Satz, der hilft, ohne die Lösung zu verraten. \"p\": Punkte 1 bis 4 je nach Aufwand.\n\n"+
     (mathe ? KI_FORMATE : kiFormateWissen())+(fremd ? KI_SPRACHE : "")+
-    "Antworte nur mit JSON in genau dieser Form:\n"+
+    "Fasse dich kurz: kompaktes JSON ohne Einrückung, keine Kommentare, kein Text davor oder danach. Antworte nur mit JSON in genau dieser Form:\n"+
     (blatt ? '{"titel":"Übungsblatt: <kurzer Titel>","hinweis":"<ein Satz an die Schüler>","merke":"<Merke-Kasten>","aufgaben":[ … genau '+kiWahl.umfang+' Aufgaben … ]}'
       : '{"titel":"Klassenarbeit: <kurzer Titel>","hinweis":"<ein Satz an die Schüler>","aufgaben":[ … genau '+kiWahl.umfang+' Aufgaben … ]}');
   return p;
@@ -22270,7 +22317,7 @@ function seiteKi(){
     const bar = losBox.querySelector("#kibar"), status = losBox.querySelector("#kistatus");
     let wartet = 6; const tick = setInterval(() => { if(wartet < 22){ wartet += 1; bar.style.width = wartet+"%"; } }, 2500);
     try{
-      const antwort = await smp.json(kiPrompt(), {modelTier:"complex", signal:ctl.signal, cache:false, onText: ({text}) => {
+      const antwort = await kiJson(smp, kiPrompt(), {modelTier:"complex", signal:ctl.signal, cache:false, onText: ({text}) => {
         const n = (text.match(/"t"\s*:/g) || []).length;
         status.textContent = n ? "Aufgabe "+Math.min(n, kiWahl.umfang)+" von "+kiWahl.umfang+" wird geschrieben …" : (kiWahl.art === "blatt" ? "Die KI plant das Übungsblatt …" : "Die KI plant die Arbeit …");
         wartet = 100; bar.style.width = Math.max(22, Math.min(96, 22 + 74*n/kiWahl.umfang))+"%";
@@ -22427,9 +22474,9 @@ function fotoPrompt(kl, wunsch, gelesen){
     "- Nutze Grafiken (fig) oder Material, wo es hilft. In Texten nur <b>, <i>, <sup>, <sub>, <br>.\n"+
     "- Bei t=\"text\" und bei Lücken: nimm ALLE Antworten in a auf, die auch richtig sind (andere Namen, übergeordnete Orte, Schreibweisen), z. B. Nullmeridian: [\"Greenwich\",\"London\",\"Greenwich (London)\"].\n"+
     "- Antwortformat passend wählen: Ist die Antwort ein Wort oder Begriff, nimm t=\"text\" (oder choice). Zahl-Formate (num, nums, frac, expr, set, sign) nur, wenn die Antwort wirklich eine Zahl oder ein Term ist. Nie eine Zahl als Code für ein Wort (z. B. 1 = parallel). Braucht eine Aufgabe ein Wort UND eine Zahl, mach zwei Aufgaben daraus.\n"+
-    "- \"weg\": 2 bis 4 kurze Schritte. \"tip\": ein Satz, der hilft, ohne die Lösung zu verraten.\n\n"+
+    "- \"weg\": 2 bis 3 kurze Schritte. \"tip\": ein Satz, der hilft, ohne die Lösung zu verraten.\n\n"+
     KI_FORMATE+
-    "Antworte nur mit JSON in genau dieser Form:\n"+
+    "Fasse dich kurz: kompaktes JSON ohne Einrückung, keine Kommentare, kein Text davor oder danach. Antworte nur mit JSON in genau dieser Form:\n"+
     '{"fach":"<eins von: '+FAECHER.map(f => f[0]).join(", ")+'>","thema":"<kurzer Thementitel>","klasse":'+kl+','+
     '"lernzettel":{"einstieg":"…","merke":["…","…"],"beispiel":{"aufgabe":"…","schritte":["…","…"]},"fehler":"…","tipps":["…","…"]},'+
     '"uebungen":[ … 8 Aufgaben … ],"arbeit":[ … 8 Aufgaben … ]}';
@@ -22500,7 +22547,7 @@ function fotoKarte(){
       }
       const opt = {modelTier:"complex", signal:ctl.signal, cache:false};
       if(bildOk && !nurText) opt.images = bilder;
-      const A = await smp.json(fotoPrompt(kl, nurText ? "" : wunschText, gelesen), Object.assign(opt, {onText: ({text}) => {
+      const A = await kiJson(smp, fotoPrompt(kl, nurText ? "" : wunschText, gelesen), Object.assign(opt, {onText: ({text}) => {
         const n = (text.match(/"t"\s*:/g) || []).length;
         status.textContent = n ? (n <= 8 ? "Übung "+n+" von 8 wird geschrieben …" : "Arbeit: Aufgabe "+Math.min(n-8,8)+" von 8 …") : "Der Lernzettel entsteht …";
         w = 100; bar.style.width = Math.max(20, Math.min(96, 20 + 76*n/16))+"%";

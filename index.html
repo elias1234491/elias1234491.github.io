@@ -918,6 +918,146 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .pbar i.jetzt{animation:puls 1.4s ease-in-out infinite}
 .toast, .toast.abz-toast{animation:toast-rein .38s cubic-bezier(.2,1.3,.4,1)}
 .konfetti{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:90}
+/* ================= Hintergründe ================= */
+#hintergrund{position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none}
+#hintergrund > *{position:absolute}
+/* Bunt: Farbwolken und schwebende Zeichen auf Karopapier */
+.hg-wolke{width:60vmax; height:60vmax; border-radius:50%; opacity:.62; will-change:transform}
+.hg-wolke.w1{left:-18vmax; top:-22vmax; background:radial-gradient(closest-side, color-mix(in srgb, var(--k, #4f8cff) 55%, transparent), transparent); animation:wolke1 38s ease-in-out infinite alternate}
+.hg-wolke.w2{right:-20vmax; top:10vh; background:radial-gradient(closest-side, rgba(255,120,170,.45), transparent); animation:wolke2 44s ease-in-out infinite alternate}
+.hg-wolke.w3{left:10vw; bottom:-28vmax; background:radial-gradient(closest-side, rgba(255,200,60,.42), transparent); animation:wolke3 50s ease-in-out infinite alternate}
+.hg-wolke.w4{right:5vw; bottom:-10vmax; width:40vmax; height:40vmax; background:radial-gradient(closest-side, rgba(60,210,170,.4), transparent); animation:wolke1 34s ease-in-out infinite alternate-reverse}
+@keyframes wolke1{to{transform:translate(18vw, 14vh) scale(1.15)}}
+@keyframes wolke2{to{transform:translate(-16vw, 22vh) scale(.9)}}
+@keyframes wolke3{to{transform:translate(20vw, -18vh) scale(1.1)}}
+.hg-zeichen{bottom:-60px; font-family:var(--hand); font-weight:700; color:var(--k, var(--brand)); opacity:.24; animation:zeichen linear infinite; will-change:transform}
+@keyframes zeichen{from{transform:translateY(0) rotate(0)} to{transform:translateY(calc(-100vh - 120px)) rotate(var(--dreh))}}
+:root[data-theme="dark"] .hg-wolke{opacity:.28} :root[data-theme="dark"] .hg-zeichen{opacity:.12}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hg-wolke{opacity:.28} :root:not([data-theme="light"]) .hg-zeichen{opacity:.12} }
+/* Weltraum */
+:root[data-hg="weltraum"] body{background-color:#070b1c; background-image:radial-gradient(ellipse at 20% 0%, #1b1f4a 0%, transparent 60%), radial-gradient(ellipse at 90% 100%, #2a0f3f 0%, transparent 55%)}
+.hg-nebel{width:70vmax; height:50vmax; border-radius:50%; opacity:.55; will-change:transform}
+.hg-nebel.n1{left:-20vmax; top:20vh; background:radial-gradient(closest-side, rgba(120,90,255,.35), transparent); animation:wolke1 60s ease-in-out infinite alternate}
+.hg-nebel.n2{right:-25vmax; top:-10vh; background:radial-gradient(closest-side, rgba(255,90,160,.25), transparent); animation:wolke2 70s ease-in-out infinite alternate}
+.hg-stern{border-radius:50%; background:#fff; box-shadow:0 0 6px #fff; animation:funkeln ease-in-out infinite}
+@keyframes funkeln{0%,100%{opacity:.25; transform:scale(.7)} 50%{opacity:1; transform:scale(1.15)}}
+.hg-schnuppe{width:140px; height:2px; background:linear-gradient(90deg, #fff, transparent); border-radius:2px; opacity:0; transform:rotate(-28deg)}
+.hg-schnuppe.s1{top:12%; left:70%; animation:schnuppe 9s ease-in 2s infinite}
+.hg-schnuppe.s2{top:30%; left:30%; animation:schnuppe 13s ease-in 7s infinite}
+@keyframes schnuppe{0%{opacity:0; transform:rotate(-28deg) translateX(0)} 3%{opacity:1} 10%{opacity:0; transform:rotate(-28deg) translateX(-420px)} 100%{opacity:0; transform:rotate(-28deg) translateX(-420px)}}
+.hg-planet{width:min(300px, 42vw); right:4vw; bottom:8vh; opacity:.9; animation:planet 16s ease-in-out infinite alternate}
+@keyframes planet{to{transform:translate(-2vw, -3vh) rotate(4deg)}}
+.hg-mond{width:54px; left:8vw; top:14vh; opacity:.85; animation:planet 20s ease-in-out infinite alternate-reverse}
+/* Meer */
+:root[data-hg="meer"] body{background-color:#7fd3f0; background-image:linear-gradient(180deg, #b9ecff 0%, #7fd3f0 45%, #3fa7d6 100%)}
+:root[data-hg="meer"][data-theme="dark"] body{background-image:linear-gradient(180deg, #0f3b5c 0%, #0b2a44 55%, #071a2c 100%)}
+@media (prefers-color-scheme: dark){ :root[data-hg="meer"]:not([data-theme="light"]) body{background-image:linear-gradient(180deg, #0f3b5c 0%, #0b2a44 55%, #071a2c 100%)} }
+.hg-strahl{top:-10vh; width:16vw; height:90vh; background:linear-gradient(180deg, rgba(255,255,255,.35), transparent 80%); transform-origin:top center; animation:strahl 9s ease-in-out infinite alternate}
+.hg-strahl.t1{left:12vw; transform:rotate(14deg)} .hg-strahl.t2{left:44vw; width:10vw; animation-delay:-3s} .hg-strahl.t3{left:72vw; animation-delay:-6s}
+@keyframes strahl{from{transform:rotate(12deg); opacity:.5} to{transform:rotate(-8deg); opacity:.9}}
+.hg-blase-weg{bottom:-40px; animation:blase-steigen linear infinite; will-change:transform}
+@keyframes blase-steigen{to{transform:translateY(calc(-100vh - 80px))}}
+.hg-blase{display:block; border-radius:50%; border:2px solid rgba(255,255,255,.75); background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), rgba(255,255,255,.08) 60%); animation:blase-wackeln ease-in-out infinite alternate}
+@keyframes blase-wackeln{from{transform:translateX(-10px)} to{transform:translateX(10px)}}
+.hg-fisch-weg{left:-80px; animation:fisch-schwimmen linear infinite; will-change:transform}
+.hg-fisch-weg.rueck{left:auto; right:-80px; animation-name:fisch-rueck}
+.hg-fisch-weg.rueck .hg-fisch{transform:scaleX(-1)}
+@keyframes fisch-schwimmen{from{transform:translateX(0)} 50%{transform:translate(55vw, -3vh)} to{transform:translateX(calc(100vw + 160px))}}
+@keyframes fisch-rueck{from{transform:translateX(0)} 50%{transform:translate(-55vw, 3vh)} to{transform:translateX(calc(-100vw - 160px))}}
+.hg-fisch{display:block; opacity:.85}
+.hg-flosse{transform-box:fill-box; transform-origin:left center; animation:flosse .5s ease-in-out infinite alternate}
+@keyframes flosse{to{transform:scaleY(.6)}}
+.hg-algen{left:0; right:0; bottom:0; width:100%; height:22vh; opacity:.9}
+.hg-alge{animation:alge ease-in-out infinite alternate}
+@keyframes alge{from{transform:rotate(-6deg)} to{transform:rotate(7deg)}}
+:root[data-hg="meer"] .seiten-kopf, :root[data-hg="weltraum"] .seiten-kopf{text-shadow:0 1px 12px rgba(255,255,255,.35)}
+/* Karo-Papier: nur das Gitter */
+:root[data-hg="papier"] #hintergrund{display:none}
+:root[data-hg="weltraum"] body, :root[data-hg="meer"] body{background-size:auto}
+/* Auswahl im Profil */
+.hg-wahl{display:grid; grid-template-columns:repeat(4, 1fr); gap:10px}
+@media (max-width:560px){ .hg-wahl{grid-template-columns:repeat(2, 1fr)} }
+.hg-kachel{display:flex; flex-direction:column; gap:6px; padding:6px; border-radius:14px; border:2px solid var(--line-2); background:var(--paper); cursor:pointer; font-weight:700; font-size:14px; color:var(--ink)}
+.hg-kachel[aria-pressed="true"]{border-color:var(--brand); box-shadow:0 0 0 2px var(--brand)}
+.hg-vorschau{display:block; height:64px; border-radius:9px}
+.hgv-bunt .hg-vorschau{background:radial-gradient(circle at 20% 30%, rgba(79,140,255,.55), transparent 55%), radial-gradient(circle at 80% 40%, rgba(255,120,170,.5), transparent 50%), radial-gradient(circle at 50% 100%, rgba(255,200,60,.5), transparent 55%), #edf1f7}
+.hgv-weltraum .hg-vorschau{background:radial-gradient(circle at 75% 65%, #e2557a 0 12px, transparent 13px), radial-gradient(circle at 20% 30%, #fff 0 1.5px, transparent 2px), radial-gradient(circle at 45% 20%, #fff 0 1px, transparent 2px), radial-gradient(circle at 60% 40%, #fff 0 1.2px, transparent 2px), radial-gradient(circle at 30% 70%, #fff 0 1px, transparent 2px), #0b1030}
+.hgv-meer .hg-vorschau{background:radial-gradient(circle at 30% 60%, rgba(255,255,255,.8) 0 3px, transparent 4px), radial-gradient(circle at 36% 40%, rgba(255,255,255,.8) 0 2px, transparent 3px), radial-gradient(ellipse at 70% 55%, #ff9f43 0 9px, transparent 10px), linear-gradient(180deg, #b9ecff, #3fa7d6)}
+.hgv-papier .hg-vorschau{background-color:#edf1f7; background-image:linear-gradient(rgba(47,95,208,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(47,95,208,.14) 1px, transparent 1px); background-size:10px 10px}
+/* ================= Bewegung, Runde 2 ================= */
+/* Seitenübergänge */
+#app{view-transition-name:seite}
+::view-transition-old(root), ::view-transition-new(root){animation:none}
+::view-transition-old(seite){animation:vt-weg .2s ease-in both}
+::view-transition-new(seite){animation:vt-da .34s cubic-bezier(.2,.8,.2,1) both}
+[data-richtung="vor"]::view-transition-old(seite){animation-name:vt-weg-links}
+[data-richtung="vor"]::view-transition-new(seite){animation-name:vt-da-rechts}
+[data-richtung="zurueck"]::view-transition-old(seite){animation-name:vt-weg-rechts}
+[data-richtung="zurueck"]::view-transition-new(seite){animation-name:vt-da-links}
+@keyframes vt-weg{to{opacity:0; transform:scale(.985)}}
+@keyframes vt-da{from{opacity:0; transform:scale(1.015)}}
+@keyframes vt-weg-links{to{opacity:0; transform:translateX(-48px)}}
+@keyframes vt-da-rechts{from{opacity:0; transform:translateX(64px)}}
+@keyframes vt-weg-rechts{to{opacity:0; transform:translateX(48px)}}
+@keyframes vt-da-links{from{opacity:0; transform:translateX(-64px)}}
+.vt #app > *{animation:none}
+/* Wellen beim Antippen */
+.btn, .opt, .th, .fach-chip, .taste, .ki-zeile, .ohne-ki-link, .t-toggle, .wiederholen .card, .blitz-banner{position:relative; overflow:hidden; isolation:isolate}
+.welle{position:absolute; border-radius:50%; background:currentColor; opacity:.16; transform:scale(0); pointer-events:none; z-index:-1; animation:welle .6s ease-out forwards}
+.btn.primary .welle, .btn.brand .welle{background:#fff; opacity:.3}
+@keyframes welle{to{transform:scale(1); opacity:0}}
+/* Glanz über Hauptknöpfe */
+.btn.primary::after{content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-18deg); pointer-events:none}
+.btn.primary:hover::after{animation:glanz .8s ease-out}
+@keyframes glanz{to{left:130%}}
+/* Richtig / falsch */
+.funken{position:relative; width:0; height:0; display:inline-block}
+.funken i{position:absolute; left:10px; top:0; width:6px; height:6px; border-radius:50%; background:var(--ok); animation:funke .7s ease-out forwards}
+.funken i:nth-child(3n){background:var(--gold)} .funken i:nth-child(4n){background:var(--k)}
+@keyframes funke{0%{transform:rotate(var(--w)) translateX(4px) scale(1); opacity:1} 100%{transform:rotate(var(--w)) translateX(var(--d)) scale(.2); opacity:0}}
+.aufgabe.richtig-glow{animation:richtig-glow .9s ease-out}
+@keyframes richtig-glow{0%{box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent)} 100%{box-shadow:0 0 0 18px transparent}}
+.aufgabe.falsch-flash .feld, .aufgabe.falsch-flash .luecke, .aufgabe.falsch-flash .wahl{animation:rot-blitz .7s ease-out, wackeln .4s ease-in-out}
+@keyframes rot-blitz{0%,40%{border-color:var(--bad); background:var(--bad-bg)}}
+.pbar i.pop{animation:balken-pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes balken-pop{0%{transform:scaleY(1)} 40%{transform:scaleY(2.2)} 100%{transform:none}}
+.opt[aria-pressed="true"]{animation:opt-pop .28s cubic-bezier(.2,1.6,.4,1)}
+@keyframes opt-pop{0%{transform:scale(.94)} 60%{transform:scale(1.04)} 100%{transform:none}}
+.t-toggle[aria-pressed="true"] .box .ic{animation:plopp .35s cubic-bezier(.2,1.6,.4,1)}
+/* Menü, XP, Ring */
+.nav-link[aria-current] .ic, .tab-link[aria-current] .ic{animation:menue-hops .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes menue-hops{0%{transform:scale(.7)} 60%{transform:scale(1.15) translateY(-2px)} 100%{transform:none}}
+.lv-karte .bar i{transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bump{animation:bump .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bump{40%{transform:scale(1.08)}}
+.ring .fg.voll{animation:ring-glanz 2.2s ease-in-out infinite}
+@keyframes ring-glanz{50%{filter:drop-shadow(0 0 6px color-mix(in srgb, var(--ok) 70%, transparent))}}
+/* Stempel knallt */
+.stempel.knall{animation:stempel-knall .55s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes stempel-knall{0%{transform:scale(2.6) rotate(-18deg); opacity:0} 55%{transform:scale(.92) rotate(-5deg); opacity:1} 75%{transform:scale(1.04) rotate(-6deg)} 100%{transform:rotate(-6deg)}}
+.zeugnis-note:has(.stempel.knall){animation:tisch .35s .28s ease-out}
+@keyframes tisch{30%{transform:translateY(3px)} 60%{transform:translateY(-1px)}}
+/* Beim Scrollen einblenden */
+.einblend{animation:none !important; opacity:0; transform:translateY(22px)}
+.einblend.sichtbar{opacity:1; transform:none; transition:opacity .5s ease-out, transform .55s cubic-bezier(.2,.8,.2,1)}
+@media print{ .einblend{opacity:1 !important; transform:none !important} }
+/* Level-Aufstieg */
+.levelup{position:fixed; inset:0; z-index:85; display:grid; place-items:center; background:rgba(11,16,23,.5); padding:16px; animation:fade .25s}
+.levelup.weg{animation:fade .25s reverse forwards}
+.lu-karte{position:relative; width:min(360px, 100%); background:var(--paper); border-radius:28px; padding:36px 24px 26px; text-align:center; display:flex; flex-direction:column; gap:10px; align-items:center; overflow:hidden; animation:lu-rein .55s cubic-bezier(.2,1.5,.4,1)}
+@keyframes lu-rein{from{transform:scale(.5) translateY(30px); opacity:0}}
+.lu-strahlen{position:absolute; left:50%; top:88px; width:520px; height:520px; margin:-260px 0 0 -260px; background:repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--gold) 26%, transparent) 0 10deg, transparent 10deg 20deg); border-radius:50%; animation:drehen 12s linear infinite; z-index:0; mask:radial-gradient(circle, #000 20%, transparent 70%); -webkit-mask:radial-gradient(circle, #000 20%, transparent 70%)}
+@keyframes drehen{to{transform:rotate(360deg)}}
+.lu-stern{position:relative; z-index:1; width:112px; height:112px; display:grid; place-items:center; animation:plopp .7s .15s cubic-bezier(.2,1.6,.4,1) both}
+.lu-stern .ic{position:absolute; inset:0; width:100%; height:100%; color:var(--gold); fill:var(--gold); stroke:#c98a00; stroke-width:1}
+.lu-stern b{position:relative; font-family:var(--display); font-size:38px; font-weight:800; color:#5a3a00; margin-top:6px}
+.lu-karte h2{position:relative; z-index:1; font-family:var(--display); font-size:34px; font-weight:800}
+.lu-karte p{position:relative; z-index:1; color:var(--ink-2)}
+.lu-karte .btn{position:relative; z-index:1; margin-top:6px}
+/* Blitz */
+.blitz-punkte.bump{animation:bump .35s cubic-bezier(.2,1.6,.4,1)}
+.blitz-sek.tick{color:#e5484d; animation:tick .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes tick{0%{transform:scale(1.8)} 100%{transform:none}}
 @media (prefers-reduced-motion: reduce){ *, *::before, *::after{animation:none !important; transition:none !important} }
 .ha .ha-inhalt{color:var(--ink-2); font-size:14.5px; margin-top:2px}
 /* ================= Nachschlagen ================= */
@@ -19679,6 +19819,41 @@ function konfetti(wenig){
     if(alt < 1.8) requestAnimationFrame(bild); else c.remove();
   })(t0);
 }
+function funken(){
+  if(ruhig()) return "";
+  let h = '<span class="funken" aria-hidden="true">';
+  for(let i = 0; i < 10; i++) h += '<i style="--w:'+(i*36)+'deg;--d:'+(26 + (i%3)*10)+'px"></i>';
+  return h + '</span>';
+}
+function levelFeier(n){
+  const alt = document.querySelector(".levelup"); if(alt) alt.remove();
+  const neueStufe = typeof freundStufe === "function" && [3,5,8,12].indexOf(n) >= 0;
+  const ov = el("div","levelup");
+  ov.innerHTML = '<div class="lu-karte" role="dialog" aria-label="Level '+n+'"><div class="lu-strahlen"></div><div class="lu-stern">'+ic("stern")+'<b class="num">'+n+'</b></div>'+
+    '<h2>Level '+n+'!</h2><p>'+(neueStufe ? "Dein Karo-Freund "+esc(freund().name)+" verwandelt sich! Schau auf die Startseite." : K.pick(["Weiter so, du wirst immer besser!","Stark! Das nächste Level wartet schon.","Richtig gut gelernt!"]))+'</p>'+
+    '<button type="button" class="btn primary gross">Weiter</button></div>';
+  const zu = () => { ov.classList.add("weg"); setTimeout(() => ov.remove(), 250); };
+  ov.addEventListener("click", zu);
+  document.body.appendChild(ov);
+  konfetti(false);
+  setTimeout(() => { if(document.body.contains(ov)) zu(); }, 4500);
+}
+/* Wellen beim Antippen von Knöpfen und Karten */
+document.addEventListener("pointerdown", e => {
+  if(ruhig()) return;
+  const b = e.target.closest && e.target.closest(".btn, .opt, .th, .fach-chip, .taste, .ki-zeile, .ohne-ki-link, .t-toggle, .wiederholen .card, .blitz-banner");
+  if(!b || b.disabled) return;
+  const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2.2;
+  const w = document.createElement("span"); w.className = "welle";
+  w.style.cssText = "width:"+d+"px;height:"+d+"px;left:"+(e.clientX - r.left - d/2)+"px;top:"+(e.clientY - r.top - d/2)+"px";
+  b.appendChild(w); setTimeout(() => w.remove(), 650);
+}, {passive:true});
+/* Karten weiter unten tauchen beim Scrollen sanft auf */
+function einblenden(){
+  if(ruhig() || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting){ x.target.classList.add("sichtbar"); io.unobserve(x.target); } }), {rootMargin:"0px 0px -6% 0px"});
+  app.querySelectorAll(".card, .th, .hefte > *, .kapitel > h2").forEach(x => { if(x.getBoundingClientRect().top > innerHeight + 10){ x.classList.add("einblend"); io.observe(x); } });
+}
 function hochzaehlen(el, ziel, dauer){
   if(!el || ruhig() || !ziel){ return; }
   const t0 = performance.now(), vor = el.textContent.replace(/[\d.]+/, "{}");
@@ -19755,8 +19930,10 @@ function aufgabeGeschafft(xp){
     S.serie.tage = S.serie.letzter === datum(-1) ? S.serie.tage + 1 : 1;
     S.serie.letzter = d;
   }
+  const lvVorher = level(S.xp).n;
   S.xp += xp || 0;
   zaehler().aufgaben++;
+  if(level(S.xp).n > lvVorher){ const n = level(S.xp).n; setTimeout(() => levelFeier(n), 700); }
   if(S.heute.n === TAGESZIEL) setTimeout(()=> toast("Tagesziel geschafft! 20 Aufgaben heute."), 400);
   zeigeTopnav();
 }
@@ -20196,8 +20373,10 @@ function widgetInnen(it, opt){
 let bereich = "start", zurueck = null;
 const MENUE = [["start","home","Start","Start","#/"],["lernen","buch","Lernen","Lernen","#/lernen"],["heft","heft","Hausaufgaben","Heft","#/heft"],
   ["ki","ki","KI-Trainer","KI","#/ki"],["buecher","regal","Nachschlagen","Bücher","#/buecher"],["zeugnis","zeugnis","Zeugnis","Zeugnis","#/zeugnis"]];
+let xpGezeigt = null;
 function zeigeTopnav(){
   const lv = level(S.xp);
+  const xpAlt = xpGezeigt; xpGezeigt = S.xp;
   const name = (S.profil.name || "").trim(), init = name.charAt(0).toUpperCase();
   const offen = (typeof Heft !== "undefined") ? Heft.liste.filter(e => e.aufgabe && !e.erledigt).length : 0;
   const akt = k => bereich === k ? ' aria-current="page"' : '';
@@ -20214,6 +20393,12 @@ function zeigeTopnav(){
   const nav = document.getElementById("topnav");
   if(nav) nav.innerHTML = '<a class="xp-pill" href="#/profil" style="text-decoration:none" title="Level '+lv.n+' · '+K.fmt(S.xp)+' XP">'+ic("blitz")+'<span class="num">Level '+lv.n+'</span></a>'+
     '<a class="icon-btn" href="#/profil" aria-label="Profil"><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span></a>';
+  if(xpAlt !== null && S.xp > xpAlt && !ruhig()){
+    const karte = leiste && leiste.querySelector(".lv-karte"), zahl = karte && karte.querySelector(".num"), bar = karte && karte.querySelector(".bar i");
+    if(zahl){ zahl.textContent = K.fmt(xpAlt)+" XP"; hochzaehlen(zahl, S.xp, 700); }
+    if(bar){ const lvAlt = level(xpAlt); bar.style.transition = "none"; bar.style.width = (lvAlt.n === lv.n ? Math.round(lvAlt.anteil*100) : 0)+"%"; void bar.offsetWidth; bar.style.transition = ""; bar.style.width = Math.round(lv.anteil*100)+"%"; }
+    [karte, nav && nav.querySelector(".xp-pill")].forEach(x => { if(x){ x.classList.add("bump"); setTimeout(() => x.classList.remove("bump"), 500); } });
+  }
 }
 /* Merkt sich, wohin der Zurück-Knopf führt: der vorletzte Eintrag, außer er ist die Startseite */
 function crumbs(list){
@@ -20259,9 +20444,20 @@ function route(){
   else if(a === "buch" && b) seiteBuch(b, c);
   else { location.hash = "#/"; return; }
   if(zurueck) app.insertAdjacentHTML("afterbegin", '<a class="zurueck" href="'+zurueck.href+'">'+ic("links")+esc(zurueck.t)+'</a>');
+  requestAnimationFrame(einblenden);
   if(!S.intro) einfuehrung();
 }
-window.addEventListener("hashchange", route);
+/* Seitenwechsel: tiefer hinein gleitet von rechts, zurück von links (wo der Browser es kann) */
+const hashTiefe = h => (String(h).replace(/^#\/?/,"").split("?")[0].split("/").filter(Boolean)).length;
+let tiefeJetzt = hashTiefe(location.hash);
+window.addEventListener("hashchange", () => {
+  const neu = hashTiefe(location.hash), richtung = neu > tiefeJetzt ? "vor" : neu < tiefeJetzt ? "zurueck" : "gleich";
+  tiefeJetzt = neu;
+  if(document.startViewTransition && !ruhig()){
+    document.documentElement.dataset.richtung = richtung; document.documentElement.classList.add("vt");
+    try{ document.startViewTransition(() => route()); }catch(e){ route(); }
+  }else route();
+});
 
 /* ================= Startseite ================= */
 function seiteStart(){
@@ -20511,7 +20707,7 @@ function seiteProfil(){
     '<div class="bar" style="background:var(--line);color:var(--gold)"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></div>'+
     '<div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Deine Klasse</div><div class="kl-wahl" id="pkl"></div></div>'+
-    '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div></div>'+
+    '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div><div id="hgplatz"></div></div>'+
     abzeichenHtml()+'<div id="freundeinst"></div>'+
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen und bei claude.ai anmelden. Dann auf den Startbildschirm legen:</p>'+
@@ -20520,6 +20716,7 @@ function seiteProfil(){
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
   app.appendChild(box); app.insertAdjacentHTML("beforeend", fuss());
   box.querySelector("#freundeinst").replaceWith(freundEinstellungen());
+  box.querySelector("#hgplatz").replaceWith(hintergrundWahl());
   const nm = box.querySelector("#pname"); nm.value = S.profil.name || "";
   nm.addEventListener("input", () => { S.profil.name = nm.value.trim().slice(0,24); speichern(); zeigeTopnav(); });
   const kl = box.querySelector("#pkl");
@@ -20536,7 +20733,7 @@ function seiteProfil(){
     const p = S.profil, t = S.theme; S = leer(); S.profil = p; S.theme = t; speichern(); toast("Fortschritt zurückgesetzt"); route();
   });
 }
-function themaSetzen(){ if(S.theme) document.documentElement.setAttribute("data-theme", S.theme); else document.documentElement.removeAttribute("data-theme"); }
+function themaSetzen(){ const t = S.hg === "weltraum" ? "dark" : S.theme; if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
 
 /* ================= Zeugnis ================= */
 function seiteZeugnis(){
@@ -20927,15 +21124,17 @@ function zeigeUeben(th, box){
   if(!R.items.length){ box.appendChild(el("div","card pad weich","Gerade gibt es hier keine Aufgaben.")); return; }
   if(R.fertig){ zeigeEnde(th, R, box); return; }
   const wrap = el("div"); box.appendChild(wrap);
-  let w, hauptB, info = null, reinGleiten = false;
+  let w, hauptB, info = null, reinGleiten = false, frisch = false;
+  const vorherSt = R.res.map(r => r.st);
 
   function render(){
     wrap.innerHTML = "";
     const it = R.items[R.i], res = R.res[R.i];
     const pb = el("div","pbar"); pb.setAttribute("aria-label","Fortschritt der Runde");
-    R.res.forEach((r,j) => pb.appendChild(el("i", r.st ? r.st : (j === R.i ? "jetzt" : ""))));
+    R.res.forEach((r,j) => { const seg = el("i", r.st ? r.st : (j === R.i ? "jetzt" : "")); if(r.st && r.st !== vorherSt[j]) seg.classList.add("pop"); vorherSt[j] = r.st; pb.appendChild(seg); });
     wrap.appendChild(pb);
-    const card = el("section","card aufgabe"+(reinGleiten ? " karte-rein" : "")); card.setAttribute("aria-live","polite"); reinGleiten = false;
+    const jetztFrisch = frisch; frisch = false;
+    const card = el("section","card aufgabe"+(reinGleiten ? " karte-rein" : "")+(jetztFrisch ? (res.st === "ok" || res.st === "halb" ? " richtig-glow" : " falsch-flash") : "")); card.setAttribute("aria-live","polite"); reinGleiten = false;
     card.innerHTML = '<div class="a-meta"><span class="eyebrow">Aufgabe '+(R.i+1)+' von '+R.items.length+(it.herkunft ? ' · '+esc(it.herkunft) : '')+'</span>'+
       '<span class="stufe">'+["leicht","mittel","schwer"][(it.lvl||1)-1]+' <i class="an"></i><i class="'+(it.lvl>=2?"an":"")+'"></i><i class="'+(it.lvl>=3?"an":"")+'"></i></span></div>';
     w = widget(it, {minus: th.klasse >= 7, onChange: () => { res.e = w.get(); speichern(); if(info){ info.remove(); info = null; } }, onEnter: haupt});
@@ -20948,7 +21147,7 @@ function zeigeUeben(th, box){
     if(res.st === "ok" || res.st === "halb"){
       w.sperren(); w.zeigeRichtig();
       const d = el("div","fb ok");
-      d.innerHTML = '<div class="kopf">'+ic("haken")+esc(LOB[(R.i*3+it.q.length)%LOB.length])+'<span class="xp-plus" style="margin-left:auto">+'+res.xp+' XP</span></div>'+
+      d.innerHTML = '<div class="kopf">'+(jetztFrisch ? funken() : '')+ic("haken")+esc(LOB[(R.i*3+it.q.length)%LOB.length])+'<span class="xp-plus" style="margin-left:auto">+'+res.xp+' XP</span></div>'+
         (res.st === "halb" ? '<p>'+(res.v > 1 ? "Im zweiten Versuch geschafft." : "Mit Tipp geschafft.")+'</p>' : '')+
         (res.schreib ? '<p>Zählt als richtig. So schreibt man es: <b>'+esc(res.schreib)+'</b></p>' : '')+
         '<details><summary class="link-btn" style="display:inline">Lösungsweg ansehen</summary><div style="margin-top:10px">'+wegHtml(it)+'</div></details>';
@@ -20982,7 +21181,7 @@ function zeigeUeben(th, box){
     if(K.leer(it, e)){ hinweis("Gib zuerst eine Antwort ein."); return; }
     const r = K.check(it, e);
     if(r.fehler){ hinweis(r.fehler); return; }
-    res.v++; res.e = e;
+    res.v++; res.e = e; frisch = true;
     const s = st(th.id);
     if(r.ok){
       res.schreib = r.schreib || null;
@@ -21060,7 +21259,8 @@ function neuerTest(th){
   const items = th.festArbeit ? festeItems(th.festArbeit) : ziehen(th, [1,1,2,2,2,3,3,3]);
   return {items:items, ans:items.map(() => null), ab:false, t0:Date.now()};
 }
-function stempel(note){ return '<div class="stempel"><span class="n">'+note.n+'</span><span class="w">'+note.t+'</span>'+unterstrich+'</div>'; }
+let stempelFrisch = false;
+function stempel(note, knall){ if(knall) stempelFrisch = false; return '<div class="stempel'+(knall && !ruhig() ? " knall" : "")+'"><span class="n">'+note.n+'</span><span class="w">'+note.t+'</span>'+unterstrich+'</div>'; }
 function zeigeTest(th, box){
   const key = "t:"+th.id;
   let T = S.sitz[key];
@@ -21090,7 +21290,7 @@ function pruefungAnsicht(box, T, o){
   if(T.ab){
     const note = K.noteVon(T.proz);
     const kopf = el("section","card zeugnis-note");
-    kopf.innerHTML = stempel(note)+'<div><h2>'+K.fmt(T.punkte)+' von '+K.fmt(max)+' Punkten</h2><p>'+T.proz+' % richtig. '+
+    kopf.innerHTML = stempel(note, stempelFrisch)+'<div><h2>'+K.fmt(T.punkte)+' von '+K.fmt(max)+' Punkten</h2><p>'+T.proz+' % richtig. '+
       (note.n <= 2 ? "Richtig stark, das sitzt." : note.n <= 3 ? "Ordentlich. Schau dir die roten Aufgaben noch einmal an." : "Lies dir die Lösungswege durch und versuch es dann noch einmal.")+'</p>'+
       '<div class="row" style="margin-top:14px"></div></div>';
     const r = kopf.querySelector(".row");
@@ -21156,7 +21356,7 @@ function pruefungAnsicht(box, T, o){
       if(T.ab) return;
       let punkte = 0; T.ok = []; T.pk = [];
       T.items.forEach((it,i) => { T.ans[i] = ws[i].get(); const pk = Math.round(it.p * K.anteil(it, T.ans[i]) * 2) / 2; T.ok.push(pk >= it.p); T.pk.push(pk); punkte += pk; aufgabeGeschafft(Math.round(5*pk)); });
-      T.punkte = punkte; T.proz = Math.round(punkte/max*100); T.ab = true;
+      T.punkte = punkte; T.proz = Math.round(punkte/max*100); T.ab = true; stempelFrisch = true;
       if(o.quelle) T.items.forEach((it, i) => { if(T.pk[i] < it.p) fehlerMerken(o.quelle.id, o.quelle.titel, it); });
       if(T.versuche && T.versuche.length && T.proz > Math.max.apply(null, T.versuche.map(v => v.proz || 0))) zaehler().besser++;
       if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n);
@@ -21243,7 +21443,7 @@ function seiteBlatt(b){
     let got = 0;
     reg.forEach(r => { const e = r.w.get(); const ok = !K.leer(r.it, e) && K.check(r.it, e).ok; if(ok) got += r.it.p || 1; setzeFb(r, ok); });
     const proz = Math.round(got/max*100), note = K.noteVon(proz);
-    ergebnis.innerHTML = '<section class="card zeugnis-note">'+stempel(note)+'<div><h2>'+K.fmt(got)+' von '+K.fmt(max)+' Punkten</h2><p>'+proz+' % richtig. Rote Felder zeigen dir die richtige Lösung.</p></div></section>';
+    ergebnis.innerHTML = '<section class="card zeugnis-note">'+stempel(note, klick)+'<div><h2>'+K.fmt(got)+' von '+K.fmt(max)+' Punkten</h2><p>'+proz+' % richtig. Rote Felder zeigen dir die richtige Lösung.</p></div></section>';
     info.textContent = K.fmt(got)+" von "+K.fmt(max)+" Punkten";
     B.checked = true;
     if(klick){ const s = st(b.id); s.tests++; s.letzte = note.n; s.note = s.note ? Math.min(s.note, note.n) : note.n; window.scrollTo({top:0, behavior:"smooth"}); }
@@ -22587,6 +22787,75 @@ function zeigeBlatt(th, box){
   box.appendChild(v);
 }
 
+/* ================= Hintergründe: Bunt, Weltraum, Meer, Karo-Papier =================
+   Alles aus Code (keine Bilder), nur transform/opacity werden animiert, damit es flüssig bleibt. */
+const HINTERGRUENDE = [["bunt","🌈","Bunt"],["weltraum","🌌","Weltraum"],["meer","🐠","Meer"],["papier","📄","Karo-Papier"]];
+function hintergrundSetzen(){
+  const art = S.hg || "bunt";
+  let hg = document.getElementById("hintergrund");
+  if(!hg){ hg = document.createElement("div"); hg.id = "hintergrund"; hg.setAttribute("aria-hidden","true"); document.body.insertBefore(hg, document.body.firstChild); }
+  if(hg.dataset.art === art) return;
+  hg.dataset.art = art;
+  document.documentElement.setAttribute("data-hg", art);
+  const z = (a, b) => a + Math.random()*(b - a);
+  const r = (a, b) => z(a, b).toFixed(1);
+  let h = "";
+  if(art === "bunt"){
+    h += '<i class="hg-wolke w1"></i><i class="hg-wolke w2"></i><i class="hg-wolke w3"></i><i class="hg-wolke w4"></i>';
+    const zeichen = ["+","−","×","÷","=","π","√","½","%","∑","∞","?","A","B","C","a²","★","✎","{ }","3","7","x"];
+    for(let i = 0; i < 18; i++){
+      h += '<span class="hg-zeichen" style="left:'+r(2, 96)+'%;font-size:'+r(18, 44)+'px;animation-duration:'+r(26, 48)+'s;animation-delay:-'+r(0, 48)+'s;--dreh:'+(Math.random() < 0.5 ? "-" : "")+Math.round(z(90, 360))+'deg">'+zeichen[i % zeichen.length]+'</span>';
+    }
+  }else if(art === "weltraum"){
+    h += '<i class="hg-nebel n1"></i><i class="hg-nebel n2"></i>';
+    for(let i = 0; i < 90; i++){
+      const g = z(1, 3.2);
+      h += '<i class="hg-stern" style="left:'+r(0, 100)+'%;top:'+r(0, 100)+'%;width:'+g.toFixed(1)+'px;height:'+g.toFixed(1)+'px;animation-duration:'+r(2, 6)+'s;animation-delay:-'+r(0, 6)+'s"></i>';
+    }
+    h += '<i class="hg-schnuppe s1"></i><i class="hg-schnuppe s2"></i>';
+    h += '<svg class="hg-planet" viewBox="0 0 200 120"><defs><radialGradient id="hgp" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#ffb37a"/><stop offset=".6" stop-color="#e2557a"/><stop offset="1" stop-color="#6a2a8f"/></radialGradient></defs>'+
+      '<g transform="rotate(-14 100 60)"><path d="M8 60 A92 20 0 0 1 192 60" fill="none" stroke="#f7c8ff" stroke-opacity=".5" stroke-width="5"/></g>'+
+      '<circle cx="100" cy="60" r="42" fill="url(#hgp)"/>'+
+      '<g transform="rotate(-14 100 60)"><path d="M8 60 A92 20 0 0 0 192 60" fill="none" stroke="#f7c8ff" stroke-opacity=".85" stroke-width="5"/></g></svg>';
+    h += '<svg class="hg-mond" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#e8ecf8"/><circle cx="14" cy="15" r="3" fill="#cfd6ea"/><circle cx="25" cy="24" r="4" fill="#cfd6ea"/></svg>';
+  }else if(art === "meer"){
+    h += '<i class="hg-strahl t1"></i><i class="hg-strahl t2"></i><i class="hg-strahl t3"></i>';
+    for(let i = 0; i < 22; i++){
+      const g = z(6, 22);
+      h += '<span class="hg-blase-weg" style="left:'+r(1, 98)+'%;animation-duration:'+r(12, 26)+'s;animation-delay:-'+r(0, 26)+'s"><i class="hg-blase" style="width:'+g.toFixed(0)+'px;height:'+g.toFixed(0)+'px;animation-duration:'+r(2.5, 4.5)+'s"></i></span>';
+    }
+    const fische = [["#ff9f43","#ffd166"],["#4cc9f0","#b8f2ff"],["#f15bb5","#ffc6e8"],["#9b5de5","#d9c2ff"],["#ffd23f","#fff1a8"]];
+    for(let i = 0; i < 6; i++){
+      const f = fische[i % fische.length], links = i % 2 === 0, gr = z(34, 64);
+      h += '<span class="hg-fisch-weg'+(links ? "" : " rueck")+'" style="top:'+r(14, 78)+'%;animation-duration:'+r(28, 46)+'s;animation-delay:-'+r(0, 46)+'s">'+
+        '<svg class="hg-fisch" viewBox="0 0 64 36" style="width:'+gr.toFixed(0)+'px"><path d="M8 18c8-14 30-16 42 0-12 16-34 14-42 0z" fill="'+f[0]+'"/><path class="hg-flosse" d="M50 18l12-10v20z" fill="'+f[1]+'"/>'+
+        '<path d="M24 8q6 10 0 20" fill="none" stroke="'+f[1]+'" stroke-width="2.5" opacity=".8"/><circle cx="16" cy="15" r="2.6" fill="#1b2233"/></svg></span>';
+    }
+    h += '<svg class="hg-algen" viewBox="0 0 1200 180" preserveAspectRatio="xMidYMax slice">';
+    for(let i = 0; i < 14; i++){
+      const x = 40 + i*85 + z(-20, 20), hoch = z(80, 170), farbe = i % 3 === 0 ? "#2a9d8f" : i % 3 === 1 ? "#52b788" : "#1b7f6b";
+      h += '<path class="hg-alge" style="animation-duration:'+r(4, 7)+'s;animation-delay:-'+r(0, 7)+'s;transform-origin:'+x.toFixed(0)+'px 180px" d="M'+x.toFixed(0)+' 180 q-18 -'+(hoch*0.3).toFixed(0)+' 0 -'+(hoch*0.55).toFixed(0)+' q16 -'+(hoch*0.25).toFixed(0)+' -4 -'+(hoch*0.45).toFixed(0)+'" fill="none" stroke="'+farbe+'" stroke-width="10" stroke-linecap="round"/>';
+    }
+    h += '<path d="M0 180 Q150 150 300 168 T600 164 T900 170 T1200 160 V180z" fill="#e9c98a"/></svg>';
+  }
+  hg.innerHTML = h;
+}
+function hintergrundWahl(){
+  const d = el("div");
+  d.innerHTML = '<div style="font-weight:700;margin-bottom:6px">Hintergrund</div>';
+  const box = el("div","hg-wahl");
+  HINTERGRUENDE.forEach(([id, e, name]) => {
+    const b = btn("hg-kachel hgv-"+id, '<span class="hg-vorschau"></span><span class="hg-name">'+e+' '+esc(name)+'</span>', () => {
+      S.hg = id; speichern(); hintergrundSetzen(); themaSetzen();
+      box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    });
+    b.setAttribute("aria-pressed", (S.hg || "bunt") === id ? "true" : "false"); box.appendChild(b);
+  });
+  d.appendChild(box);
+  d.insertAdjacentHTML("beforeend", '<p class="leise" style="margin-top:6px">Beim Weltraum wird Karo automatisch dunkel.</p>');
+  return d;
+}
+
 /* ================= Karo-Freund: ein kleines Wesen, das mit dem Level wächst =================
    Ei (Level 1–2) → Baby (3–4) → Kind (5–7) → Groß (8–11) → Legende (ab 12).
    Futter = heute gelöste Aufgaben (satt beim Tagesziel). Abzeichen bringen Kleidung. */
@@ -22947,13 +23216,16 @@ function seiteBlitz(){
           karte.insertAdjacentHTML("beforeend", '<div class="blitz-loes">Richtig: <b>'+K.solHtml(it)+'</b></div>'); }
       }
       punkteEl.textContent = E.punkte;
+      if(ok){ punkteEl.classList.remove("bump"); void punkteEl.offsetWidth; punkteEl.classList.add("bump"); }
       const f = faktor(); comboEl.innerHTML = E.serie >= 3 ? '🔥 ×'+f : ''; comboEl.classList.toggle("an", E.serie >= 3);
       E.i++;
       setTimeout(zeige, ok ? 380 : uebersprungen ? 120 : 1100);
     }
     timer = setInterval(() => {
       const rest = Math.max(0, BLITZ_ZEIT - (Date.now() - t0) / 1000);
-      balken.style.width = (rest / BLITZ_ZEIT * 100) + "%"; sek.textContent = Math.ceil(rest);
+      balken.style.width = (rest / BLITZ_ZEIT * 100) + "%";
+      const ganz = Math.ceil(rest);
+      if(String(ganz) !== sek.textContent){ sek.textContent = ganz; if(ganz <= 5 && ganz > 0){ sek.classList.remove("tick"); void sek.offsetWidth; sek.classList.add("tick"); } }
       balken.classList.toggle("knapp", rest <= 10);
       if(rest <= 0){ clearInterval(timer); timer = null; vorbei = true; setTimeout(() => ende(E), 250); }
     }, 100);
@@ -23007,6 +23279,7 @@ Heft.init();
 abzeichenPruefen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
 sphAutomatik();
 themaSetzen();
+hintergrundSetzen();
 route();
 })(Karo);
 

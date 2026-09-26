@@ -781,6 +781,34 @@ table.tab tr.klickbar:hover td{background:var(--brand-soft)}
 .ohne-ki-link .ic{width:24px; height:24px; flex:none; color:var(--brand); margin-top:1px}
 .ohne-ki-link b{display:block; font-size:16.5px}
 .ohne-ki-link small{display:block; color:var(--ink-3); font-size:13.5px; margin-top:2px}
+/* Tagesmix, Fehler-Heft, Abzeichen */
+.wiederholen .card{text-decoration:none; color:var(--ink)}
+.wiederholen .card:hover{box-shadow:var(--shadow-2)}
+.wiederholen h3 .ico{width:36px; height:36px; font-size:12px; border-radius:10px}
+.wiederholen .btn{align-self:flex-start; margin-top:auto}
+.fehler-gruppe{display:flex; flex-direction:column; gap:8px}
+.fehler-gruppe h3{font-size:18px}
+.fehler-zeile{display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid var(--line)}
+.fz-q{flex:1; font-size:15px; color:var(--ink-2)}
+.fz-gut{display:flex; gap:4px}
+.fz-gut i{width:10px; height:10px; border-radius:50%; border:2px solid var(--line-2)}
+.fz-gut i.an{background:var(--ok); border-color:var(--ok)}
+.fz-weg{border:0; background:none; color:var(--ink-3); cursor:pointer; padding:6px; border-radius:8px; display:grid; place-items:center}
+.fz-weg:hover{background:var(--bad-bg); color:var(--bad)}
+.fz-weg .ic{width:16px; height:16px}
+.abz-liste{display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:10px}
+.abz{display:flex; flex-direction:column; align-items:center; text-align:center; gap:3px; padding:12px 8px; border-radius:14px; background:var(--gold-soft); border:1.5px solid color-mix(in srgb, var(--gold) 45%, transparent)}
+.abz .abz-e{font-size:32px; line-height:1.1}
+.abz b{font-size:14.5px}
+.abz small{font-size:12px; color:var(--ink-3); line-height:1.3}
+.abz.zu{background:var(--paper-2); border-color:var(--line)}
+.abz.zu .abz-e{filter:grayscale(1); opacity:.35}
+.abz.zu b{color:var(--ink-3)}
+a.pill{text-decoration:none; color:inherit}
+.toast.abz-toast{display:flex; align-items:center; gap:12px; padding:12px 18px}
+.toast.abz-toast .abz-e{font-size:30px}
+.toast.abz-toast small{display:block; font-size:12px; opacity:.75; letter-spacing:.04em; text-transform:uppercase}
+.toast.abz-toast b{font-size:16.5px}
 /* Übungsblätter */
 .blatt-h{display:flex; align-items:center; gap:9px; font-family:var(--display); font-size:21px}
 .blatt-h .ic{width:22px; height:22px; color:var(--kd)}
@@ -18757,7 +18785,7 @@ const ic = (n, cls) => '<svg class="ic '+(cls||"")+'" viewBox="0 0 24 24" aria-h
 const GLYPH = {masse:"kg", zahl:"10⁶", runden:"≈", strahl:"0→", plus:"+−", mal:"×", potenz:"aⁿ", diagramm:"▂▅▇", teiler:"ggT", bruch:"½",
   komma:"0,5", flaeche:"cm²", minus:"−3", prozent:"%", dreisatz:"⇄", term:"3x", gleichung:"x=?", winkel:"∠", funktion:"f(x)",
   binom:"(a+b)²", zins:"€", kreis:"π", wurzel:"√", pythagoras:"a²+b²", lgs:"x|y", parabel:"x²", wahrsch:"P", trigo:"sin",
-  blatt:"✎", wachstum:"2ˣ", koerper:"V", daten:"Ø", ka:"KA", heft:"HA",
+  blatt:"✎", mix:"Mix", fehler:"✗→✓", wachstum:"2ˣ", koerper:"V", daten:"Ø", ka:"KA", heft:"HA",
   be:"am", have:"has", pron:"me", plural:"-s", present:"-s", frage:"Wh?", ing:"-ing", past:"-ed", uhr:"3:15", haeufig:"often", zeit:"at", genitiv:"'s", futur:"will", steigern:"-er", adverb:"-ly", perfekt:"have", vok:"ABC"};
 function icoHtml(icon, extra){
   const g = GLYPH[icon] || "∑";
@@ -18797,7 +18825,7 @@ const SKEY = "karo-v1";
 const TAGESZIEL = 20;
 function leer(){
   return {v:1, profil:{name:"", klasse:null, fertig:false}, theme:null, xp:0,
-    serie:{tage:0, letzter:""}, heute:{datum:"", n:0}, themen:{}, zuletzt:[], sitz:{}, vok:{}};
+    serie:{tage:0, letzter:""}, heute:{datum:"", n:0}, themen:{}, zuletzt:[], sitz:{}, vok:{}, fehler:[], abz:null, zaehler:null};
 }
 function laden(){
   let s = null;
@@ -18817,7 +18845,7 @@ function laden(){
   return s;
 }
 let S = laden();
-function speichern(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function speichern(){ abzeichenPruefen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
 function st(id){ if(!S.themen[id]) S.themen[id] = {runden:0, sterne:0, tests:0, note:null, letzte:null, richtig:0, gesamt:0}; return S.themen[id]; }
 
 function datum(off){
@@ -18835,9 +18863,151 @@ function aufgabeGeschafft(xp){
     S.serie.letzter = d;
   }
   S.xp += xp || 0;
+  zaehler().aufgaben++;
   if(S.heute.n === TAGESZIEL) setTimeout(()=> toast("Tagesziel geschafft! 20 Aufgaben heute."), 400);
   zeigeTopnav();
 }
+/* ================= Abzeichen =================
+   Beim allerersten Prüfen werden schon verdiente Abzeichen still vergeben (keine Toast-Flut). */
+function zaehler(){
+  if(!S.zaehler) S.zaehler = {aufgaben:Object.keys(S.themen).reduce((a, id) => a + (S.themen[id].gesamt || 0), 0), fehlerWeg:0, mix:0, blatt:0, besser:0};
+  return S.zaehler;
+}
+const alleThemenStats = () => Object.keys(S.themen).map(id => S.themen[id]);
+const ABZEICHEN = [
+  {id:"start", e:"🚀", t:"Erste Schritte", x:"Die erste Aufgabe gelöst", ok:() => zaehler().aufgaben >= 1},
+  {id:"ziel", e:"🎯", t:"Tagesziel", x:TAGESZIEL+" Aufgaben an einem Tag", ok:() => S.heute.datum === datum(0) && S.heute.n >= TAGESZIEL},
+  {id:"a100", e:"💯", t:"Hundert", x:"100 Aufgaben gelöst", ok:() => zaehler().aufgaben >= 100},
+  {id:"a500", e:"🏔️", t:"Bergsteiger", x:"500 Aufgaben gelöst", ok:() => zaehler().aufgaben >= 500},
+  {id:"a2000", e:"🌋", t:"Unaufhaltsam", x:"2000 Aufgaben gelöst", ok:() => zaehler().aufgaben >= 2000},
+  {id:"serie3", e:"🔥", t:"Dranbleiber", x:"3 Tage am Stück geübt", ok:() => S.serie.tage >= 3},
+  {id:"serie7", e:"⚡", t:"Eine Woche", x:"7 Tage am Stück geübt", ok:() => S.serie.tage >= 7},
+  {id:"serie30", e:"👑", t:"Monats-König", x:"30 Tage am Stück geübt", ok:() => S.serie.tage >= 30},
+  {id:"sterne", e:"⭐", t:"Drei Sterne", x:"Eine Übungsrunde mit 3 Sternen", ok:() => alleThemenStats().some(s => s.sterne >= 3)},
+  {id:"eins", e:"🥇", t:"Glatte Eins", x:"Eine Eins in einem Test oder einer Arbeit", ok:() => alleThemenStats().some(s => s.note === 1) || (Array.isArray(S.ki) && S.ki.some(A => A.ab && A.proz >= 92))},
+  {id:"themen10", e:"📚", t:"Sammler", x:"10 verschiedene Themen geübt", ok:() => Object.keys(S.themen).filter(id => byId[id] && (S.themen[id].runden || S.themen[id].tests)).length >= 10},
+  {id:"englisch", e:"🗣️", t:"Englisch-Start", x:"Ein Englisch-Thema geübt", ok:() => Object.keys(S.themen).some(id => byId[id] && fachVon(byId[id]) === FACH_E && (S.themen[id].runden || S.themen[id].tests))},
+  {id:"vok50", e:"🗂️", t:"Wortschatz", x:"50 Vokabeln sicher im Karteikasten", ok:() => Object.keys(S.vok || {}).filter(k => (S.vok[k].b || 0) >= 3).length >= 50},
+  {id:"mix1", e:"🔀", t:"Gut gemischt", x:"Den ersten Tagesmix geschafft", ok:() => zaehler().mix >= 1},
+  {id:"mix10", e:"🎲", t:"Mix-Meister", x:"10 Tagesmixe geschafft", ok:() => zaehler().mix >= 10},
+  {id:"fehler10", e:"🩹", t:"Aus Fehlern gelernt", x:"10 Aufgaben aus dem Fehler-Heft geschafft", ok:() => zaehler().fehlerWeg >= 10},
+  {id:"besser", e:"📈", t:"Zweite Chance", x:"Eine Arbeit beim nächsten Versuch besser geschrieben", ok:() => zaehler().besser >= 1},
+  {id:"blatt", e:"🖨️", t:"Papier-Profi", x:"Ein Übungsblatt gedruckt oder gespeichert", ok:() => zaehler().blatt >= 1},
+  {id:"level5", e:"🏅", t:"Level 5", x:"Level 5 erreicht", ok:() => level(S.xp).n >= 5},
+  {id:"level10", e:"🏆", t:"Level 10", x:"Level 10 erreicht", ok:() => level(S.xp).n >= 10}
+];
+function abzeichenPruefen(){
+  zaehler();
+  const erst = !S.abz; if(erst) S.abz = {};
+  const neu = [];
+  ABZEICHEN.forEach(a => { let ok = false; try{ ok = a.ok(); }catch(e){} if(ok && !S.abz[a.id]){ S.abz[a.id] = datum(0); neu.push(a); } });
+  if(!erst) neu.forEach((a, i) => setTimeout(() => abzeichenToast(a), 600 + i*3000));
+}
+function abzeichenToast(a){
+  const alt = document.querySelector(".toast"); if(alt) alt.remove();
+  const t = el("div","toast abz-toast", '<span class="abz-e">'+a.e+'</span><span><small>Neues Abzeichen</small><b>'+esc(a.t)+'</b></span>');
+  t.setAttribute("role","status"); document.body.appendChild(t); setTimeout(() => t.remove(), 3400);
+}
+function abzeichenHtml(){
+  const n = ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length;
+  return '<div class="card pad stack" id="abzeichen"><div class="row" style="justify-content:space-between"><h3>Deine Abzeichen</h3><span class="chip">'+n+' von '+ABZEICHEN.length+'</span></div><div class="abz-liste">'+
+    ABZEICHEN.map(a => { const hat = S.abz && S.abz[a.id];
+      return '<div class="abz'+(hat ? "" : " zu")+'" title="'+esc(a.x)+'"><span class="abz-e">'+a.e+'</span><b>'+esc(a.t)+'</b><small>'+esc(a.x)+'</small></div>'; }).join("")+'</div></div>';
+}
+
+/* ================= Fehler-Heft =================
+   Falsch gelöste Aufgaben (Üben nach zwei Versuchen, Tests und Arbeiten) landen hier.
+   Wer eine Aufgabe in zwei Runden richtig löst, hat sie geschafft. */
+function fehlerMerken(thId, titel, it){
+  if(!it || thId === "fehler") return;
+  if(!Array.isArray(S.fehler)) S.fehler = [];
+  const alt = S.fehler.find(f => f.th === thId && f.it.q === it.q);
+  if(alt){ alt.gut = 0; alt.am = datum(0); return; }
+  const x = JSON.parse(JSON.stringify(it)); delete x.fid; delete x.thId; x.herkunft = titel;
+  S.fehler.unshift({id:"f"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), th:thId, titel:titel, it:x, am:datum(0), gut:0});
+  if(S.fehler.length > 60) S.fehler.length = 60;
+}
+function fehlerErgebnis(fid, st){
+  const f = (S.fehler || []).find(x => x.id === fid); if(!f) return;
+  if(st === "ok"){ f.gut++; if(f.gut >= 2){ S.fehler = S.fehler.filter(x => x !== f); zaehler().fehlerWeg++; } }
+  else if(st === "falsch") f.gut = 0;
+}
+function fehlerItems(){
+  const l = (S.fehler || []).slice().sort((a, b) => a.gut - b.gut || String(a.am).localeCompare(String(b.am))).slice(0, 10);
+  return K.shuffle(l.map(f => Object.assign(JSON.parse(JSON.stringify(f.it)), {fid:f.id, herkunft:f.titel})));
+}
+function fehlerThema(){
+  return {id:"fehler", klasse:S.profil.klasse || 5, titel:"Fehler üben", kurz:"Aufgaben, die du falsch hattest. Zweimal richtig, dann sind sie geschafft.", kapitel:"Fehler-Heft",
+    icon:"fehler", tabs:["ueben"], aufgaben:[], neueItems:fehlerItems, href:"#/fehler/ueben", crumbs:[{t:"Start", href:"#/"}, {t:"Fehler-Heft", href:"#/fehler"}, {t:"Üben"}]};
+}
+function seiteFehler(teil){
+  const l = Array.isArray(S.fehler) ? S.fehler : [];
+  if(teil === "ueben"){
+    if(!l.length){ location.hash = "#/fehler"; return; }
+    const R = S.sitz["u:fehler"];
+    if(!R || R.fertig || !R.items.length) S.sitz["u:fehler"] = rundeAus(fehlerItems());
+    seiteThema(fehlerThema(), "ueben"); return;
+  }
+  crumbs([{t:"Start", href:"#/"}, {t:"Fehler-Heft"}]);
+  const wrap = el("div","runner stack");
+  wrap.innerHTML = '<div class="th-head">'+icoHtml("fehler")+'<div><div class="eyebrow">Wiederholen</div><h1>Fehler-Heft</h1>'+
+    '<p>Hier sammelt Karo Aufgaben, die du falsch hattest. Löst du eine Aufgabe in zwei Runden richtig, ist sie geschafft und fliegt raus.</p></div></div>';
+  if(!l.length){
+    wrap.insertAdjacentHTML("beforeend", '<section class="card pad stack" style="text-align:center"><div style="font-size:44px">🎉</div><h2>Keine Fehler gespeichert</h2>'+
+      '<p class="weich">Wenn du beim Üben oder in einem Test etwas falsch hast, landet die Aufgabe hier. '+(zaehler().fehlerWeg ? "Du hast schon "+zaehler().fehlerWeg+" Fehler ausgebügelt." : "")+'</p>'+
+      '<div class="row" style="justify-content:center"><a class="btn primary" href="#/mix">'+ic("neu")+'Zum Tagesmix</a></div></section>');
+  }else{
+    const kopf = el("section","card pad stack");
+    kopf.innerHTML = '<div class="row" style="justify-content:space-between"><div><div style="font-family:var(--display);font-weight:800;font-size:22px">'+l.length+' Aufgabe'+(l.length === 1 ? "" : "n")+' zum Wiederholen</div>'+
+      '<p class="weich" style="font-size:15px">Eine Runde hat bis zu 10 Aufgaben, die ältesten zuerst.</p></div></div>';
+    kopf.querySelector(".row").appendChild(btn("btn primary gross", ic("stift")+"Fehler üben", () => { S.sitz["u:fehler"] = rundeAus(fehlerItems()); speichern(); location.hash = "#/fehler/ueben"; }));
+    wrap.appendChild(kopf);
+    const gruppen = {}; l.forEach(f => { (gruppen[f.titel] = gruppen[f.titel] || []).push(f); });
+    Object.keys(gruppen).forEach(t => {
+      const c = el("section","card pad fehler-gruppe");
+      const erstes = gruppen[t][0], th = byId[erstes.th];
+      c.innerHTML = '<div class="row" style="justify-content:space-between"><h3>'+esc(t)+'</h3>'+(th ? '<a class="btn ghost klein" href="#/thema/'+th.id+'/erklaerung">'+ic("buch")+'Erklärung</a>' : '')+'</div>';
+      gruppen[t].forEach(f => {
+        const z = el("div","fehler-zeile");
+        z.innerHTML = '<span class="fz-q">'+esc(textKurz(f.it.q || (f.it.woerter || []).join(" "), 110))+'</span><span class="fz-gut" title="'+f.gut+' von 2 richtig">'+[0,1].map(i => '<i class="'+(i < f.gut ? "an" : "")+'"></i>').join("")+'</span>';
+        z.appendChild(btn("fz-weg", ic("kreuz"), () => { S.fehler = S.fehler.filter(x => x !== f); speichern(); route(); }));
+        z.lastChild.setAttribute("aria-label","Aus dem Fehler-Heft löschen");
+        c.appendChild(z);
+      });
+      wrap.appendChild(c);
+    });
+  }
+  app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
+}
+
+/* ================= Tagesmix =================
+   10 gemischte Aufgaben aus Themen, die man schon geübt hat (schwächere Themen öfter). Jeden Tag neu. */
+function mixItems(){
+  const geuebt = THEMEN.filter(t => { const s = S.themen[t.id]; return s && (s.runden || s.tests); });
+  const pool = geuebt.length >= 2 ? geuebt : geuebt.concat(empfehlungen(S.profil.klasse || 5, 4).filter(t => geuebt.indexOf(t) < 0));
+  const reihe = [];
+  pool.forEach(t => { const s = S.themen[t.id] || {}; const w = 1 + (3 - (s.sterne || 0)) + (s.note ? s.note - 1 : 1); for(let i = 0; i < w; i++) reihe.push(t); });
+  const items = [];
+  for(let v = 0; v < 80 && items.length < 10; v++){
+    const t = K.pick(reihe), lv = items.length < 3 ? 1 : items.length < 7 ? 2 : 3;
+    if(pool.length > 3 && items.filter(x => x.thId === t.id).length >= 3) continue;
+    const it = ziehen(t, [lv])[0];
+    if(!it || items.some(x => x.q === it.q)) continue;
+    it.thId = t.id; it.herkunft = t.titel; items.push(it);
+  }
+  return items;
+}
+function mixThema(){
+  return {id:"mix", klasse:S.profil.klasse || 5, titel:"Tagesmix", kurz:"10 gemischte Aufgaben aus deinen Themen, damit nichts vergessen wird. Jeden Tag neu.", kapitel:"Wiederholen",
+    icon:"mix", tabs:["ueben"], aufgaben:[], neueItems:mixItems, href:"#/mix", crumbs:[{t:"Start", href:"#/"}, {t:"Tagesmix"}],
+    fertig:() => { if(S.mixTag !== datum(0)){ S.mixTag = datum(0); zaehler().mix++; } }};
+}
+function seiteMix(){
+  const R = S.sitz["u:mix"];
+  if(!R || R.tag !== datum(0) || !R.items.length) S.sitz["u:mix"] = rundeAus(mixItems());
+  seiteThema(mixThema(), "ueben");
+}
+
 function level(xp){
   let n = 1; while(50*(n+1)*n <= xp) n++;
   const von = 50*n*(n-1), bis = 50*(n+1)*n;
@@ -19169,7 +19339,7 @@ function route(){
   kFarbe(null);
   zeigeTopnav();
   const [a, b, c] = teile;
-  bereich = !a ? "start" : (["klasse","thema","blatt","lernen","suche","englisch","vokabeln"].indexOf(a) >= 0 ? "lernen" : a === "foto" ? "ki" : a === "buch" ? "buecher" : a);
+  bereich = !a ? "start" : (["klasse","thema","blatt","lernen","suche","englisch","vokabeln","fehler","mix"].indexOf(a) >= 0 ? "lernen" : a === "foto" ? "ki" : a === "buch" ? "buecher" : a);
   zurueck = null;
   zeigeTopnav();
   if(!a) seiteStart();
@@ -19177,6 +19347,8 @@ function route(){
   else if(a === "klasse" && KLASSEN.indexOf(+b) >= 0) seiteKlasse(+b);
   else if(a === "englisch" && EN_KLASSEN.indexOf(+b) >= 0) seiteKlasse(+b, FACH_E);
   else if(a === "vokabeln") seiteVokabeln(b);
+  else if(a === "fehler") seiteFehler(b);
+  else if(a === "mix") seiteMix();
   else if(a === "thema" && byId[b]) seiteThema(byId[b], c);
   else if(a === "blatt" && kaById[b]) seiteBlatt(kaById[b]);
   else if(a === "zeugnis") seiteZeugnis();
@@ -19220,8 +19392,17 @@ function seiteStart(){
   html += '<div class="card ziel-karte"><div class="eyebrow">Tagesziel</div>'+
     '<div class="ring"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="48"/><circle class="fg'+(anteil>=1?" voll":"")+'" cx="60" cy="60" r="48" stroke-dasharray="'+U.toFixed(1)+'" stroke-dashoffset="'+(U*(1-anteil)).toFixed(1)+'"/></svg>'+
     '<div class="mitte"><div><b class="num">'+Math.min(n,99)+'</b><br><span>von '+TAGESZIEL+'</span></div></div></div>'+
-    '<div class="pills"><span class="pill">'+ic("flamme","flame")+serie+' '+(serie === 1 ? "Tag" : "Tage")+'</span><span class="pill">'+ic("stern","star")+K.fmt(S.xp)+' XP</span></div></div>';
+    '<div class="pills"><span class="pill">'+ic("flamme","flame")+serie+' '+(serie === 1 ? "Tag" : "Tage")+'</span><span class="pill">'+ic("stern","star")+K.fmt(S.xp)+' XP</span>'+
+    '<a class="pill" href="#/profil" title="Deine Abzeichen">🏅 '+ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length+'</a></div></div>';
   html += '</section>';
+  const mixR = S.sitz["u:mix"], mixHeute = S.mixTag === datum(0), mixLauf = !mixHeute && mixR && mixR.tag === datum(0) && !mixR.fertig && mixR.i > 0;
+  const fehlerN = (S.fehler || []).length;
+  html += '<section class="duo wiederholen">'+
+    '<a class="card mix-karte" href="#/mix"><h3>'+icoHtml("mix")+'Tagesmix</h3><p class="weich" style="font-size:15px">10 gemischte Aufgaben aus deinen Themen, damit nichts vergessen wird. Jeden Tag neu.</p>'+
+      '<span class="btn '+(mixHeute ? "" : "primary")+'">'+(mixHeute ? ic("haken")+"Heute geschafft" : mixLauf ? "Weitermachen · "+(mixR.i+1)+" von "+mixR.items.length : "Los geht's "+ic("pfeil"))+'</span></a>'+
+    '<a class="card fehler-karte" href="#/fehler"><h3>'+icoHtml("fehler")+'Fehler-Heft</h3><p class="weich" style="font-size:15px">'+
+      (fehlerN ? fehlerN+" Aufgabe"+(fehlerN === 1 ? "" : "n")+" zum Wiederholen. Zweimal richtig, dann sind sie geschafft." : "Hier landen Aufgaben, die du falsch hattest. Gerade ist es leer.")+'</p>'+
+      '<span class="btn">'+(fehlerN ? "Fehler üben "+ic("pfeil") : "Ansehen")+'</span></a></section>';
   if(k && themenVon(k).length){
     html += '<div class="section-h"><h2>Für dich in Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(k, 4).map(themaZeile).join("")+'</div>';
@@ -19429,6 +19610,7 @@ function seiteProfil(){
     '<div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Deine Klasse</div><div class="kl-wahl" id="pkl"></div></div>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div></div>'+
+    abzeichenHtml()+
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen und bei claude.ai anmelden. Dann auf den Startbildschirm legen:</p>'+
     '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
@@ -19768,14 +19950,15 @@ const unEsc = s => String(s == null ? "" : s).replace(/&lt;/g,"<").replace(/&gt;
 const feinZeiger = window.matchMedia && window.matchMedia("(pointer:fine)").matches;
 function seiteThema(th, tab){
   kFarbe(farbeVon(th));
-  merkeZuletzt(th.id); speichern();
+  if(byId[th.id]) merkeZuletzt(th.id);
+  speichern();
   if(!tab){ const s = S.themen[th.id]; tab = (s && (s.runden || s.tests)) || S.sitz["u:"+th.id] ? "ueben" : "erklaerung"; }
   const tabs = tabsVon(th);
   if(tabs.indexOf(tab) < 0) tab = tabs.indexOf("ueben") >= 0 ? "ueben" : tabs[0];
   crumbs(th.crumbs || [{t:"Start", href:"#/"}, {t:(fachVon(th) === FACH_E ? "Englisch " : "Klasse ")+th.klasse, href:klasseHref(th.klasse, fachVon(th))}, {t:th.titel}]);
   const kopf = el("div","runner");
   kopf.innerHTML = '<div class="th-head">'+icoHtml(th.icon)+'<div><div class="eyebrow">'+(fachVon(th) === FACH_E ? "Englisch · " : "")+'Klasse '+th.klasse+' · '+esc(th.kapitel)+'</div><h1>'+esc(th.titel)+'</h1><p>'+esc(th.kurz)+'</p></div></div>'+
-    '<nav class="seg" aria-label="Bereich" style="grid-template-columns:repeat('+tabs.length+', 1fr)">'+
+    (tabs.length < 2 ? '<nav hidden>' : '<nav class="seg" aria-label="Bereich" style="grid-template-columns:repeat('+tabs.length+', 1fr)">')+
       [["erklaerung","buch","Erklärung"],["ueben","stift","Üben"],["test","test","Test"],["blatt","drucker","Blatt"]].filter(x => tabs.indexOf(x[0]) >= 0).map(([k,i,l]) =>
         '<a href="'+thHref(th)+'/'+k+'"'+(k === tab ? ' aria-current="page"' : '')+'>'+ic(i)+l+'</a>').join("")+'</nav>';
   const inhalt = el("div"); kopf.appendChild(inhalt);
@@ -19832,12 +20015,13 @@ function festeItems(liste){
   return it;
 }
 function neueRunde(th){
-  return rundeAus(th.festUeben ? festeItems(th.festUeben) : ziehen(th, [1,1,1,2,2,2,2,3,3,3]));
+  return rundeAus(th.neueItems ? th.neueItems() : th.festUeben ? festeItems(th.festUeben) : ziehen(th, [1,1,1,2,2,2,2,3,3,3]));
 }
 function zeigeUeben(th, box){
   const key = "u:"+th.id;
   let R = S.sitz[key];
   if(!R || !R.items || !R.items.length){ R = S.sitz[key] = neueRunde(th); speichern(); }
+  if(!R.items.length){ box.appendChild(el("div","card pad weich","Gerade gibt es hier keine Aufgaben.")); return; }
   if(R.fertig){ zeigeEnde(th, R, box); return; }
   const wrap = el("div"); box.appendChild(wrap);
   let w, hauptB, info = null;
@@ -19849,7 +20033,7 @@ function zeigeUeben(th, box){
     R.res.forEach((r,j) => pb.appendChild(el("i", r.st ? r.st : (j === R.i ? "jetzt" : ""))));
     wrap.appendChild(pb);
     const card = el("section","card aufgabe"); card.setAttribute("aria-live","polite");
-    card.innerHTML = '<div class="a-meta"><span class="eyebrow">Aufgabe '+(R.i+1)+' von '+R.items.length+'</span>'+
+    card.innerHTML = '<div class="a-meta"><span class="eyebrow">Aufgabe '+(R.i+1)+' von '+R.items.length+(it.herkunft ? ' · '+esc(it.herkunft) : '')+'</span>'+
       '<span class="stufe">'+["leicht","mittel","schwer"][(it.lvl||1)-1]+' <i class="an"></i><i class="'+(it.lvl>=2?"an":"")+'"></i><i class="'+(it.lvl>=3?"an":"")+'"></i></span></div>';
     w = widget(it, {minus: th.klasse >= 7, onChange: () => { res.e = w.get(); speichern(); if(info){ info.remove(); info = null; } }, onEnter: haupt});
     if(w.eigeneFrage) card.appendChild(w.el); else card.appendChild(el("div","q", it.q));
@@ -19903,11 +20087,13 @@ function zeigeUeben(th, box){
       res.xp = res.v === 1 ? (res.tipp ? 6 : 10) : 4;
       R.xp += res.xp; s.richtig++; s.gesamt++;
       aufgabeGeschafft(res.xp);
+      if(it.fid) fehlerErgebnis(it.fid, res.st);
     }else if(res.v < 2){
       res.form = r.form || null;
     }else{
       res.st = "falsch"; s.gesamt++;
       aufgabeGeschafft(0);
+      if(it.fid) fehlerErgebnis(it.fid, "falsch"); else fehlerMerken(it.thId || th.id, it.herkunft || th.titel, it);
     }
     speichern(); render();
   }
@@ -19917,6 +20103,7 @@ function zeigeUeben(th, box){
       R.fertig = true; R.dauer = Date.now() - R.t0;
       const s = st(th.id); s.runden++;
       s.sterne = Math.max(s.sterne||0, sterneVon(R));
+      if(th.fertig) th.fertig(R);
       speichern(); box.innerHTML = ""; zeigeEnde(th, R, box);
     }else{ speichern(); render(); }
     const top = box.getBoundingClientRect().top + window.scrollY - 80;
@@ -19941,9 +20128,14 @@ function zeigeEnde(th, R, box){
     '<div class="kennzahlen"><div><b class="num">'+ok+'/'+n+'</b><span>richtig</span></div><div><b class="num" style="color:var(--gold)">+'+R.xp+'</b><span>XP</span></div>'+
     '<div><b class="num">'+Math.floor(sek/60)+':'+String(sek%60).padStart(2,"0")+'</b><span>Minuten</span></div></div>';
   const knoepfe = el("div","row"); knoepfe.style.justifyContent = "center";
-  knoepfe.appendChild(btn("btn primary gross", ic("neu")+"Neue Runde", () => { S.sitz["u:"+th.id] = neueRunde(th); speichern(); box.innerHTML = ""; zeigeUeben(th, box); }));
-  knoepfe.insertAdjacentHTML("beforeend", tabsVon(th).indexOf("test") >= 0 ? '<a class="btn gross" href="'+thHref(th)+'/test">'+ic("test")+'Test schreiben</a>'
-    : '<a class="btn gross" href="'+thHref(th)+'/blatt">'+ic("drucker")+'Blatt drucken</a>');
+  knoepfe.appendChild(btn("btn primary gross", ic("neu")+"Neue Runde", () => {
+    const R2 = neueRunde(th);
+    if(!R2.items.length){ location.hash = th.id === "fehler" ? "#/fehler" : "#/"; return; }
+    S.sitz["u:"+th.id] = R2; speichern(); box.innerHTML = ""; zeigeUeben(th, box); }));
+  const tabs = tabsVon(th);
+  knoepfe.insertAdjacentHTML("beforeend", tabs.indexOf("test") >= 0 ? '<a class="btn gross" href="'+thHref(th)+'/test">'+ic("test")+'Test schreiben</a>'
+    : tabs.indexOf("blatt") >= 0 ? '<a class="btn gross" href="'+thHref(th)+'/blatt">'+ic("drucker")+'Blatt drucken</a>'
+    : th.id === "fehler" ? '<a class="btn gross" href="#/fehler">'+ic("heft")+'Zum Fehler-Heft</a>' : '<a class="btn gross" href="#/">'+ic("home")+'Zur Startseite</a>');
   c.appendChild(knoepfe);
   const rueck = el("div","rueck");
   rueck.innerHTML = '<div class="eyebrow" style="margin-top:14px">Deine Aufgaben</div>' + R.items.map((it,i) => {
@@ -19972,6 +20164,7 @@ function zeigeTest(th, box){
     neuText: "Neuer Test",
     neu: () => { S.sitz[key] = neuerTest(th); speichern(); box.innerHTML = ""; zeigeTest(th, box); },
     uebenHref: thHref(th)+"/ueben",
+    quelle: {id:th.id, titel:th.titel},
     abgegeben: n => { const s = st(th.id); s.tests++; s.letzte = n; s.note = s.note ? Math.min(s.note, n) : n; },
     neuZeichnen: () => { box.innerHTML = ""; zeigeTest(th, box); }
   });
@@ -20057,6 +20250,8 @@ function pruefungAnsicht(box, T, o){
       let punkte = 0; T.ok = []; T.pk = [];
       T.items.forEach((it,i) => { T.ans[i] = ws[i].get(); const pk = Math.round(it.p * K.anteil(it, T.ans[i]) * 2) / 2; T.ok.push(pk >= it.p); T.pk.push(pk); punkte += pk; aufgabeGeschafft(Math.round(5*pk)); });
       T.punkte = punkte; T.proz = Math.round(punkte/max*100); T.ab = true;
+      if(o.quelle) T.items.forEach((it, i) => { if(T.pk[i] < it.p) fehlerMerken(o.quelle.id, o.quelle.titel, it); });
+      if(T.versuche && T.versuche.length && T.proz > Math.max.apply(null, T.versuche.map(v => v.proz || 0))) zaehler().besser++;
       if(o.abgegeben) o.abgegeben(K.noteVon(T.proz).n);
       speichern(); o.neuZeichnen(); window.scrollTo({top:0, behavior:"smooth"});
     }));
@@ -21218,6 +21413,7 @@ function seiteKiArbeit(id, tab){
     minus: ["Mathematik","Physik","Chemie","Informatik"].indexOf(A.fach) >= 0,
     intro: "Von der KI aus deinen Themen geschrieben und von Karo geprüft. Ohne Tipps, wie in einer echten Arbeit."+(A.verworfen ? " ("+A.verworfen+" fehlerhafte Aufgabe"+(A.verworfen === 1 ? " wurde" : "n wurden")+" aussortiert.)" : ""),
     neuText: "Neue KI-Arbeit",
+    quelle: {id:"ki-"+A.id, titel:unEsc(A.titel)},
     neu: () => { location.hash = "#/ki"; },
     abgegeben: () => {},
     neuZeichnen: () => route()
@@ -21424,8 +21620,9 @@ function druckLeiste(bau, titel, o){
   const l = btn("t-toggle", '<span class="box">'+ic("haken")+'</span><span><b>Lösungen hinten anhängen</b><small>Auf einer eigenen Seite, zum Selbst-Kontrollieren</small></span>', () => { loes = !loes; l.setAttribute("aria-pressed", loes ? "true" : "false"); if(o.onLoes) o.onLoes(loes); });
   l.setAttribute("aria-pressed", loes ? "true" : "false");
   const r = el("div","row");
-  r.appendChild(btn("btn primary", ic("drucker")+"Drucken", () => drucken(bau(loes), titel)));
-  r.appendChild(btn("btn", ic("laden")+"Als Datei speichern", () => alsDatei(bau(loes), titel)));
+  const gezaehlt = () => { zaehler().blatt++; speichern(); };
+  r.appendChild(btn("btn primary", ic("drucker")+"Drucken", () => { gezaehlt(); drucken(bau(loes), titel); }));
+  r.appendChild(btn("btn", ic("laden")+"Als Datei speichern", () => { gezaehlt(); alsDatei(bau(loes), titel); }));
   d.appendChild(l); d.appendChild(r);
   d.appendChild(el("p","leise","Passiert beim Drucken nichts? Dann speichere das Blatt als Datei, öffne sie und drucke von dort."));
   return d;
@@ -21442,7 +21639,7 @@ function blattItems(th, anzahl, stufe){
   return items.slice(0, anzahl).sort((a, b) => a.lvl - b.lvl);
 }
 function rundeAus(items){
-  return {items:items, i:0, res:items.map(() => ({st:null, v:0, tipp:false, e:null, form:null, xp:0})), xp:0, fertig:false, t0:Date.now()};
+  return {tag:datum(0), items:items, i:0, res:items.map(() => ({st:null, v:0, tipp:false, e:null, form:null, xp:0})), xp:0, fertig:false, t0:Date.now()};
 }
 function zeigeBlatt(th, box){
   const key = "d:"+th.id;
@@ -21484,6 +21681,7 @@ function zeigeBlatt(th, box){
 
 /* ================= Start ================= */
 Heft.init();
+abzeichenPruefen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
 sphAutomatik();
 themaSetzen();
 route();

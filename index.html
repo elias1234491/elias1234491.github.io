@@ -971,11 +971,34 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .hg-alge{animation:alge ease-in-out infinite alternate}
 @keyframes alge{from{transform:rotate(-6deg)} to{transform:rotate(7deg)}}
 :root[data-hg="meer"] .seiten-kopf, :root[data-hg="weltraum"] .seiten-kopf{text-shadow:0 1px 12px rgba(255,255,255,.35)}
+/* Glas */
+:root[data-hg="glas"] body{background-color:#e8e2ff; background-image:linear-gradient(135deg, #ffd1e8 0%, #d9ccff 40%, #c2f0ff 100%)}
+:root[data-hg="glas"][data-theme="dark"] body{background-image:linear-gradient(135deg, #2a1640 0%, #151a3d 50%, #0c2a3a 100%)}
+@media (prefers-color-scheme: dark){ :root[data-hg="glas"]:not([data-theme="light"]) body{background-image:linear-gradient(135deg, #2a1640 0%, #151a3d 50%, #0c2a3a 100%)} }
+.hg-wolke.g1{left:-15vmax; top:-15vmax; background:radial-gradient(closest-side, rgba(255,80,160,.75), transparent)}
+.hg-wolke.g2{right:-18vmax; top:5vh; background:radial-gradient(closest-side, rgba(90,120,255,.7), transparent)}
+.hg-wolke.g3{left:15vw; bottom:-25vmax; background:radial-gradient(closest-side, rgba(40,220,200,.65), transparent)}
+.hg-wolke.g4{right:10vw; bottom:-8vmax; width:42vmax; height:42vmax; background:radial-gradient(closest-side, rgba(255,190,60,.7), transparent)}
+.hg-kugel{aspect-ratio:1; background:linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.06) 60%); border:1.5px solid rgba(255,255,255,.65); box-shadow:inset 6px 6px 18px rgba(255,255,255,.45), 0 20px 40px -20px rgba(40,20,90,.35)}
+@keyframes kugel{from{transform:translate(0, 0) rotate(0)} to{transform:translate(4vw, -6vh) rotate(25deg)}}
+.glas-leinwand{position:absolute; left:0; top:0}
+:root[data-hg="glas"] .card, :root[data-hg="glas"] .th, :root[data-hg="glas"] .top, :root[data-hg="glas"] .seite, :root[data-hg="glas"] .tabbar{background:rgba(255,255,255,.52); backdrop-filter:blur(18px) saturate(1.5); -webkit-backdrop-filter:blur(18px) saturate(1.5); border-color:rgba(255,255,255,.75)}
+:root[data-hg="glas"][data-theme="dark"] .card, :root[data-hg="glas"][data-theme="dark"] .th, :root[data-hg="glas"][data-theme="dark"] .top, :root[data-hg="glas"][data-theme="dark"] .seite, :root[data-hg="glas"][data-theme="dark"] .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)}
+@media (prefers-color-scheme: dark){ :root[data-hg="glas"]:not([data-theme="light"]) .card, :root[data-hg="glas"]:not([data-theme="light"]) .th, :root[data-hg="glas"]:not([data-theme="light"]) .top, :root[data-hg="glas"]:not([data-theme="light"]) .seite, :root[data-hg="glas"]:not([data-theme="light"]) .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)} }
+/* Bauplan */
+:root[data-hg="bauplan"] body{background-color:#1b4f93; background-image:linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px), radial-gradient(ellipse at 50% 40%, #2463ae, #163f78); background-size:120px 120px, 120px 120px, 24px 24px, 24px 24px, auto}
+.hg-bauplan{inset:0; width:100%; height:100%}
+.hg-bauplan .bp{fill:none; stroke:rgba(255,255,255,.75); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; animation:bp-zeichnen 16s ease-in-out infinite; animation-delay:var(--v)}
+@keyframes bp-zeichnen{0%{stroke-dashoffset:1; opacity:1} 14%{stroke-dashoffset:0} 80%{stroke-dashoffset:0; opacity:1} 95%,100%{stroke-dashoffset:0; opacity:0}}
+.hg-bauplan .bp-text{font:700 24px var(--hand); fill:rgba(255,255,255,.8); opacity:0; animation:bp-text 16s ease-in-out infinite}
+@keyframes bp-text{0%,8%{opacity:0} 14%,78%{opacity:1} 92%,100%{opacity:0}}
+.hgv-glas .hg-vorschau{background:radial-gradient(circle at 70% 35%, rgba(255,255,255,.7) 0 12px, rgba(255,255,255,.2) 13px, transparent 18px), radial-gradient(circle at 25% 30%, rgba(255,80,160,.7), transparent 50%), radial-gradient(circle at 70% 90%, rgba(40,220,200,.7), transparent 55%), linear-gradient(135deg, #ffd1e8, #d9ccff, #c2f0ff)}
+.hgv-bauplan .hg-vorschau{background:radial-gradient(circle at 35% 50%, transparent 15px, rgba(255,255,255,.8) 16px, transparent 17.5px), linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px), #1b4f93; background-size:auto, 10px 10px, 10px 10px, auto}
 /* Karo-Papier: nur das Gitter */
 :root[data-hg="papier"] #hintergrund{display:none}
-:root[data-hg="weltraum"] body, :root[data-hg="meer"] body{background-size:auto}
+:root[data-hg="weltraum"] body, :root[data-hg="meer"] body, :root[data-hg="glas"] body{background-size:auto; background-attachment:fixed}
 /* Auswahl im Profil */
-.hg-wahl{display:grid; grid-template-columns:repeat(4, 1fr); gap:10px}
+.hg-wahl{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px}
 @media (max-width:560px){ .hg-wahl{grid-template-columns:repeat(2, 1fr)} }
 .hg-kachel{display:flex; flex-direction:column; gap:6px; padding:6px; border-radius:14px; border:2px solid var(--line-2); background:var(--paper); cursor:pointer; font-weight:700; font-size:14px; color:var(--ink)}
 .hg-kachel[aria-pressed="true"]{border-color:var(--brand); box-shadow:0 0 0 2px var(--brand)}
@@ -20733,7 +20756,7 @@ function seiteProfil(){
     const p = S.profil, t = S.theme; S = leer(); S.profil = p; S.theme = t; speichern(); toast("Fortschritt zurückgesetzt"); route();
   });
 }
-function themaSetzen(){ const t = S.hg === "weltraum" ? "dark" : S.theme; if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
+function themaSetzen(){ const t = HG_DUNKEL.indexOf(S.hg) >= 0 ? "dark" : S.theme; if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
 
 /* ================= Zeugnis ================= */
 function seiteZeugnis(){
@@ -22789,7 +22812,8 @@ function zeigeBlatt(th, box){
 
 /* ================= Hintergründe: Bunt, Weltraum, Meer, Karo-Papier =================
    Alles aus Code (keine Bilder), nur transform/opacity werden animiert, damit es flüssig bleibt. */
-const HINTERGRUENDE = [["bunt","🌈","Bunt"],["weltraum","🌌","Weltraum"],["meer","🐠","Meer"],["papier","📄","Karo-Papier"]];
+const HINTERGRUENDE = [["bunt","🌈","Bunt"],["glas","🪟","Glas"],["bauplan","📐","Bauplan"],["weltraum","🌌","Weltraum"],["meer","🐠","Meer"],["papier","📄","Karo-Papier"]];
+const HG_DUNKEL = ["weltraum","bauplan"];
 function hintergrundSetzen(){
   const art = S.hg || "bunt";
   let hg = document.getElementById("hintergrund");
@@ -22818,6 +22842,20 @@ function hintergrundSetzen(){
       '<circle cx="100" cy="60" r="42" fill="url(#hgp)"/>'+
       '<g transform="rotate(-14 100 60)"><path d="M8 60 A92 20 0 0 0 192 60" fill="none" stroke="#f7c8ff" stroke-opacity=".85" stroke-width="5"/></g></svg>';
     h += '<svg class="hg-mond" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#e8ecf8"/><circle cx="14" cy="15" r="3" fill="#cfd6ea"/><circle cx="25" cy="24" r="4" fill="#cfd6ea"/></svg>';
+  }else if(art === "glas"){
+    h += '<i class="hg-wolke g1"></i><i class="hg-wolke g2"></i><i class="hg-wolke g3"></i><i class="hg-wolke g4"></i>';
+    for(let i = 0; i < 6; i++) h += '<i class="hg-kugel" style="left:'+r(0, 92)+'%;top:'+r(0, 88)+'%;width:'+r(70, 220)+'px;animation-duration:'+r(18, 30)+'s;animation-delay:-'+r(0, 30)+'s;border-radius:'+(i % 3 === 0 ? "32%" : "50%")+'"></i>';
+  }else if(art === "bauplan"){
+    const L = (d, extra) => '<path pathLength="1" class="bp" d="'+d+'" '+(extra || "")+'/>';
+    const T = (x, y, t, verz) => '<text class="bp-text" x="'+x+'" y="'+y+'" style="animation-delay:'+verz+'s">'+t+'</text>';
+    h += '<svg class="hg-bauplan" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">'+
+      '<g style="--v:0s">'+L("M240 110a110 110 0 1 1 0 220a110 110 0 1 1 0-220")+L("M230 220h20M240 210v20")+L("M240 220L335 165")+T(262, 176, "r = 3 cm", 2.4)+'</g>'+
+      '<g style="--v:3s">'+L("M760 560H1010L760 360Z")+L("M760 530h30v30")+L("M978 560a32 32 0 0 0-8-22")+T(870, 590, "a = 5 cm", 5.2)+T(718, 470, "b", 5.2)+T(895, 450, "c", 5.2)+'</g>'+
+      '<g style="--v:6s">'+L("M150 650H560")+L("M150 638v24M560 638v24M150 650l14-7M150 650l14 7M560 650l-14-7M560 650l-14 7")+T(330, 636, "12 cm", 8.2)+'</g>'+
+      '<g style="--v:8s">'+L("M860 180a120 120 0 0 1 240 0Z")+L("M980 180l-85-85M980 180l0-120M980 180l85-85")+T(1000, 120, "90°", 10.2)+'</g>'+
+      '<g style="--v:10s">'+L("M470 470l90-52 90 52-90 52z")+L("M470 470v100l90 52 90-52V470M560 522v100")+T(540, 660, "V = a · b · c", 12.2)+'</g>'+
+      '<g style="--v:4.5s">'+L("M520 110h260M650 60v200")+L("M560 250Q650-20 740 250")+T(752, 250, "y = x²", 6.8)+'</g>'+
+    '</svg>';
   }else if(art === "meer"){
     h += '<i class="hg-strahl t1"></i><i class="hg-strahl t2"></i><i class="hg-strahl t3"></i>';
     for(let i = 0; i < 22; i++){
@@ -22839,7 +22877,131 @@ function hintergrundSetzen(){
     h += '<path d="M0 180 Q150 150 300 168 T600 164 T900 170 T1200 160 V180z" fill="#e9c98a"/></svg>';
   }
   hg.innerHTML = h;
+  if(art === "glas") Glas.einrichten(hg); else Glas.c = null;
 }
+/* ================= Glas zum Zerbrechen =================
+   Tippen auf eine freie Stelle im Hintergrund: 1. Sprung, 2. größerer Riss, 3. die Scheibe zerspringt.
+   Gezeichnet auf einer Leinwand hinter den Karten, die Karten aus Milchglas verschwimmen die Risse. */
+const Glas = {
+  c:null, g:null, dpr:1, risse:[], scherben:[], treffer:[], laeuft:false, ton:null,
+  an(){ return (S.hg || "bunt") === "glas"; },
+  einrichten(hg){
+    this.c = document.createElement("canvas"); this.c.className = "glas-leinwand"; hg.appendChild(this.c);
+    this.g = this.c.getContext("2d"); this.risse = []; this.scherben = []; this.treffer = []; this.groesse();
+  },
+  groesse(){
+    if(!this.c) return;
+    this.dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.c.width = innerWidth * this.dpr; this.c.height = innerHeight * this.dpr;
+    this.c.style.width = innerWidth + "px"; this.c.style.height = innerHeight + "px";
+    this.g.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.malen();
+  },
+  /* ein gezackter Riss von (x,y) in Richtung w */
+  riss(x, y, w, laenge){
+    const p = [[x, y]]; let px = x, py = y, rest = laenge, ww = w; const aeste = [];
+    while(rest > 0){
+      const s = Math.min(rest, 10 + Math.random()*18); ww += (Math.random() - 0.5) * 0.5;
+      px += Math.cos(ww) * s; py += Math.sin(ww) * s; p.push([px, py]); rest -= s;
+      if(Math.random() < 0.12 && laenge - rest > 30 && rest > 12) aeste.push(this.riss(px, py, ww + (Math.random() < 0.5 ? -1 : 1) * (0.5 + Math.random()*0.6), rest * (0.25 + Math.random()*0.3)).p);
+    }
+    return {p:p, aeste:aeste};
+  },
+  sprung(x, y, stufe){
+    const n = stufe === 1 ? 7 : 11, weit = stufe === 1 ? [50, 130] : [120, 280];
+    const start = Math.random() * Math.PI * 2, linien = [], ringe = [];
+    const winkel = []; for(let i = 0; i < n; i++) winkel.push(start + i * Math.PI*2/n + (Math.random() - 0.5) * 0.45);
+    winkel.forEach(w => { const r = this.riss(x, y, w, weit[0] + Math.random()*(weit[1] - weit[0])); linien.push(r.p); r.aeste.forEach(a => linien.push(a)); });
+    (stufe === 1 ? [22] : [26, 70]).forEach(rad => {
+      const ring = []; winkel.forEach((w, i) => { if(Math.random() < 0.8){ const rr = rad * (0.8 + Math.random()*0.4); ring.push([x + Math.cos(w)*rr, y + Math.sin(w)*rr]); } else ring.push(null); });
+      ringe.push(ring);
+    });
+    this.risse.push({x:x, y:y, linien:linien, ringe:ringe, t:performance.now(), stufe:stufe});
+  },
+  zerbrechen(x, y){
+    this.risse = this.risse.filter(r => Math.hypot(r.x - x, r.y - y) > 140);
+    const n = 10 + Math.floor(Math.random()*4), R = 150 + Math.random()*70, r1 = R * (0.35 + Math.random()*0.15);
+    const start = Math.random() * Math.PI * 2, w = [];
+    for(let i = 0; i <= n; i++) w.push(start + i * Math.PI*2/n + (i && i < n ? (Math.random() - 0.5) * 0.3 : 0));
+    const pt = (ww, rr) => [x + Math.cos(ww)*rr, y + Math.sin(ww)*rr];
+    for(let i = 0; i < n; i++){
+      const a = w[i], b = w[i+1], ra = r1 * (0.8 + Math.random()*0.4), rb = r1 * (0.8 + Math.random()*0.4);
+      [[[x, y], pt(a, ra), pt(b, rb)], [pt(a, ra), pt(a, R * (0.85 + Math.random()*0.3)), pt(b, R * (0.85 + Math.random()*0.3)), pt(b, rb)]].forEach(poly => {
+        const cx = poly.reduce((s, q) => s + q[0], 0) / poly.length, cy = poly.reduce((s, q) => s + q[1], 0) / poly.length;
+        const d = Math.hypot(cx - x, cy - y) || 1, kraft = 3 + Math.random()*5;
+        this.scherben.push({cx:cx, cy:cy, pts:poly.map(q => [q[0] - cx, q[1] - cy]), vx:(cx - x)/d*kraft, vy:(cy - y)/d*kraft - 3 - Math.random()*3, dreh:0, vdreh:(Math.random() - 0.5)*0.2, alpha:1});
+      });
+    }
+    this.klirren(); try{ if(navigator.vibrate) navigator.vibrate([30, 30, 50]); }catch(e){}
+  },
+  schlag(x, y){
+    const jetzt = performance.now();
+    this.treffer = this.treffer.filter(t => jetzt - t.t < 8000);
+    let t = this.treffer.find(q => Math.hypot(q.x - x, q.y - y) < 120);
+    if(!t){ t = {x:x, y:y, n:0, t:jetzt}; this.treffer.push(t); }
+    t.n++; t.t = jetzt;
+    if(t.n >= 3){ this.zerbrechen(t.x, t.y); this.treffer = this.treffer.filter(q => q !== t); }
+    else { this.sprung(x, y, t.n); this.knacken(); try{ if(navigator.vibrate) navigator.vibrate(15); }catch(e){} }
+    this.starten();
+  },
+  starten(){ if(this.laeuft) return; this.laeuft = true; const self = this; requestAnimationFrame(function bild(){ const weiter = self.malen(); if(weiter) requestAnimationFrame(bild); else self.laeuft = false; }); },
+  malen(){
+    if(!this.g) return false;
+    const g = this.g, jetzt = performance.now();
+    g.clearRect(0, 0, innerWidth, innerHeight);
+    this.risse = this.risse.filter(r => jetzt - r.t < 9000);
+    this.risse.forEach(r => {
+      const alter = jetzt - r.t, a = alter > 7000 ? 1 - (alter - 7000)/2000 : 1;
+      const wachsen = Math.min(1, alter / 160);
+      g.save(); g.globalAlpha = a; g.lineJoin = "round"; g.lineCap = "round";
+      const zieh = (pts, anteil) => { if(!pts || pts.length < 2) return; const k = Math.min(pts.length, Math.max(2, Math.ceil(pts.length * anteil))); g.beginPath(); g.moveTo(pts[0][0], pts[0][1]); for(let i = 1; i < k; i++) g.lineTo(pts[i][0], pts[i][1]); g.stroke(); };
+      g.strokeStyle = "rgba(20,30,60,.22)"; g.lineWidth = 3; g.translate(1, 1.5); r.linien.forEach(l => zieh(l, wachsen)); g.translate(-1, -1.5);
+      g.strokeStyle = "rgba(255,255,255,.95)"; g.lineWidth = 1.4; r.linien.forEach(l => zieh(l, wachsen));
+      if(wachsen >= 1) r.ringe.forEach(ring => { g.beginPath(); let an = false; ring.concat([ring[0]]).forEach(q => { if(!q){ an = false; return; } if(!an){ g.moveTo(q[0], q[1]); an = true; } else g.lineTo(q[0], q[1]); }); g.stroke(); });
+      const glanz = g.createRadialGradient(r.x, r.y, 0, r.x, r.y, r.stufe === 1 ? 16 : 26);
+      glanz.addColorStop(0, "rgba(255,255,255,.95)"); glanz.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = glanz; g.beginPath(); g.arc(r.x, r.y, r.stufe === 1 ? 16 : 26, 0, Math.PI*2); g.fill();
+      g.restore();
+    });
+    this.scherben.forEach(s => {
+      s.vy += 0.42; s.vx *= 0.995; s.cx += s.vx; s.cy += s.vy; s.dreh += s.vdreh;
+      if(s.cy > innerHeight * 0.75) s.alpha -= 0.02;
+      g.save(); g.globalAlpha = Math.max(0, s.alpha); g.translate(s.cx, s.cy); g.rotate(s.dreh);
+      g.beginPath(); s.pts.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath();
+      const f = g.createLinearGradient(-30, -30, 30, 30); f.addColorStop(0, "rgba(255,255,255,.55)"); f.addColorStop(1, "rgba(200,230,255,.12)");
+      g.fillStyle = f; g.fill(); g.strokeStyle = "rgba(255,255,255,.9)"; g.lineWidth = 1.2; g.stroke();
+      g.restore();
+    });
+    this.scherben = this.scherben.filter(s => s.alpha > 0 && s.cy < innerHeight + 200);
+    return this.risse.length > 0 || this.scherben.length > 0;
+  },
+  /* Töne ohne Dateien: kurzes Knacken und Klirren, leise */
+  audio(){ try{ if(!this.ton) this.ton = new (window.AudioContext || window.webkitAudioContext)(); if(this.ton.state === "suspended") this.ton.resume(); return this.ton; }catch(e){ return null; } },
+  rauschen(a, dauer, laut, hoch){
+    const buf = a.createBuffer(1, Math.floor(a.sampleRate * dauer), a.sampleRate), d = buf.getChannelData(0);
+    for(let i = 0; i < d.length; i++) d[i] = (Math.random()*2 - 1) * Math.pow(1 - i/d.length, 3);
+    const q = a.createBufferSource(); q.buffer = buf; const f = a.createBiquadFilter(); f.type = "highpass"; f.frequency.value = hoch;
+    const v = a.createGain(); v.gain.value = laut; q.connect(f); f.connect(v); v.connect(a.destination); q.start();
+  },
+  knacken(){ const a = this.audio(); if(a) this.rauschen(a, 0.06, 0.12, 2500); },
+  klirren(){
+    const a = this.audio(); if(!a) return;
+    this.rauschen(a, 0.35, 0.18, 3000);
+    for(let i = 0; i < 7; i++){
+      const o = a.createOscillator(), v = a.createGain(), t = a.currentTime + i*0.035 + Math.random()*0.03;
+      o.type = "sine"; o.frequency.value = 2200 + Math.random()*3800;
+      v.gain.setValueAtTime(0.0001, t); v.gain.exponentialRampToValueAtTime(0.05, t + 0.005); v.gain.exponentialRampToValueAtTime(0.0001, t + 0.25 + Math.random()*0.2);
+      o.connect(v); v.connect(a.destination); o.start(t); o.stop(t + 0.5);
+    }
+  }
+};
+window.addEventListener("resize", () => Glas.groesse());
+document.addEventListener("pointerdown", e => {
+  if(!Glas.an() || !Glas.c) return;
+  if(e.target.closest && e.target.closest(".card, a, button, input, textarea, select, label, summary, .th, .seite, .top, .tabbar, .overlay, .levelup, .dialog, .fig, .leiste, .toast, .pill")) return;
+  Glas.schlag(e.clientX, e.clientY);
+  if(!S.glasTipp){ S.glasTipp = true; speichern(); }
+}, {passive:true});
+
 function hintergrundWahl(){
   const d = el("div");
   d.innerHTML = '<div style="font-weight:700;margin-bottom:6px">Hintergrund</div>';
@@ -22847,12 +23009,13 @@ function hintergrundWahl(){
   HINTERGRUENDE.forEach(([id, e, name]) => {
     const b = btn("hg-kachel hgv-"+id, '<span class="hg-vorschau"></span><span class="hg-name">'+e+' '+esc(name)+'</span>', () => {
       S.hg = id; speichern(); hintergrundSetzen(); themaSetzen();
+      if(id === "glas") toast("Tipp: Tippe 3-mal auf eine freie Stelle im Hintergrund!");
       box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
     });
     b.setAttribute("aria-pressed", (S.hg || "bunt") === id ? "true" : "false"); box.appendChild(b);
   });
   d.appendChild(box);
-  d.insertAdjacentHTML("beforeend", '<p class="leise" style="margin-top:6px">Beim Weltraum wird Karo automatisch dunkel.</p>');
+  d.insertAdjacentHTML("beforeend", '<p class="leise" style="margin-top:6px">Glas kannst du zerbrechen: 3-mal auf eine freie Stelle tippen. Bei Weltraum und Bauplan wird Karo dunkel.</p>');
   return d;
 }
 

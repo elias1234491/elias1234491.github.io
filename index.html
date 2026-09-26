@@ -736,6 +736,104 @@ table.tab th{background:var(--brand-soft); font-weight:700}
   .seg a{font-size:15px}
   .seg a .ic{display:none}
 }
+/* ================= Karo-Freund ================= */
+.freund-karte{display:flex; align-items:center; gap:18px; margin-top:18px; padding:16px 22px; overflow:visible}
+.freund-tier{position:relative; flex:none; width:150px; height:150px; border:0; background:none; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.f-svg{width:100%; height:100%; overflow:visible}
+.freund-info{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px}
+.freund-info h3{font-family:var(--display); font-size:26px; font-weight:800}
+.freund-blase{position:relative; align-self:flex-start; max-width:440px; background:var(--paper-2); border:1.5px solid var(--line); border-radius:16px; padding:10px 14px; font-size:15.5px; line-height:1.4}
+.freund-blase::before{content:""; position:absolute; left:-9px; top:16px; width:14px; height:14px; background:var(--paper-2); border-left:1.5px solid var(--line); border-bottom:1.5px solid var(--line); transform:rotate(45deg)}
+.freund-blase.neu{animation:rein .25s ease-out}
+.freund-futter{display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-3); max-width:440px}
+.freund-futter .bar{flex:1; height:10px; border-radius:99px; background:var(--line); overflow:hidden}
+.freund-futter .bar i{display:block; height:100%; border-radius:99px; background:var(--pet)}
+.freund-futter b{color:var(--ink); font-size:14px}
+.freund-anpassen{font-size:13px; align-self:flex-start}
+@media (max-width:560px){ .freund-karte{flex-direction:column; text-align:center} .freund-info{align-items:center} .freund-blase::before{left:calc(50% - 7px); top:-9px; transform:rotate(135deg)} .freund-futter{width:100%} }
+/* Farben des Wesens */
+.f-koerper, .f-fuss, .f-arm{fill:var(--pet)}
+.f-fuss, .f-arm{filter:brightness(.85)}
+.f-karo{fill:color-mix(in srgb, var(--pet) 55%, #fff)}
+.f-eischale{fill:#fff8ec; stroke:color-mix(in srgb, var(--pet) 40%, #d9c9aa); stroke-width:3}
+.f-riss{fill:none; stroke:#8a7a5c; stroke-width:3; stroke-linejoin:round}
+.f-weiss{fill:#fff} .f-pupille{fill:#1b2233} .f-glanz{fill:#fff}
+.f-mund{fill:#6b2230} .f-backe{fill:#ff8fa3; opacity:.55}
+.f-strich{fill:none; stroke:#1b2233; stroke-width:3.5; stroke-linecap:round}
+.f-strich.dick{stroke:color-mix(in srgb, var(--pet) 70%, #000); stroke-width:4}
+.f-antenne{fill:#ffd23f; stroke:color-mix(in srgb, var(--pet) 70%, #000); stroke-width:2}
+.f-fluegel{fill:color-mix(in srgb, var(--pet) 22%, #fff); stroke:color-mix(in srgb, var(--pet) 65%, #333); stroke-width:3; stroke-linejoin:round}
+.f-feder{fill:none; stroke:color-mix(in srgb, var(--pet) 55%, #fff); stroke-width:2.5; stroke-linecap:round}
+.f-fluegel-g{transform-box:view-box; transform-origin:52px 112px; animation:flattern 1.8s ease-in-out infinite}
+.f-fluegel-g.rechts{transform-origin:0 0; animation-name:flattern-r}
+@keyframes flattern{0%,100%{transform:rotate(0)} 50%{transform:rotate(-10deg)}}
+@keyframes flattern-r{0%,100%{transform:translate(200px,0) scale(-1,1) translate(52px,112px) rotate(0) translate(-52px,-112px)} 50%{transform:translate(200px,0) scale(-1,1) translate(52px,112px) rotate(-10deg) translate(-52px,-112px)}}
+.f-schatten{fill:rgba(19,32,58,.13)}
+.f-brille circle, .f-brille path{fill:none; stroke:#1b2233; stroke-width:3.5}
+.f-schal{fill:#e5484d}
+.f-krone{fill:#ffc629; stroke:#c98a00; stroke-width:2.5; stroke-linejoin:round}
+.f-cap{fill:#1f78d1}
+.f-sticker{fill:#ffd23f; stroke:#c98a00; stroke-width:1.5}
+.f-zzz{font:800 20px var(--display); fill:var(--ink-3); animation:zzz 2.4s ease-in-out infinite}
+.f-zzz.z2{font-size:26px; animation-delay:1.2s}
+/* Bewegung des Wesens */
+.f-koerper-g{transform-origin:100px 180px; animation:atmen 2.6s ease-in-out infinite}
+.laune-froh .f-koerper-g, .laune-satt .f-koerper-g{animation:huepfen 1.4s cubic-bezier(.3,0,.3,1) infinite}
+.laune-schlaf .f-koerper-g{animation:atmen 4s ease-in-out infinite}
+.f-ei{transform-origin:100px 180px; animation:wackel-ei 3s ease-in-out infinite}
+.f-augen{transform-box:fill-box; transform-origin:center; animation:blinzeln 4.5s infinite}
+.f-aura{animation:puls 2.4s ease-in-out infinite}
+.freund-tier.hops .f-svg{animation:hops .55s cubic-bezier(.2,1.6,.4,1)}
+.freund-herz{position:absolute; top:10%; font-size:22px; pointer-events:none; animation:herz 1s ease-out forwards}
+@keyframes atmen{0%,100%{transform:scale(1,1)} 50%{transform:scale(1.03,.97)}}
+@keyframes huepfen{0%,100%{transform:translateY(0) scale(1,1)} 30%{transform:translateY(-10px) scale(.97,1.04)} 55%{transform:translateY(0) scale(1.05,.95)} 70%{transform:scale(1,1)}}
+@keyframes wackel-ei{0%,70%,100%{transform:rotate(0)} 76%{transform:rotate(-6deg)} 82%{transform:rotate(6deg)} 88%{transform:rotate(-3deg)} 94%{transform:rotate(2deg)}}
+@keyframes blinzeln{0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(.1)}}
+@keyframes hops{0%{transform:none} 40%{transform:translateY(-22px) rotate(-6deg)} 70%{transform:translateY(0) scale(1.06,.94)} 100%{transform:none}}
+@keyframes herz{from{opacity:1; transform:translateY(0) scale(.6)} to{opacity:0; transform:translateY(-60px) scale(1.3)}}
+@keyframes zzz{0%{opacity:0; transform:translateY(6px)} 40%{opacity:1} 100%{opacity:0; transform:translateY(-14px)}}
+.freund-einst .freund-vorschau{width:120px; height:120px; align-self:center}
+.freund-farben{display:flex; gap:10px; flex-wrap:wrap}
+.freund-farbe{width:40px; height:40px; border-radius:50%; border:3px solid var(--paper); box-shadow:0 0 0 2px var(--line-2); cursor:pointer}
+.freund-farbe[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+/* ================= Blitz ================= */
+.blitz-logo{width:58px; height:58px; flex:none; border-radius:18px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg, #ffb020, #ff5a3c); box-shadow:0 8px 20px -8px rgba(255,90,60,.7)}
+.blitz-logo .ic{width:30px; height:30px; fill:#fff; stroke:#fff}
+.blitz-logo.gross{width:76px; height:76px; border-radius:24px; margin:0 auto}
+.blitz-logo.gross .ic{width:40px; height:40px}
+.blitz-held{display:flex; gap:16px; align-items:center}
+.blitz-held h1{font-size:clamp(30px, 6vw, 40px)}
+.blitz-banner{display:flex; align-items:center; gap:16px; margin-top:18px; padding:18px 20px; text-decoration:none; color:var(--ink); background:linear-gradient(120deg, color-mix(in srgb, #ffb020 16%, var(--paper)), color-mix(in srgb, #ff5a3c 12%, var(--paper))); border:1.5px solid color-mix(in srgb, #ff5a3c 30%, var(--line)); transition:transform .15s, box-shadow .15s}
+.blitz-banner:hover{box-shadow:var(--shadow-2)} .blitz-banner:active{transform:scale(.985)}
+.blitz-banner h3{font-size:21px} .blitz-banner p{font-size:15px; color:var(--ink-2)} .blitz-banner > div:nth-child(2){flex:1}
+.blitz-banner .btn.primary{--k:#ff5a3c; --k-ink:#fff; white-space:nowrap}
+@media (max-width:620px){ .blitz-banner{flex-wrap:wrap} .blitz-banner .btn{width:100%} }
+.blitz-los{--k:#ff5a3c; --k-ink:#fff}
+.blitz-count{min-height:50vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px}
+.blitz-wer{font-family:var(--display); font-size:24px; font-weight:800; color:var(--ink-2)}
+.blitz-zahl{font-family:var(--display); font-size:140px; font-weight:800; line-height:1; color:#ff5a3c; animation:count-pop .7s cubic-bezier(.2,1.5,.4,1)}
+@keyframes count-pop{0%{transform:scale(2.2); opacity:0} 40%{opacity:1} 100%{transform:scale(1); opacity:.9}}
+.blitz-top{position:sticky; top:8px; z-index:5; background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:10px 14px; box-shadow:var(--shadow-1); margin-bottom:14px}
+.blitz-zeit{height:10px; border-radius:99px; background:var(--line); overflow:hidden}
+.blitz-zeit i{display:block; height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg, #ffb020, #ff5a3c); transition:width .1s linear}
+.blitz-zeit i.knapp{background:#e5484d; animation:puls .6s ease-in-out infinite}
+.blitz-stand{display:flex; align-items:center; gap:12px; margin-top:8px}
+.blitz-sek{font-family:var(--display); font-weight:800; font-size:22px; min-width:2ch}
+.blitz-name{font-weight:700; color:var(--ink-2)}
+.blitz-combo{margin-left:auto; font-weight:800; color:#ff5a3c; font-size:18px}
+.blitz-combo.an{animation:plopp .35s cubic-bezier(.2,1.6,.4,1)}
+.blitz-punkte{font-family:var(--display); font-size:28px; font-weight:800; min-width:3ch; text-align:right}
+.blitz-karte{position:relative; transition:box-shadow .2s, border-color .2s}
+.blitz-karte.blitz-ok{border-color:var(--ok); box-shadow:0 0 0 3px color-mix(in srgb, var(--ok) 35%, transparent)}
+.blitz-karte.blitz-bad{border-color:var(--bad); box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 30%, transparent); animation:wackeln .4s}
+.blitz-plus{position:absolute; right:18px; top:12px; font-family:var(--display); font-weight:800; font-size:26px; color:var(--ok); animation:xp-hoch .5s cubic-bezier(.2,1.4,.4,1) both}
+.blitz-loes{margin-top:12px; color:var(--bad); font-size:16px; animation:rein .2s}
+.blitz-gross{font-size:72px; line-height:1}
+.blitz-duell{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; margin:8px 0}
+.blitz-duell > div{border:2px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:4px; align-items:center}
+.blitz-duell > div.sieger{border-color:var(--gold); background:var(--gold-soft)}
+.blitz-duell b{font-family:var(--display); font-size:40px}
+.blitz-duell span{font-size:13px; color:var(--ink-3)}
 /* ================= Bewegung ================= */
 @keyframes seite-rein{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
 @keyframes karte-rein{from{opacity:0; transform:translateX(28px)} to{opacity:1; transform:none}}
@@ -19629,6 +19727,9 @@ const ABZEICHEN = [
   {id:"fehler10", e:"🩹", t:"Aus Fehlern gelernt", x:"10 Aufgaben aus dem Fehler-Heft geschafft", ok:() => zaehler().fehlerWeg >= 10},
   {id:"besser", e:"📈", t:"Zweite Chance", x:"Eine Arbeit beim nächsten Versuch besser geschrieben", ok:() => zaehler().besser >= 1},
   {id:"blatt", e:"🖨️", t:"Papier-Profi", x:"Ein Übungsblatt gedruckt oder gespeichert", ok:() => zaehler().blatt >= 1},
+  {id:"blitz1", e:"⚡", t:"Blitzmerker", x:"Das erste Blitz-Spiel gespielt", ok:() => !!(S.blitz && S.blitz.spiele >= 1)},
+  {id:"blitz300", e:"🌩️", t:"Donnerwetter", x:"300 Punkte in einem Blitz-Spiel", ok:() => !!(S.blitz && Object.keys(S.blitz.best || {}).some(k => S.blitz.best[k] >= 300))},
+  {id:"duell", e:"⚔️", t:"Herausforderer", x:"Ein Blitz-Duell zu zweit gespielt", ok:() => !!(S.blitz && S.blitz.duelle >= 1)},
   {id:"level5", e:"🏅", t:"Level 5", x:"Level 5 erreicht", ok:() => level(S.xp).n >= 5},
   {id:"level10", e:"🏆", t:"Level 10", x:"Level 10 erreicht", ok:() => level(S.xp).n >= 10}
 ];
@@ -20085,6 +20186,7 @@ function route(){
   else if(a === "vokabeln") seiteVokabeln(b);
   else if(a === "fehler") seiteFehler(b);
   else if(a === "mix") seiteMix();
+  else if(a === "blitz") seiteBlitz();
   else if(a === "thema" && byId[b]) seiteThema(byId[b], c);
   else if(a === "blatt" && kaById[b]) seiteBlatt(kaById[b]);
   else if(a === "zeugnis") seiteZeugnis();
@@ -20130,7 +20232,7 @@ function seiteStart(){
     '<div class="mitte"><div><b class="num">'+Math.min(n,99)+'</b><br><span>von '+TAGESZIEL+'</span></div></div></div>'+
     '<div class="pills"><span class="pill">'+ic("flamme","flame")+serie+' '+(serie === 1 ? "Tag" : "Tage")+'</span><span class="pill">'+ic("stern","star")+K.fmt(S.xp)+' XP</span>'+
     '<a class="pill" href="#/profil" title="Deine Abzeichen">🏅 '+ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length+'</a></div></div>';
-  html += '</section>';
+  html += '</section><div id="freundplatz"></div>';
   const mixR = S.sitz["u:mix"], mixHeute = S.mixTag === datum(0), mixLauf = !mixHeute && mixR && mixR.tag === datum(0) && !mixR.fertig && mixR.i > 0;
   const fehlerN = (S.fehler || []).length;
   html += '<section class="duo wiederholen">'+
@@ -20138,7 +20240,9 @@ function seiteStart(){
       '<span class="btn '+(mixHeute ? "" : "primary")+'">'+(mixHeute ? ic("haken")+"Heute geschafft" : mixLauf ? "Weitermachen · "+(mixR.i+1)+" von "+mixR.items.length : "Los geht's "+ic("pfeil"))+'</span></a>'+
     '<a class="card fehler-karte" href="#/fehler"><h3>'+icoHtml("fehler")+'Fehler-Heft</h3><p class="weich" style="font-size:15px">'+
       (fehlerN ? fehlerN+" Aufgabe"+(fehlerN === 1 ? "" : "n")+" zum Wiederholen. Zweimal richtig, dann sind sie geschafft." : "Hier landen Aufgaben, die du falsch hattest. Gerade ist es leer.")+'</p>'+
-      '<span class="btn">'+(fehlerN ? "Fehler üben "+ic("pfeil") : "Ansehen")+'</span></a></section>';
+      '<span class="btn">'+(fehlerN ? "Fehler üben "+ic("pfeil") : "Ansehen")+'</span></a></section>'+
+    '<a class="card blitz-banner" href="#/blitz"><div class="blitz-logo">'+ic("blitz")+'</div><div><h3>Blitz</h3><p>60 Sekunden, so viele Aufgaben wie möglich. Allein auf Rekordjagd oder als Duell zu zweit.</p></div>'+
+      '<span class="btn primary">'+(S.blitz && S.blitz.best && S.blitz.best[(S.profil.klasse ? "m"+S.profil.klasse : "m5")] ? "Rekord "+S.blitz.best["m"+(S.profil.klasse || 5)]+" · " : "")+'Spielen '+ic("pfeil")+'</span></a>';
   if(k && themenVon(k).length){
     html += '<div class="section-h"><h2>Für dich in Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(k, 4).map(themaZeile).join("")+'</div>';
@@ -20159,6 +20263,7 @@ function seiteStart(){
     : '<div class="card ki-karte"><h3>'+ic("drucker")+'Übungsblätter</h3><p style="font-size:15px">Zu jedem Thema ein Blatt zum Ausdrucken, mit Lösungsseite. Oder gleich hier am Bildschirm lösen.</p>'+
     '<div class="row"><a class="btn brand" href="'+blattZiel()+'">'+ic("drucker")+'Übungsblatt</a></div></div>')+'</section>';
   app.innerHTML = html + fuss();
+  const fp = app.querySelector("#freundplatz"); if(fp) fp.replaceWith(freundKarte());
   const fg = app.querySelector(".ring .fg");
   if(fg && !ruhig()){ const ziel = fg.getAttribute("stroke-dashoffset"); fg.style.strokeDashoffset = U.toFixed(1); requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = ziel; })); }
 }
@@ -20348,13 +20453,14 @@ function seiteProfil(){
     '<div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Deine Klasse</div><div class="kl-wahl" id="pkl"></div></div>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div></div>'+
-    abzeichenHtml()+
+    abzeichenHtml()+'<div id="freundeinst"></div>'+
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen und bei claude.ai anmelden. Dann auf den Startbildschirm legen:</p>'+
     '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
     '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.</p>'+
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
   app.appendChild(box); app.insertAdjacentHTML("beforeend", fuss());
+  box.querySelector("#freundeinst").replaceWith(freundEinstellungen());
   const nm = box.querySelector("#pname"); nm.value = S.profil.name || "";
   nm.addEventListener("input", () => { S.profil.name = nm.value.trim().slice(0,24); speichern(); zeigeTopnav(); });
   const kl = box.querySelector("#pkl");
@@ -22420,6 +22526,298 @@ function zeigeBlatt(th, box){
   const v = el("div","blatt-vorschau");
   v.innerHTML = '<div class="eyebrow" style="margin:18px 0 8px">Vorschau</div><div class="papier" aria-label="Vorschau des Blatts">'+bau(false)+'</div>';
   box.appendChild(v);
+}
+
+/* ================= Karo-Freund: ein kleines Wesen, das mit dem Level wächst =================
+   Ei (Level 1–2) → Baby (3–4) → Kind (5–7) → Groß (8–11) → Legende (ab 12).
+   Futter = heute gelöste Aufgaben (satt beim Tagesziel). Abzeichen bringen Kleidung. */
+const FREUND_FARBEN = [["#4f8cff","Blau"],["#ff7a59","Orange"],["#2fbf71","Grün"],["#b06cff","Lila"],["#ff5d8f","Pink"],["#f5b400","Gelb"]];
+const FREUND_STUFEN = ["Ei","Baby","Kind","Groß","Legende"];
+function freund(){
+  if(!S.freund) S.freund = {name:"Karli", farbe:FREUND_FARBEN[0][0], stufe:null};
+  return S.freund;
+}
+function freundStufe(){ const n = level(S.xp).n; return n >= 12 ? 4 : n >= 8 ? 3 : n >= 5 ? 2 : n >= 3 ? 1 : 0; }
+function freundLaune(){
+  if(S.heute.datum === datum(0) && S.heute.n >= TAGESZIEL) return "satt";
+  if(S.heute.datum === datum(0) && S.heute.n > 0) return "froh";
+  if(S.serie.letzter === datum(-1) || !S.serie.letzter) return "hunger";
+  return "schlaf";
+}
+function freundSvg(stufe, laune){
+  const hat = id => !!(S.abz && S.abz[id]);
+  const schlaf = laune === "schlaf";
+  const augen = (x1, x2, y, r) => schlaf
+    ? '<path class="f-strich" d="M'+(x1-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0 M'+(x2-r)+' '+y+' q'+r+' '+(r*0.8)+' '+(2*r)+' 0"/>'
+    : '<g class="f-augen"><ellipse class="f-weiss" cx="'+x1+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/><ellipse class="f-weiss" cx="'+x2+'" cy="'+y+'" rx="'+r+'" ry="'+(r*1.15)+'"/>'+
+      '<circle class="f-pupille" cx="'+(x1+r*0.15)+'" cy="'+(y+r*0.15)+'" r="'+(r*0.58)+'"/><circle class="f-pupille" cx="'+(x2+r*0.15)+'" cy="'+(y+r*0.15)+'" r="'+(r*0.58)+'"/>'+
+      '<circle class="f-glanz" cx="'+(x1+r*0.35)+'" cy="'+(y-r*0.25)+'" r="'+(r*0.22)+'"/><circle class="f-glanz" cx="'+(x2+r*0.35)+'" cy="'+(y-r*0.25)+'" r="'+(r*0.22)+'"/></g>';
+  const mund = (x, y, b) => laune === "satt" || laune === "froh"
+    ? '<path class="f-mund" d="M'+(x-b)+' '+y+' q'+b+' '+(b*0.9)+' '+(2*b)+' 0 q-'+b+' '+(b*0.35)+' -'+(2*b)+' 0z"/>'
+    : laune === "hunger" ? '<ellipse class="f-mund" cx="'+x+'" cy="'+(y+3)+'" rx="'+(b*0.45)+'" ry="'+(b*0.55)+'"/>'
+    : '<path class="f-strich" d="M'+(x-b*0.5)+' '+(y+3)+' h'+b+'"/>';
+  const backen = (x1, x2, y) => '<ellipse class="f-backe" cx="'+x1+'" cy="'+y+'" rx="9" ry="6"/><ellipse class="f-backe" cx="'+x2+'" cy="'+y+'" rx="9" ry="6"/>';
+  const karo = '<defs><pattern id="fkaro" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="8" height="8" class="f-karo"/><rect x="8" y="8" width="8" height="8" class="f-karo"/></pattern>'+
+    '<radialGradient id="faura"><stop offset="0" stop-color="#fff6b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff6b0" stop-opacity="0"/></radialGradient></defs>';
+  let s = '<svg viewBox="0 0 200 200" class="f-svg" role="img" aria-label="Dein Karo-Freund">'+karo+'<ellipse class="f-schatten" cx="100" cy="186" rx="50" ry="8"/>';
+  if(stufe === 0){
+    const risse = level(S.xp).n >= 2;
+    s += '<g class="f-koerper-g f-ei"><path class="f-eischale" d="M100 42c-36 0-58 52-58 88 0 32 26 52 58 52s58-20 58-52c0-36-22-88-58-88z"/>'+
+      '<path fill="url(#fkaro)" opacity=".5" d="M100 42c-36 0-58 52-58 88 0 32 26 52 58 52s58-20 58-52c0-36-22-88-58-88z"/>'+
+      (risse ? '<path class="f-riss" d="M58 118l14-10 10 12 12-14 12 12 12-10 12 12 14-8"/>'+augen(84, 116, 104, 7) : '')+'</g>';
+    return s + '</svg>';
+  }
+  const kopfY = stufe === 1 ? 118 : 100;
+  s += '<g class="f-koerper-g">';
+  if(stufe >= 4) s += '<circle cx="100" cy="112" r="92" fill="url(#faura)" class="f-aura"/>';
+  if(stufe >= 3){ const fl = 'M52 104C30 84 6 92 8 112c-8 4-6 16 4 16-6 8 2 18 12 12 2 10 16 10 18 0 6 6 16 2 14-8z';
+    s += '<g class="f-fluegel-g"><path class="f-fluegel" d="'+fl+'"/><path class="f-feder" d="M20 112q14 0 28 2M24 128q12-4 24-8M38 138q6-8 12-14"/></g>'+
+      '<g class="f-fluegel-g rechts" transform="translate(200 0) scale(-1 1)"><path class="f-fluegel" d="'+fl+'"/><path class="f-feder" d="M20 112q14 0 28 2M24 128q12-4 24-8M38 138q6-8 12-14"/></g>'; }
+  const mitCap = hat("a500") && !(hat("serie30") || stufe >= 4);
+  if(stufe >= 2 && !mitCap) s += '<path class="f-strich dick" d="M100 '+(kopfY-52)+' q-4 -16 6 -24"/><circle class="f-antenne" cx="107" cy="'+(kopfY-78)+'" r="8"/>';
+  if(stufe === 1) s += '<ellipse class="f-fuss" cx="80" cy="176" rx="14" ry="8"/><ellipse class="f-fuss" cx="120" cy="176" rx="14" ry="8"/><path class="f-koerper" d="M100 70c34 0 52 30 52 62 0 30-22 46-52 46s-52-16-52-46c0-32 18-62 52-62z"/>';
+  else {
+    s += '<ellipse class="f-fuss" cx="78" cy="178" rx="16" ry="9"/><ellipse class="f-fuss" cx="122" cy="178" rx="16" ry="9"/>'+
+      '<ellipse class="f-arm" cx="46" cy="132" rx="12" ry="20" transform="rotate(20 46 132)"/><ellipse class="f-arm" cx="154" cy="132" rx="12" ry="20" transform="rotate(-20 154 132)"/>'+
+      '<rect class="f-koerper" x="48" y="'+(kopfY-50)+'" width="104" height="'+(178-kopfY+50)+'" rx="46"/>'+
+      '<rect x="72" y="'+(kopfY+26)+'" width="56" height="44" rx="16" fill="url(#fkaro)" opacity=".55"/>';
+  }
+  s += augen(80, 120, kopfY - 6, stufe === 1 ? 11 : 12) + backen(66, 134, kopfY + 12) + mund(100, kopfY + 12, 9);
+  if(hat("eins")) s += '<g class="f-brille"><circle cx="80" cy="'+(kopfY-6)+'" r="16"/><circle cx="120" cy="'+(kopfY-6)+'" r="16"/><path d="M96 '+(kopfY-6)+'h8"/></g>';
+  if(hat("vok50")) s += '<path class="f-schal" d="M58 '+(kopfY+34)+'q42 16 84 0v12q-42 16-84 0z"/><path class="f-schal" d="M128 '+(kopfY+42)+'l10 26-14 2z"/>';
+  const kopfOben = stufe === 1 ? 72 : kopfY - 50;
+  if(hat("serie30") || stufe >= 4) s += '<path class="f-krone" d="M76 '+(kopfOben+4)+'l6-24 12 14 6-18 6 18 12-14 6 24z"/>';
+  else if(hat("a500")) s += '<path class="f-cap" d="M64 '+(kopfOben+12)+'q36-34 72 0z"/><path class="f-cap" d="M126 '+(kopfOben+10)+'h28q2 6-6 8h-22z"/>';
+  if(hat("blitz300")) s += '<path class="f-sticker" d="M'+(stufe === 1 ? 128 : 132)+' '+(kopfY+40)+'l-10 14h7l-3 12 11-15h-7z"/>';
+  s += '</g>';
+  if(laune === "schlaf") s += '<text class="f-zzz" x="140" y="60">z</text><text class="f-zzz z2" x="152" y="44">Z</text>';
+  return s + '</svg>';
+}
+function freundSpruch(stufe, laune){
+  const rest = Math.max(0, TAGESZIEL - heuteN()), f = freund();
+  if(stufe === 0){ const bis = 300 - S.xp; return bis > 0 ? "*klopf klopf* … Noch "+bis+" XP, dann schlüpfe ich!" : "*knack* Gleich bin ich da!"; }
+  const liste = {
+    schlaf:["Zzz … Ich hab dich vermisst!", "Wollen wir heute ein bisschen üben?", "Ich hab geträumt, dass wir zusammen Aufgaben lösen …"],
+    hunger:["Ich hab Hunger! Jede gelöste Aufgabe ist Futter für mich.", "Noch "+rest+" Aufgaben, dann bin ich satt.", "Lust auf den Tagesmix? Da ist alles gemischt drin!"],
+    froh:["Mmh, lecker! Noch "+rest+" Aufgaben bis ich satt bin.", "Du machst das super!", "Noch ein bisschen, dann ist das Tagesziel geschafft!"],
+    satt:["Pappsatt! Tagesziel geschafft! 🎉", "Du bist der Hammer!", "Morgen wieder? Ich freu mich schon!"]
+  }[laune];
+  return K.pick(liste).replace("{name}", f.name);
+}
+function freundKarte(){
+  const f = freund(), stufe = freundStufe(), laune = freundLaune();
+  const neu = f.stufe !== null && stufe > f.stufe;
+  if(f.stufe === null || stufe > f.stufe){ f.stufe = stufe; speichern(); }
+  const n = heuteN(), satt = Math.min(1, n / TAGESZIEL);
+  const c = el("section","card freund-karte laune-"+laune);
+  c.style.setProperty("--pet", f.farbe);
+  c.innerHTML = '<button type="button" class="freund-tier" aria-label="'+esc(f.name)+' antippen">'+freundSvg(stufe, laune)+'</button>'+
+    '<div class="freund-info"><div class="eyebrow">Dein Karo-Freund · '+FREUND_STUFEN[stufe]+'</div><h3>'+esc(f.name)+'</h3>'+
+    '<div class="freund-blase">'+esc(neu ? "✨ Ich hab mich entwickelt! Jetzt bin ich "+["", "geschlüpft", "ein Kind", "groß und hab Flügel", "eine Legende"][stufe]+"!" : freundSpruch(stufe, laune))+'</div>'+
+    (stufe > 0 ? '<div class="freund-futter"><span>Futter heute</span><div class="bar"><i style="width:'+Math.round(satt*100)+'%"></i></div><b class="num">'+Math.min(n, TAGESZIEL)+'/'+TAGESZIEL+'</b></div>' : '')+
+    '<a class="link-btn freund-anpassen" href="#/profil">Name und Farbe ändern</a></div>';
+  const tier = c.querySelector(".freund-tier"), blase = c.querySelector(".freund-blase");
+  tier.addEventListener("click", () => {
+    tier.classList.remove("hops"); void tier.offsetWidth; tier.classList.add("hops");
+    blase.textContent = freundSpruch(stufe, laune); blase.classList.remove("neu"); void blase.offsetWidth; blase.classList.add("neu");
+    const h = el("span","freund-herz", K.pick(["❤️","💛","💙","💚","💜","⭐"])); h.style.left = (40 + Math.random()*40)+"%"; tier.appendChild(h); setTimeout(() => h.remove(), 1000);
+  });
+  if(neu) setTimeout(() => konfetti(false), 400);
+  return c;
+}
+function freundEinstellungen(){
+  const f = freund();
+  const c = el("div","card pad stack freund-einst");
+  c.style.setProperty("--pet", f.farbe);
+  c.innerHTML = '<h3>Dein Karo-Freund</h3><div class="freund-vorschau">'+freundSvg(Math.max(1, freundStufe()), "froh")+'</div>'+
+    '<label style="font-weight:700">Name<input type="text" id="fname" maxlength="16" class="feld lang"></label><div><div style="font-weight:700;margin-bottom:6px">Farbe</div><div class="freund-farben"></div></div>'+
+    '<p class="leise">'+esc(f.name)+' wächst mit deinem Level: Ei, Baby (Level 3), Kind (Level 5), Groß mit Flügeln (Level 8) und Legende (Level 12). Manche Abzeichen bringen Kleidung: Brille, Mütze, Schal, Krone.</p>';
+  const inp = c.querySelector("#fname"); inp.value = f.name;
+  inp.addEventListener("input", () => { f.name = inp.value.trim().slice(0,16) || "Karli"; speichern(); });
+  const farben = c.querySelector(".freund-farben");
+  FREUND_FARBEN.forEach(([hex, name]) => { const b = btn("freund-farbe", "", () => { f.farbe = hex; speichern(); c.style.setProperty("--pet", hex); farben.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false")); });
+    b.style.background = hex; b.setAttribute("aria-label", name); b.setAttribute("aria-pressed", f.farbe === hex ? "true" : "false"); farben.appendChild(b); });
+  return c;
+}
+
+/* ================= Blitz: 60 Sekunden, so viele Aufgaben wie möglich =================
+   Allein (Rekordjagd) oder als Duell zu zweit auf einem Gerät: beide bekommen dieselben Aufgaben. */
+const BLITZ_ZEIT = 60;
+const blitzWahl = {modus:"solo", fach:FACH_M, klasse:null, namen:["", ""]};
+function blitzPasst(it){
+  if(!it || it.sprich || it.fig || it.material) return false;
+  if(["num","choice","sign","text","gaps"].indexOf(it.t) < 0) return false;
+  if(it.t === "gaps" && it.felder.length !== 1) return false;
+  if(it.t === "text" && String(it.a[0]).length > 22) return false;
+  if(it.t === "choice" && it.options.some(o => String(o).replace(/<[^>]+>/g,"").length > 40)) return false;
+  return String(it.q).replace(/<[^>]+>/g,"").length <= 150;
+}
+function blitzAufgaben(fach, k, n){
+  const pool = themenVon(k, fach);
+  const items = [];
+  for(let v = 0; v < n*12 && items.length < n; v++){
+    const t = K.pick(pool); let it = null;
+    try{ it = ziehen(t, [K.pick([1,1,2])])[0]; }catch(e){ it = null; }
+    if(!blitzPasst(it) || items.slice(-15).some(x => x.q === it.q)) continue;
+    it.thId = t.id; it.herkunft = t.titel; items.push(it);
+  }
+  return items;
+}
+function blitzRekordKey(){ return (blitzWahl.fach === FACH_E ? "e" : "m") + blitzWahl.klasse; }
+function seiteBlitz(){
+  crumbs([{t:"Start", href:"#/"}, {t:"Blitz"}]);
+  if(!blitzWahl.klasse) blitzWahl.klasse = S.profil.klasse || 5;
+  if(!S.blitz) S.blitz = {best:{}, spiele:0};
+  const wrap = el("div","runner stack blitz");
+  app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
+  let timer = null;
+  aufraeumen = () => { if(timer) clearInterval(timer); timer = null; };
+
+  function einstellungen(){
+    if(timer){ clearInterval(timer); timer = null; }
+    const klassen = blitzWahl.fach === FACH_E ? EN_KLASSEN : KLASSEN;
+    if(klassen.indexOf(blitzWahl.klasse) < 0) blitzWahl.klasse = klassen[klassen.length - 1];
+    const rekord = S.blitz.best[blitzRekordKey()] || 0;
+    wrap.innerHTML = '<div class="blitz-held"><div class="blitz-logo">'+ic("blitz")+'</div><div><div class="eyebrow">60 Sekunden</div><h1>Blitz</h1>'+
+      '<p>So viele Aufgaben wie möglich. Mehrere richtig hintereinander geben einen Combo-Bonus bis ×4!</p></div></div>';
+    const c = el("section","card pad stack");
+    const gruppe = (titel, werte, key, neu) => {
+      const d = el("div"); d.innerHTML = '<div style="font-weight:700;margin-bottom:6px">'+titel+'</div>';
+      const box = el("div","seg-klein");
+      werte.forEach(([v, l]) => { const b = btn("opt", l, () => { blitzWahl[key] = v; if(neu) neu(); einstellungen(); }); b.setAttribute("aria-pressed", blitzWahl[key] === v ? "true" : "false"); box.appendChild(b); });
+      d.appendChild(box); c.appendChild(d);
+    };
+    gruppe("Wer spielt?", [["solo", "🙋 Allein"], ["duell", "⚔️ Duell zu zweit"]], "modus");
+    gruppe("Fach", [[FACH_M, "Mathe"], [FACH_E, "Englisch"]], "fach");
+    gruppe("Klasse", klassen.map(k => [k, String(k)]), "klasse");
+    if(blitzWahl.modus === "duell"){
+      const f = el("div","formular zwei");
+      f.innerHTML = '<label>Spieler 1<input type="text" id="bn0" maxlength="14" placeholder="Name"></label><label>Spieler 2<input type="text" id="bn1" maxlength="14" placeholder="Name"></label>';
+      c.appendChild(f);
+      [0,1].forEach(i => { const inp = f.querySelector("#bn"+i); inp.value = blitzWahl.namen[i] || (i === 0 ? (S.profil.name || "") : ""); inp.addEventListener("input", () => { blitzWahl.namen[i] = inp.value.trim().slice(0,14); }); blitzWahl.namen[i] = inp.value.trim(); });
+    }
+    const los = el("div","row"); los.style.justifyContent = "space-between";
+    los.innerHTML = '<p class="weich" style="font-size:15px">'+(blitzWahl.modus === "solo" ? (rekord ? "Dein Rekord: <b>"+rekord+" Punkte</b>" : "Noch kein Rekord. Leg los!") : "Erst spielt Spieler 1, dann Spieler 2. Beide bekommen dieselben Aufgaben.")+'</p>';
+    los.appendChild(btn("btn primary gross blitz-los", ic("blitz")+"Los geht's", starten));
+    c.appendChild(los);
+    wrap.appendChild(c);
+  }
+  function starten(){
+    const items = blitzAufgaben(blitzWahl.fach, blitzWahl.klasse, 70);
+    if(items.length < 10){ toast("Für diese Auswahl gibt es zu wenige schnelle Aufgaben."); return; }
+    if(blitzWahl.modus === "solo") runde(items, null, erg => ergebnisSolo(erg));
+    else {
+      const n = [blitzWahl.namen[0] || "Spieler 1", blitzWahl.namen[1] || "Spieler 2"];
+      runde(items, n[0], e1 => uebergabe(n[1], () => runde(items, n[1], e2 => ergebnisDuell(n, [e1, e2]))));
+    }
+  }
+  function countdown(wer, fertig){
+    wrap.innerHTML = '<div class="blitz-count">'+(wer ? '<div class="blitz-wer">'+esc(wer)+' ist dran</div>' : '')+'<div class="blitz-zahl">3</div></div>';
+    const z = wrap.querySelector(".blitz-zahl"); let n = 3;
+    const t = setInterval(() => { n--; if(n <= 0){ clearInterval(t); fertig(); return; } z.textContent = n; z.style.animation = "none"; void z.offsetWidth; z.style.animation = ""; }, 700);
+    aufraeumen = () => { clearInterval(t); if(timer) clearInterval(timer); };
+  }
+  function runde(items, wer, ende){
+    countdown(wer, () => spielen(items, wer, ende));
+  }
+  function spielen(items, wer, ende){
+    const E = {punkte:0, richtig:0, falsch:0, serie:0, besteSerie:0, i:0, falscheItems:[]};
+    const t0 = Date.now();
+    wrap.innerHTML = '<div class="blitz-top"><div class="blitz-zeit"><i></i></div><div class="blitz-stand"><span class="blitz-sek num">'+BLITZ_ZEIT+'</span>'+
+      (wer ? '<span class="blitz-name">'+esc(wer)+'</span>' : '')+'<span class="blitz-combo"></span><b class="blitz-punkte num">0</b></div></div><div class="blitz-feld"></div>';
+    const balken = wrap.querySelector(".blitz-zeit i"), sek = wrap.querySelector(".blitz-sek"), punkteEl = wrap.querySelector(".blitz-punkte"),
+      comboEl = wrap.querySelector(".blitz-combo"), feld = wrap.querySelector(".blitz-feld");
+    let w = null, gesperrt = false, vorbei = false;
+    const faktor = () => Math.min(4, 1 + Math.floor(E.serie / 3));
+    function zeige(){
+      if(vorbei) return;
+      const it = items[E.i % items.length];
+      const c = el("section","card aufgabe blitz-karte karte-rein");
+      c.innerHTML = '<div class="a-meta"><span class="eyebrow">'+esc(it.herkunft || "")+'</span></div>';
+      w = widget(it, {kompakt:true, minus:blitzWahl.klasse >= 7, onEnter:pruefen, onChange:() => { if(it.t === "choice" || it.t === "sign") setTimeout(pruefen, 60); }});
+      if(w.eigeneFrage) c.appendChild(w.el); else { c.appendChild(el("div","q", it.q)); c.appendChild(w.el); }
+      const r = el("div","aktionen"); r.style.marginTop = "14px";
+      if(it.t !== "choice" && it.t !== "sign") r.appendChild(btn("btn primary gross", ic("haken")+"OK", pruefen));
+      r.appendChild(btn("btn ghost", "Überspringen", () => weiter(false, true)));
+      c.appendChild(r);
+      feld.innerHTML = ""; feld.appendChild(c); gesperrt = false;
+      if(feinZeiger || it.t !== "choice") setTimeout(() => w.fokus(), 30);
+    }
+    function pruefen(){
+      if(gesperrt || vorbei) return;
+      const it = items[E.i % items.length], e = w.get();
+      if(K.leer(it, e)) return;
+      const r = K.check(it, e);
+      if(r.fehler){ toast(r.fehler); return; }
+      weiter(r.ok, false);
+    }
+    function weiter(ok, uebersprungen){
+      if(gesperrt || vorbei) return;
+      gesperrt = true;
+      const it = items[E.i % items.length], karte = feld.querySelector(".blitz-karte");
+      if(ok){
+        const p = 10 * faktor(); E.punkte += p; E.richtig++; E.serie++; E.besteSerie = Math.max(E.besteSerie, E.serie);
+        karte.classList.add("blitz-ok");
+        karte.insertAdjacentHTML("beforeend", '<span class="blitz-plus">+'+p+'</span>');
+      }else{
+        E.serie = 0;
+        if(!uebersprungen){ E.falsch++; E.falscheItems.push(it); karte.classList.add("blitz-bad");
+          karte.insertAdjacentHTML("beforeend", '<div class="blitz-loes">Richtig: <b>'+K.solHtml(it)+'</b></div>'); }
+      }
+      punkteEl.textContent = E.punkte;
+      const f = faktor(); comboEl.innerHTML = E.serie >= 3 ? '🔥 ×'+f : ''; comboEl.classList.toggle("an", E.serie >= 3);
+      E.i++;
+      setTimeout(zeige, ok ? 380 : uebersprungen ? 120 : 1100);
+    }
+    timer = setInterval(() => {
+      const rest = Math.max(0, BLITZ_ZEIT - (Date.now() - t0) / 1000);
+      balken.style.width = (rest / BLITZ_ZEIT * 100) + "%"; sek.textContent = Math.ceil(rest);
+      balken.classList.toggle("knapp", rest <= 10);
+      if(rest <= 0){ clearInterval(timer); timer = null; vorbei = true; setTimeout(() => ende(E), 250); }
+    }, 100);
+    aufraeumen = () => { if(timer) clearInterval(timer); timer = null; vorbei = true; };
+    zeige();
+  }
+  function uebergabe(name, weiterFn){
+    wrap.innerHTML = '<section class="card pad stack blitz-uebergabe" style="text-align:center"><div style="font-size:52px">🤝</div><h2>Gib das Handy an '+esc(name)+'</h2>'+
+      '<p class="weich">Nicht auf den Bildschirm schauen, bis du dran bist. 👀</p></section>';
+    const b = btn("btn primary gross", esc(name)+" ist bereit", weiterFn); b.style.alignSelf = "center";
+    wrap.querySelector(".blitz-uebergabe").appendChild(b);
+  }
+  function statistik(E){
+    return '<div class="kennzahlen"><div><b class="num">'+E.richtig+'</b><span>richtig</span></div><div><b class="num">'+E.falsch+'</b><span>falsch</span></div><div><b class="num">'+E.besteSerie+'</b><span>beste Serie</span></div></div>';
+  }
+  function ergebnisSolo(E){
+    const key = blitzRekordKey(), alt = S.blitz.best[key] || 0, rekord = E.punkte > alt;
+    if(rekord) S.blitz.best[key] = E.punkte;
+    S.blitz.spiele = (S.blitz.spiele || 0) + 1;
+    E.falscheItems.forEach(it => fehlerMerken(it.thId, it.herkunft, it));
+    for(let i = 0; i < E.richtig; i++) aufgabeGeschafft(2);
+    speichern();
+    wrap.innerHTML = '<section class="card ende blitz-ende"><div class="blitz-logo gross">'+ic("blitz")+'</div>'+
+      '<div class="eyebrow">'+(rekord ? "Neuer Rekord!" : "Zeit ist um")+'</div><h1 class="blitz-gross num">0</h1><p class="weich">Punkte'+(!rekord && alt ? " · Rekord: "+alt : "")+'</p>'+statistik(E)+
+      (E.falsch ? '<p class="leise">Deine Fehler liegen jetzt im <a href="#/fehler">Fehler-Heft</a>.</p>' : '')+'</section>';
+    const r = el("div","row"); r.style.justifyContent = "center";
+    r.appendChild(btn("btn primary gross", ic("neu")+"Nochmal", starten));
+    r.appendChild(btn("btn gross", "Einstellungen", einstellungen));
+    wrap.querySelector(".blitz-ende").appendChild(r);
+    hochzaehlen(wrap.querySelector(".blitz-gross"), E.punkte, 900);
+    wrap.querySelector(".blitz-gross").textContent = ruhig() ? E.punkte : "0";
+    if(rekord && E.punkte > 0) setTimeout(() => konfetti(false), 300);
+  }
+  function ergebnisDuell(namen, E){
+    S.blitz.spiele = (S.blitz.spiele || 0) + 1; S.blitz.duelle = (S.blitz.duelle || 0) + 1; speichern();
+    const sieg = E[0].punkte === E[1].punkte ? -1 : (E[0].punkte > E[1].punkte ? 0 : 1);
+    wrap.innerHTML = '<section class="card ende blitz-ende"><div style="font-size:54px">'+(sieg < 0 ? "🤝" : "🏆")+'</div>'+
+      '<h1>'+(sieg < 0 ? "Unentschieden!" : esc(namen[sieg])+" gewinnt!")+'</h1>'+
+      '<div class="blitz-duell">'+[0,1].map(i => '<div class="'+(i === sieg ? "sieger" : "")+'"><div class="eyebrow">'+esc(namen[i])+'</div><b class="num">'+E[i].punkte+'</b><span>'+E[i].richtig+' richtig · '+E[i].falsch+' falsch · Serie '+E[i].besteSerie+'</span></div>').join("")+'</div></section>';
+    const r = el("div","row"); r.style.justifyContent = "center";
+    r.appendChild(btn("btn primary gross", ic("neu")+"Revanche", starten));
+    r.appendChild(btn("btn gross", "Einstellungen", einstellungen));
+    wrap.querySelector(".blitz-ende").appendChild(r);
+    setTimeout(() => konfetti(false), 300);
+  }
+  einstellungen();
 }
 
 /* ================= Start ================= */

@@ -3,31 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Karo Schlauer – Trailer</title>
-<meta name="description" content="Der Trailer zu Karo Schlauer: Mathe und Englisch üben, ab dem 30.09.2026.">
+<title>Karo Schlauer – Trailer und Clips</title>
+<meta name="description" content="Der Trailer und alle Clips von Karo Schlauer zum Anschauen und Herunterladen. Start am 30.09.2026.">
+<meta property="og:title" content="Karo Schlauer – Trailer">
+<meta property="og:image" content="https://elias1234491.github.io/clips/trailer.jpg">
 <style>
-:root{--bg:#0b1230; --ink:#fff; --brand:#3d6ff0; --gold:#ffc83d}
+:root{--bg:#0b1230; --karte:#141d45; --linie:rgba(255,255,255,.1); --ink:#fff; --ink2:#c9d6ff; --brand:#3d6ff0; --gold:#ffc83d}
 *{box-sizing:border-box}
 html,body{margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{min-height:100vh; display:flex; flex-direction:column; align-items:center; gap:18px; padding:24px 16px 32px}
-h1{margin:0; font-size:26px; text-align:center}
+body{background:radial-gradient(ellipse at 50% -10%, #23367f 0%, var(--bg) 55%) fixed, var(--bg)}
+header{text-align:center; padding:32px 16px 8px}
+h1{margin:0; font-size:30px; line-height:1.15}
 h1 b{color:var(--gold)}
-video{width:100%; max-width:380px; aspect-ratio:9/16; border-radius:18px; background:#000; box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.knoepfe{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; width:100%; max-width:380px}
-a.btn{flex:1 1 160px; display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:14px 18px; border-radius:14px; font-weight:800; font-size:17px; text-decoration:none; color:#fff; background:var(--brand)}
-a.btn.zwei{background:rgba(255,255,255,.12)}
-p{margin:0; max-width:380px; text-align:center; color:#c9d6ff; font-size:15px; line-height:1.5}
+header p{margin:8px auto 0; max-width:520px; color:var(--ink2); font-size:16px; line-height:1.5}
+.datum{display:inline-block; margin-top:14px; padding:6px 14px; border-radius:99px; background:rgba(255,200,61,.15); color:var(--gold); font-weight:800}
+main{max-width:1180px; margin:0 auto; padding:18px 16px 40px; display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:18px}
+.clip{background:var(--karte); border:1px solid var(--linie); border-radius:20px; padding:12px; display:flex; flex-direction:column; gap:10px}
+.clip.gross{grid-column:1 / -1; max-width:420px; justify-self:center; width:100%}
+video{width:100%; aspect-ratio:9/16; border-radius:14px; background:#000; display:block}
+h2{margin:2px 2px 0; font-size:18px}
+.clip p{margin:0 2px; color:var(--ink2); font-size:14.5px; line-height:1.45}
+a.btn{display:flex; justify-content:center; align-items:center; gap:8px; padding:13px 16px; border-radius:14px; font-weight:800; font-size:16px; text-decoration:none; color:#fff; background:var(--brand)}
+a.btn:active{transform:scale(.98)}
+footer{text-align:center; color:var(--ink2); font-size:14px; padding:0 16px 40px; line-height:1.6}
+footer a{color:#fff}
 </style>
 </head>
 <body>
+<header>
+  <h1>Karo <b>Schlauer</b> – Trailer &amp; Clips</h1>
+  <p>Mathe und Englisch üben, Hausaufgaben automatisch aus dem Schulportal. Kostenlos und ohne Werbung.</p>
+  <span class="datum">Start am 30.09.2026</span>
+</header>
 <main>
-  <h1>Karo <b>Schlauer</b> – Trailer</h1>
-  <video src="trailer.mp4" controls playsinline preload="metadata"></video>
-  <div class="knoepfe">
+  <section class="clip gross">
+    <video src="trailer.mp4" poster="clips/trailer.jpg" controls playsinline preload="none"></video>
+    <h2>Der ganze Trailer</h2>
+    <p>36 Sekunden, mit Musik.</p>
     <a class="btn" href="trailer.mp4" download="karo-schlauer-trailer.mp4">⬇ Herunterladen</a>
-    <a class="btn zwei" href="./">Zur App</a>
-  </div>
-  <p>Am Handy: Klappt „Herunterladen“ nicht, das Video lange gedrückt halten und „Video sichern“ wählen.</p>
+  </section>
+  <section class="clip">
+    <video src="clips/karli-hausaufgaben.mp4" poster="clips/karli-hausaufgaben.jpg" controls playsinline preload="none"></video>
+    <h2>Karli macht Hausaufgaben</h2>
+    <p>Hausaufgaben automatisch, direkt aus dem Schulportal. 5 Sekunden.</p>
+    <a class="btn" href="clips/karli-hausaufgaben.mp4" download="karli-hausaufgaben.mp4">⬇ Herunterladen</a>
+  </section>
+  <section class="clip">
+    <video src="clips/ei-schluepft.mp4" poster="clips/ei-schluepft.jpg" controls playsinline preload="none"></video>
+    <h2>Das Ei schlüpft</h2>
+    <p>Karlis Ei knackt und leuchtet auf. 5 Sekunden.</p>
+    <a class="btn" href="clips/ei-schluepft.mp4" download="karli-ei-schluepft.mp4">⬇ Herunterladen</a>
+  </section>
+  <section class="clip">
+    <video src="clips/karli-fluegel.mp4" poster="clips/karli-fluegel.jpg" controls playsinline preload="none"></video>
+    <h2>Karli mit Flügeln und Krone</h2>
+    <p>Karli fliegt zwischen Mathe-Zeichen. 5 Sekunden.</p>
+    <a class="btn" href="clips/karli-fluegel.mp4" download="karli-fluegel.mp4">⬇ Herunterladen</a>
+  </section>
 </main>
+<footer>
+  Am Handy: Klappt „Herunterladen“ nicht, das Video lange gedrückt halten und „Video sichern“ wählen.<br>
+  <a href="./">Zur App Karo Schlauer</a>
+</footer>
 </body>
 </html>

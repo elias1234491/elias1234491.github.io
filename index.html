@@ -1391,6 +1391,7 @@ a.pill{text-decoration:none; color:inherit}
 .abz-mehr summary{list-style:none; cursor:pointer; margin-top:4px}
 .abz-mehr summary::-webkit-details-marker{display:none}
 .abz-mehr[open] summary{margin-bottom:10px}
+.portal-screenshot{margin:0 0 14px; white-space:normal; text-align:left}
 </style>
 <aside class="seite" id="seitenleiste" aria-label="Hauptmenü"></aside>
 <header class="top">
@@ -22309,7 +22310,7 @@ function seiteHeft(){
   else if(claudeRT){
     const imp = importKarte(); imp.hidden = true; imp.style.marginBottom = "16px";
     const auf = btn("btn ghost klein", ic("ki")+"Aus dem Schulportal übernehmen (Screenshot)", () => { imp.hidden = !imp.hidden; });
-    knoepfe.appendChild(auf); wrap.appendChild(imp);
+    auf.classList.add("portal-screenshot"); wrap.appendChild(auf); wrap.appendChild(imp);
   }
   const filterBox = el("div","filter"); wrap.appendChild(filterBox);
   const listeBox = el("div"); wrap.appendChild(listeBox);
@@ -22593,6 +22594,13 @@ function sphPlanUebernehmen(neu, erzwingen){
 }
 let sphLaeuft = null;
 /* Geht die automatische Verbindung? In der App direkt, auf der Webseite über den Schulportal-Helfer im Karo-Server */
+/* Echte Anmeldung erkennen: Abmelde-Link da, keine Fehlerseite (die hat auch „logoutTimer“ im Text) */
+function sphAngemeldet(html){
+  if(/Login n(ö|&ouml;)tig|Datenbankauswahl nicht m(ö|&ouml;)glich|error-wrapper/i.test(html)) return false;
+  return /href="[^"]*[?&]logout/i.test(html);
+}
+/* Name der Supabase-Funktion, die fürs Web beim Schulportal anmeldet (Code: supabase/functions/schulportal/index.ts) */
+const SPH_HELFER = "swift-responder";
 function sphMoeglich(){ return nativ || (typeof Konto !== "undefined" && Konto.an()); }
 /* Seiten holen: in der Android-App direkt vom Handy, im Browser über die Supabase-Funktion „schulportal“ */
 async function sphHolen(d){
@@ -22606,14 +22614,14 @@ async function sphHolen(d){
     await H.request({url:"https://connect.schulportal.hessen.de/", method:"GET", headers:kopf});
     const r = await H.request({url:"https://start.schulportal.hessen.de/meinunterricht.php", method:"GET", headers:kopf, responseType:"text"});
     const mu = typeof r.data === "string" ? r.data : "";
-    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !/logout|abmelden/i.test(mu)) throw {code:"login"};
+    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !sphAngemeldet(mu)) throw {code:"login"};
     let plan = "";
     try{ const rp = await H.request({url:"https://start.schulportal.hessen.de/stundenplan.php", method:"GET", headers:kopf, responseType:"text"}); plan = typeof rp.data === "string" ? rp.data : ""; }catch(e){}
     return {mu:mu, plan:plan};
   }
   const ctl = new AbortController(), uhr = setTimeout(() => ctl.abort(), 45000);
   try{
-    const r = await fetch(KONTO_URL+"/functions/v1/schulportal", {method:"POST", signal:ctl.signal,
+    const r = await fetch(KONTO_URL+"/functions/v1/"+SPH_HELFER, {method:"POST", signal:ctl.signal,
       headers:{"Content-Type":"application/json", apikey:KONTO_KEY}, body:JSON.stringify({schule:d.schule, benutzer:d.benutzer, passwort:d.passwort})});
     if(r.status === 404) throw {code:"helfer"};
     const j = await r.json().catch(() => ({}));

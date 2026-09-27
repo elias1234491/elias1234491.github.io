@@ -363,6 +363,13 @@ sup, sub{font-size:.7em; line-height:0}
 .plan-unten{margin-top:14px}
 .plan-sph{display:flex; flex-direction:column; gap:6px; align-items:flex-start; padding:12px 14px; border-radius:12px; background:var(--brand-soft)}
 .plan-sph .leise{font-size:14px}
+.sph-browser{gap:10px}
+.sph-weg{width:100%; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:10px 14px}
+.sph-weg summary{cursor:pointer; list-style-position:inside}
+.sph-weg ol{margin:10px 0 10px 20px; display:flex; flex-direction:column; gap:6px; font-size:15px}
+.sph-feld{min-height:70px; border:2px dashed var(--line-2); border-radius:12px; padding:12px; background:var(--paper-2); font-size:15px; color:var(--ink-2); overflow:hidden; max-height:120px}
+.sph-feld:empty::before{content:attr(data-leer); color:var(--ink-3)}
+.sph-feld:focus{outline:none; border-color:var(--brand)}
 .plan-doppel{flex-direction:row !important; align-items:center; gap:10px !important; font-weight:600 !important}
 .plan-doppel input{width:22px; height:22px}
 .plan-karte{display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit; margin-top:14px}
@@ -21943,10 +21950,9 @@ function seiteStundenplan(){
       sph.appendChild(hol);
     }else if(nativ){
       sph.innerHTML = '<b>Schulportal Hessen</b><span class="leise">Verbinde das Schulportal im Hausaufgaben-Heft, dann kommt dein Stundenplan automatisch.</span><a class="btn klein" href="#/heft">Verbinden</a>';
-    }else{
-      sph.innerHTML = '<b>Automatisch aus dem Schulportal?</b><span class="leise">Das geht in der Karo-App für Android (Schulportal Hessen). Im Browser erlaubt das Schulportal keine Verbindung von anderen Seiten, deshalb trägst du den Plan hier selbst ein.</span>';
     }
-    unten.appendChild(sph);
+    if(nativ) unten.appendChild(sph);
+    else if(!claudeRT) unten.appendChild(sphBrowserKarte("stundenplan", zeichne));
     unten.insertAdjacentHTML("beforeend", '<p class="weich" style="font-size:14.5px">Tipp: Wenn du im Hausaufgaben-Heft etwas einträgst, ist das Fach der aktuellen Stunde schon ausgewählt. Die Uhrzeiten änderst du, indem du links auf die Stunde tippst.</p>');
   }
   function dialog(titel, inhalt, speichernFn, leerenFn){
@@ -21993,6 +21999,7 @@ function seiteStundenplan(){
     d.querySelector("#za").value = pad(P.zeiten[i][0]); d.querySelector("#zb").value = pad(P.zeiten[i][1]);
   }
   zeichne();
+  sphHashImport("stundenplan");
   /* Handy drehen oder Fenster ändern: zwischen Wochen-Gitter und Tages-Liste wechseln */
   let breitAlt = innerWidth >= 760, uhr = null;
   const neuMessen = () => { clearTimeout(uhr); uhr = setTimeout(() => { const b = innerWidth >= 760; if(b !== breitAlt){ breitAlt = b; zeichne(); } }, 150); };
@@ -22015,7 +22022,11 @@ function seiteHeft(){
     '<label>Thema der Stunde<input type="text" id="hthema" maxlength="140" placeholder="z. B. Satz des Pythagoras" required></label>'+
     '<label>Hausaufgabe<textarea id="haufg" maxlength="600" placeholder="z. B. Buch S. 112, Nr. 3a–c (optional)"></textarea></label>'+
     '<div><button class="btn brand gross" type="submit">'+ic("plus")+'Eintragen</button></div>';
-  const imp = nativ ? portalKarte() : importKarte(); imp.style.marginTop = "0"; imp.style.marginBottom = "16px";
+  let imp;
+  if(nativ) imp = portalKarte();
+  else if(claudeRT) imp = importKarte();
+  else { imp = el("section","card pad"); imp.appendChild(sphBrowserKarte("heft")); }
+  imp.style.marginTop = "0"; imp.style.marginBottom = "16px";
   wrap.appendChild(imp);
   wrap.appendChild(form);
   /* Mit verbundenem Schulportal kommen die Einträge von selbst: das Formular nur auf Wunsch zeigen */
@@ -22079,6 +22090,7 @@ function seiteHeft(){
       (alle.length ? '<div style="margin-top:14px"><a class="btn brand" href="#/ki">'+ic("ki")+'KI-Arbeit aus diesen Themen</a></div>' : '');
   }
   zeichne();
+  sphHashImport("heft");
   aufraeumen = Heft.hoere(zeichne);
 }
 
@@ -22297,6 +22309,82 @@ function sphPlanAuswerten(html){
   });
   if(anzahl < 3 || !h) return null;
   return {n:Math.max(4, Math.min(12, h)), tage:tage, zeiten:zeiten};
+}
+/* ---------- Schulportal im Browser: Kopieren/Einfügen und Karo-Lesezeichen ----------
+   Das Schulportal erlaubt keine Anmeldung von fremden Seiten. Deshalb holt der Nutzer die Seite selbst:
+   entweder kopieren und in Karo einfügen, oder ein Lesezeichen auf der Schulportal-Seite antippen, das die Tabelle zu Karo schickt. */
+function tabelleAusText(t){
+  const zeilen = String(t || "").split(/\r?\n/).filter(z => z.trim());
+  const e = x => x.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  return "<table>"+zeilen.map(z => "<tr>"+z.split("\t").map(c => "<td><b>"+e(c.trim().split(/\s{2,}| (?=R ?\d|\d{3})/)[0])+"</b> <small>"+e(c.trim().split(/\s{2,}/).slice(1).join(" "))+"</small></td>").join("")+"</tr>").join("")+"</table>";
+}
+function sphLesezeichen(){
+  const ziel = location.origin + location.pathname;
+  const js = "(()=>{const Z="+JSON.stringify(ziel)+",T=['montag','dienstag','mittwoch','donnerstag','freitag'];"+
+    "const C=e=>{const c=e.cloneNode(true);c.querySelectorAll('script,style,button,img,svg,input,select,textarea').forEach(x=>x.remove());"+
+    "c.querySelectorAll('*').forEach(x=>[...x.attributes].forEach(a=>{if(!/^(rowspan|colspan|class)$/i.test(a.name))x.removeAttribute(a.name)}));return c.outerHTML.replace(/\\s+/g,' ')};"+
+    "const t=[...document.querySelectorAll('table')].find(t=>[...t.querySelectorAll('tr')].some(r=>T.filter(d=>r.textContent.toLowerCase().includes(d)).length>=3));"+
+    "let s='stundenplan',h='';if(t)h=C(t);else{const r=document.querySelectorAll('table[id*=aktuell] tr,tr.printable');"+
+    "if(!r.length){alert('Karo: Öffne im Schulportal den Stundenplan oder „Mein Unterricht“ und tippe dann nochmal auf das Lesezeichen.');return}"+
+    "s='heft';h='<table id=\"aktuell\">'+[...r].map(C).join('')+'</table>'}"+
+    "location.href=Z+'#/'+s+'?import='+encodeURIComponent(h)})();";
+  return "javascript:"+encodeURIComponent(js);
+}
+function sphHashImport(art){
+  const q = new URLSearchParams(location.hash.split("?")[1] || "").get("import");
+  if(!q) return;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#/" + art); }catch(e){}
+  if(art === "stundenplan"){
+    const pl = sphPlanAuswerten(q);
+    if(!pl){ toast("Im Schulportal wurde kein Stundenplan gefunden."); return; }
+    const alt = !planLeer() && plan().quelle !== "schulportal";
+    (alt ? frage("Deinen eigenen Stundenplan durch den aus dem Schulportal ersetzen?", "Ersetzen") : Promise.resolve(true)).then(ok => {
+      if(!ok) return; sphPlanUebernehmen(pl, true); toast("Stundenplan aus dem Schulportal übernommen"); route(); });
+  }else{
+    const liste = sphAuswerten(q); let neu = 0;
+    liste.forEach(e => { if(Heft.neu(e, e.id, "schulportal")) neu++; });
+    toast(liste.length ? (neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge")+" aus dem Schulportal" : "Alles schon im Heft") : "In „Mein Unterricht“ wurden keine Einträge erkannt.");
+  }
+}
+/* Karte mit beiden Wegen (nur im normalen Browser) */
+function sphBrowserKarte(art, fertig){
+  const d = el("div","plan-sph sph-browser");
+  const wofuer = art === "stundenplan" ? "deinen Stundenplan" : "Themen und Hausaufgaben aus „Mein Unterricht“";
+  d.innerHTML = '<b>Aus dem Schulportal Hessen übernehmen</b>'+
+    '<span class="leise">Direkt anmelden erlaubt das Schulportal im Browser nicht. So geht es trotzdem, für '+wofuer+':</span>'+
+    '<details class="sph-weg"><summary><b>1. Kopieren und hier einfügen</b></summary><ol><li>Im Schulportal '+(art === "stundenplan" ? "den <b>Stundenplan</b>" : "<b>Mein Unterricht</b>")+' öffnen.</li>'+
+    '<li>Alles markieren (<b>Strg + A</b>, am Handy lange drücken → „Alles auswählen“) und kopieren.</li><li>Hier in das Feld tippen und einfügen.</li></ol>'+
+    '<div class="sph-feld" contenteditable="true" role="textbox" aria-label="Hier einfügen" data-leer="Hier einfügen …"></div></details>'+
+    '<details class="sph-weg"><summary><b>2. Karo-Lesezeichen (ein Klick)</b></summary><ol><li><b>Am PC:</b> Den Knopf unten in die Lesezeichenleiste ziehen.</li>'+
+    '<li><b>Am Handy:</b> „Code kopieren“ tippen, irgendeine Seite als Lesezeichen speichern und beim Bearbeiten die Adresse durch den Code ersetzen. Name: <b>Karo</b>.</li>'+
+    '<li>Im Schulportal den Stundenplan oder „Mein Unterricht“ öffnen und das Lesezeichen antippen (am Handy: in die Adresszeile <b>Karo</b> tippen und es auswählen).</li></ol>'+
+    '<div class="row" style="flex-wrap:wrap;gap:8px"><a class="btn brand klein sph-lz" href="#" draggable="true">'+ic("heft")+'Karo ⇢ Schulportal</a></div></details>';
+  const lz = d.querySelector(".sph-lz"); lz.setAttribute("href", sphLesezeichen());
+  lz.addEventListener("click", e => { e.preventDefault(); toast("Zieh den Knopf in die Lesezeichenleiste oder nimm „Code kopieren“."); });
+  const kopieren = btn("btn klein", "Code kopieren", () => {
+    const code = sphLesezeichen();
+    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast("Code kopiert. Jetzt als Lesezeichen-Adresse einfügen."), () => { prompt ? prompt("Diesen Code als Lesezeichen-Adresse speichern:", code) : null; });
+  });
+  lz.parentNode.appendChild(kopieren);
+  const feld = d.querySelector(".sph-feld");
+  feld.addEventListener("paste", e => {
+    e.preventDefault();
+    const cd = e.clipboardData || window.clipboardData, html = cd && cd.getData("text/html"), text = cd && cd.getData("text/plain");
+    if(art === "stundenplan"){
+      const pl = (html && sphPlanAuswerten(html)) || (text && sphPlanAuswerten(tabelleAusText(text)));
+      if(!pl){ feld.textContent = ""; toast("Darin war kein Stundenplan zu erkennen. Hast du die Stundenplan-Seite kopiert?"); return; }
+      const alt = !planLeer() && plan().quelle !== "schulportal";
+      (alt ? frage("Deinen eigenen Stundenplan durch den eingefügten ersetzen?", "Ersetzen") : Promise.resolve(true)).then(ok => {
+        feld.textContent = ""; if(!ok) return; sphPlanUebernehmen(pl, true); toast("Stundenplan übernommen"); if(fertig) fertig(); });
+    }else{
+      const liste = html ? sphAuswerten(html) : []; let neu = 0;
+      liste.forEach(x => { if(Heft.neu(x, x.id, "schulportal")) neu++; });
+      feld.textContent = "";
+      toast(liste.length ? (neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge")+" übernommen" : "Alles schon im Heft") : "Darin waren keine Einträge zu erkennen. Hast du „Mein Unterricht“ kopiert?");
+      if(fertig) fertig();
+    }
+  });
+  return d;
 }
 function sphPlanUebernehmen(neu, erzwingen){
   const P = plan();

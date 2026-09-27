@@ -102,6 +102,8 @@ main{padding-block:20px 120px; display:block}
 .logo > span{white-space:nowrap}
 .logo-zwei{color:var(--brand)}
 @media (max-width:420px){ .logo{font-size:21px} }
+/* Kleine Handys (320 px): Kopfzeile muss in die Breite passen */
+@media (max-width:380px){ .logo{font-size:18px; gap:7px} .logo-mark{width:26px; height:26px} .xp-pill .lv-w{display:none} .xp-pill{padding:0 9px} .top-nav{gap:2px} }
 .crumbs{display:flex; align-items:center; gap:6px; min-width:0; color:var(--ink-3); font-size:15px}
 .crumbs a{text-decoration:none; color:var(--ink-2); white-space:nowrap}
 .crumbs a:hover{color:var(--ink)}
@@ -321,6 +323,23 @@ sup, sub{font-size:.7em; line-height:0}
 .link-btn{background:none; border:none; padding:0; color:var(--brand); font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:3px; align-self:flex-start; font-size:15px}
 .nl-pick{overflow-x:auto; cursor:crosshair; border-radius:var(--r-m); border:1px solid var(--line); padding:6px; background:var(--paper)}
 .nl-pick svg{display:block; width:100%; min-width:540px; height:auto; color:var(--ink)}
+.en-hinweis{display:flex; gap:12px; align-items:flex-start; margin-top:20px; background:var(--brand-soft)}
+.en-hinweis .ic{flex:none; width:22px; height:22px; color:var(--brand)}
+.section-h h2 small{font-size:14px; font-weight:600; margin-left:6px}
+.hammer-knopf{position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); z-index:62; width:52px; height:52px; border-radius:50%; border:1.5px solid rgba(255,255,255,.8);
+  background:rgba(255,255,255,.7); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); font-size:26px; box-shadow:var(--shadow-2); cursor:pointer; transition:transform .15s}
+.hammer-knopf.an{transform:rotate(-35deg) scale(1.1); background:var(--gold-soft); border-color:var(--gold)}
+.hammer-flaeche{position:fixed; inset:0; z-index:61; cursor:crosshair; touch-action:manipulation}
+.hammer-hinweis{position:fixed; left:50%; top:calc(12px + env(safe-area-inset-top, 0px)); transform:translateX(-50%); background:rgba(19,32,58,.85); color:#fff; font-weight:700; font-size:14px; padding:8px 14px; border-radius:99px; white-space:nowrap; pointer-events:none}
+@media (max-width:999.98px){ .hammer-knopf{bottom:calc(84px + env(safe-area-inset-bottom, 0px))} }
+.nl-fein{display:flex; align-items:center; justify-content:center; gap:10px; margin-top:8px}
+.nl-fein .btn{min-width:48px; font-size:18px}
+/* Handy: Zahlenstrahl ganz zeigen statt seitlich wischen, dafür größere Schrift */
+@media (max-width:620px){
+  .fig svg.nl, .nl-pick svg{min-width:0}
+  svg.nl .nltxt{font-size:21px} svg.nl .marklbl{font-size:24px}
+  svg.nl .axis{stroke-width:3} svg.nl .tick{stroke-width:2.4}
+}
 .saeulen{display:flex; gap:10px; align-items:flex-end; justify-content:space-around}
 .saeule{display:flex; flex-direction:column; align-items:center; gap:6px; flex:1 1 0; min-width:0}
 .saeule .box{height:170px; width:100%; display:flex; align-items:flex-end; justify-content:center}
@@ -386,7 +405,7 @@ sup, sub{font-size:.7em; line-height:0}
 .blatt-aufg .intro{color:var(--ink-2); margin:4px 0 12px}
 .b-item{display:flex; gap:10px 14px; align-items:flex-start; flex-wrap:wrap; padding:12px 0; border-top:1px dashed var(--line)}
 .b-item:first-of-type{border-top:none}
-.b-item .qt{flex:1 1 260px; min-width:0; font-size:18px; overflow-wrap:anywhere}
+.b-item .qt{flex:1 1 260px; min-width:0; font-size:18px; overflow-wrap:break-word; hyphens:auto}
 .b-item .an{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .b-item > .ganz{flex:1 1 100%}
 .b-item .feld{font-size:18px; min-height:46px; padding:8px 12px}
@@ -401,6 +420,15 @@ sup, sub{font-size:.7em; line-height:0}
   border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px))}
 .leiste .wrap{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:0}
 .leiste .rechts{margin-left:auto; font-weight:700; font-variant-numeric:tabular-nums}
+/* Handy: eine schmale Zeile statt einem Viertel des Bildschirms */
+@media (max-width:620px){
+  .leiste{padding:7px 10px calc(7px + env(safe-area-inset-bottom, 0px))}
+  .leiste .wrap{flex-wrap:nowrap; gap:6px}
+  .leiste .btn{min-height:40px; padding:0 11px; font-size:14.5px; flex:none}
+  .leiste .btn:not(.primary) .ic{display:none}
+  .leiste .rechts{font-size:12.5px; line-height:1.2; text-align:right; min-width:0}
+}
+@media (max-width:360px){ .leiste .rechts{display:none} .leiste .btn .ic{display:none} .leiste .btn{padding:0 10px} }
 
 /* ================= Zeugnis ================= */
 .zeugnis{padding:34px clamp(20px, 5vw, 48px); position:relative}
@@ -454,6 +482,7 @@ svg .fett{font-weight:700}
 svg .kursiv{font-style:italic}
 svg .weich{fill:var(--ink-2)}
 svg .dim{font-weight:700; fill:var(--kd)}
+@media (max-width:620px){ svg.figur:is([aria-label*="Dreieck"],[aria-label*="Leiter"],[aria-label*="Rechteck"]) .lbl{font-size:20px} }
 svg .winkel{font-weight:700; fill:var(--pen)}
 svg .grid{stroke:var(--line); stroke-width:1; fill:none}
 svg .barA{fill:var(--k)}
@@ -639,6 +668,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .tab-link .ic{width:25px; height:25px}
 .tab-link span{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%}
 .tab-link[aria-current="page"]{color:var(--brand)}
+@media (max-width:360px){ .tab-link{font-size:10.5px; padding:6px 0 4px; letter-spacing:-.01em} }
 .tab-link[aria-current="page"]::before{content:""; position:absolute; top:-7px; left:28%; right:28%; height:3px; border-radius:0 0 4px 4px; background:var(--brand)}
 .tab-link .zahl{position:absolute; top:0; left:calc(50% + 5px); min-width:18px; height:18px; font-size:11px; padding:0 5px}
 .zurueck{display:inline-flex; align-items:center; gap:4px; height:38px; padding:0 12px 0 6px; border-radius:10px; text-decoration:none; color:var(--ink-2); font-weight:700; font-size:15px; margin:4px 0 0 -6px}
@@ -747,7 +777,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .f-svg{width:100%; height:100%; overflow:visible}
 .freund-info{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px}
 .freund-info h3{font-family:var(--display); font-size:26px; font-weight:800}
-.freund-blase{position:relative; align-self:flex-start; max-width:440px; background:var(--paper-2); border:1.5px solid var(--line); border-radius:16px; padding:10px 14px; font-size:15.5px; line-height:1.4}
+.freund-blase{position:relative; align-self:flex-start; max-width:440px; background:var(--paper-2); border:1.5px solid var(--line); border-radius:16px; padding:10px 14px; font-size:15.5px; line-height:1.4; min-height:calc(2.8em + 23px)}
 .freund-blase::before{content:""; position:absolute; left:-9px; top:16px; width:14px; height:14px; background:var(--paper-2); border-left:1.5px solid var(--line); border-bottom:1.5px solid var(--line); transform:rotate(45deg)}
 .freund-blase.neu{animation:rein .25s ease-out}
 .freund-futter{display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--ink-3); max-width:440px}
@@ -1413,8 +1443,17 @@ function varianten(liste){
   return Array.from(new Set(out));
 }
 K.varianten = varianten;
+const APO = /['’‘`´ʼ]/;
 function textOk(liste, inp, genau){
   liste = varianten(liste);
+  /* Steht in der Lösung ein Apostroph (we're, it's, Peter's), muss er auch in der Antwort stehen: "were" und "its" sind andere Wörter */
+  if(!APO.test(String(inp == null ? "" : inp))){
+    const ohneApo = liste.filter(a => !APO.test(String(a)));
+    if(ohneApo.length < liste.length){
+      if(!ohneApo.length || !textOk(ohneApo, inp, genau).ok) return textOk(liste.map(a => String(a).replace(/['’‘`´ʼ]/g, "")), inp, true).ok ? {ok:false, form:"Fast! Da fehlt noch der Apostroph '."} : {ok:false};
+      return textOk(ohneApo, inp, genau);
+    }
+  }
   const ohneArtikel = x => { const r = String(x == null ? "" : x).trim().replace(/^(der|die|das|den|dem|des|ein|eine|einen|einem|einer|the|a|an|le|la|les|l'|un|une|el|los|las|il)\s+/i, ""); return r || String(x); };
   const g0 = normTxt(inp);
   if(g0 !== "" && liste.some(a => normTxt(a) === g0)) return {ok:true};
@@ -1492,9 +1531,9 @@ K.check = function(it, inp){
   if(t === "gaps"){
     const arr = Array.isArray(inp) ? inp : [];
     if(it.felder.some((f, i) => normTxt(arr[i]) === "")) return {ok:false, fehler:"Bitte fülle alle Lücken aus."};
-    let ok = true; const schreib = [];
-    it.felder.forEach((f, i) => { const r = textOk(f.a, arr[i], it.genau || f.genau); if(!r.ok) ok = false; else if(r.schreib) schreib.push(r.schreib); });
-    return ok ? (schreib.length ? {ok:true, schreib:schreib.join(", ")} : {ok:true}) : {ok:false};
+    let ok = true, form = null; const schreib = [];
+    it.felder.forEach((f, i) => { const r = textOk(f.a, arr[i], it.genau || f.genau); if(!r.ok){ ok = false; if(r.form) form = r.form; } else if(r.schreib) schreib.push(r.schreib); });
+    return ok ? (schreib.length ? {ok:true, schreib:schreib.join(", ")} : {ok:true}) : (form ? {ok:false, form:form} : {ok:false});
   }
   if(t === "satz"){
     const c = Array.isArray(inp) ? inp : [];
@@ -1629,7 +1668,7 @@ K.nlSvg = function(o){
   const W=720, PAD=50, y=o.y||64, H=o.h||100;
   const x = v => PAD + (v-o.min)/(o.max-o.min)*(W-2*PAD);
   const steps = Math.round((o.max-o.min)/o.step);
-  let s = '<svg viewBox="0 0 '+W+' '+H+'" class="breit" role="img" aria-label="Zahlenstrahl">';
+  let s = '<svg viewBox="0 0 '+W+' '+H+'" class="breit nl" role="img" aria-label="Zahlenstrahl">';
   s += '<line class="axis" x1="'+(PAD-26)+'" y1="'+y+'" x2="'+(W-PAD+20)+'" y2="'+y+'"/>';
   s += '<polygon class="axisfill" points="'+(W-PAD+26)+','+y+' '+(W-PAD+12)+','+(y-6)+' '+(W-PAD+12)+','+(y+6)+'"/>';
   for(let i=0;i<=steps;i++){
@@ -2197,7 +2236,7 @@ const PRON = [["I","me","my"],["you","you","your"],["he","him","his"],["she","he
 function genPronTabelle(stufe){
   const z = pick(PRON), art = stufe === 1 ? 1 : pick([1, 2]);
   const was = art === 1 ? "Objektform (mich, ihn …)" : "Begleiter für Besitz (mein, sein …)";
-  return E.text("Wie heißt die " + was + " zu " + B(z[0]) + "?", [z[art]], ["Reihe: " + z.join(" – "), "Gesucht: " + B(z[art])], "I – me – my, he – him – his, she – her – her …");
+  return E.text("Wie heißt " + (art === 1 ? "die " : "der ") + was + " zu " + B(z[0]) + "?", [z[art]], ["Reihe: " + z.join(" – "), "Gesucht: " + B(z[art])], "I – me – my, he – him – his, she – her – her …");
 }
 const PERSON_TEXT = [
   {n:"Tom", s:"he", o:"him", p:"his", tier:"His dog"}, {n:"Emma", s:"she", o:"her", p:"her", tier:"Her cat"},
@@ -5393,7 +5432,7 @@ function genGeld(stufe){
   const rueck = Math.random() < 0.5;
   const schein = [500, 1000, 2000].find(x => x > summe);
   const a = rueck ? (schein - summe) / 100 : summe / 100;
-  const q = "Du kaufst " + n + " " + w1[1] + " zu je " + (p1 < 100 ? p1 + " ct" : euro(p1)) + " und " + (w2[0] === "Kugel Eis" ? "eine" : "ein") + " " + w2[0] + " für " + euro(p2) + ". " +
+  const q = "Du kaufst " + n + " " + w1[1] + " zu je " + (p1 < 100 ? p1 + " ct" : euro(p1)) + " und " + (w2[0] === "Kugel Eis" || w2[0] === "Brezel" ? "eine" : "ein") + " " + w2[0] + " für " + euro(p2) + ". " +
     (rueck ? "Du bezahlst mit einem " + (schein / 100) + "-€-Schein. Wie viel Rückgeld bekommst du?" : "Wie viel musst du bezahlen?");
   const w = ["Alles in ct: " + n + " · " + p1 + " ct = " + (n * p1) + " ct; " + euro(p2) + " = " + p2 + " ct",
     "Zusammen: " + (n * p1) + " ct + " + p2 + " ct = " + fmt(summe) + " ct = " + euro(summe)];
@@ -7076,7 +7115,7 @@ function genMittel(st){
     do{ c = [1,2,3,4,5,6].map(nt => nt >= 5 ? rnd(0,2) : rnd(1,8)); tot = summe(c); }while(tot < 18 || tot > 30);
     const S = summe(c.map((x,i) => x*(i+1))), m = K.round(S/tot, 1);
     return {t:"num", q:"Notenspiegel der Klassenarbeit: "+c.map((x,i) => "Note "+(i+1)+": "+x+"-mal").join(", ")+". Berechne den Notendurchschnitt und runde auf eine Nachkommastelle.",
-      a:m, tol:0.1,
+      a:m, tol:0.05,
       tip:"Jede Note zählt so oft, wie sie vorkommt. Teile dann durch die Anzahl aller Arbeiten.",
       weg:["Summe aller Noten: "+c.map((x,i) => (i+1)+" · "+x).join(" + ")+" = "+S,
            "Anzahl der Arbeiten: "+c.join(" + ")+" = "+tot,
@@ -7099,7 +7138,7 @@ function genMedian(st){
   const mitte = n%2 ? "Bei "+n+" Werten steht in der Mitte der "+((n+1)/2)+". Wert: "+zeigW(s[(n-1)/2], c.dec)
                     : "Bei "+n+" Werten gibt es zwei mittlere: der "+(n/2)+". und "+(n/2+1)+". Wert, also "+zeigW(s[n/2-1], c.dec)+" und "+zeigW(s[n/2], c.dec);
   const weg = ["Der Größe nach ordnen: "+reihe(s, c.dec), mitte];
-  if(n%2 === 0) weg.push("Median = ("+zeigW(s[n/2-1], c.dec)+" + "+zeigW(s[n/2], c.dec)+") : 2 = "+fmt(glatt(m/f))+" "+c.e);
+  if(n%2 === 0) weg.push("Median = ("+zeigW(s[n/2-1], c.dec)+" + "+(s[n/2] < 0 ? "("+zeigW(s[n/2], c.dec)+")" : zeigW(s[n/2], c.dec))+") : 2 = "+fmt(glatt(m/f))+" "+c.e);
   else weg.push("Median = "+fmt(glatt(m/f))+" "+c.e);
   return {t:"num", q:c.t(w)+" Bestimme den Median (Zentralwert).", a:glatt(m/f), unit:c.e,
     tip: n%2 ? "Ordne die Werte zuerst der Größe nach." : "Ordne zuerst. Bei einer geraden Anzahl liegt der Median genau zwischen den beiden mittleren Werten.",
@@ -7552,7 +7591,17 @@ function pWert(st){
   }
   const W = rr(G*p/100);
   const geld = !Number.isInteger(W) || Math.random() < 0.4;
-  if(geld){
+  /* Über 100 % passt nur zu Wachstum, nicht zu Anteilen wie „150 % kommen mit dem Fahrrad“ */
+  if(p > 100){
+    const d = pick(geld ? [
+      () => "Berechne "+b(proz(p)+" von "+eur(G))+".",
+      () => "Ein Fahrrad kostete letztes Jahr "+b(eur(G))+". Heute kostet es "+b(proz(p))+" des alten Preises. Wie viel kostet es heute?"
+    ] : [
+      () => "Berechne "+b(proz(p)+" von "+f(G))+".",
+      () => "Ein Sportverein hatte letztes Jahr "+b(f(G))+" Mitglieder. Dieses Jahr sind es "+b(proz(p))+" davon. Wie viele Mitglieder hat der Verein jetzt?"
+    ]);
+    ctx = {q:d(), unit:geld ? "€" : "", w:geld ? eur(W) : f(W)};
+  } else if(geld){
     const d = pick([
       () => "Berechne "+b(proz(p)+" von "+eur(G))+".",
       () => "Ein Konzertticket kostet "+b(eur(G))+". Die Vorverkaufsgebühr beträgt "+b(proz(p))+" des Ticketpreises. Wie hoch ist die Gebühr?",
@@ -7612,7 +7661,7 @@ function pSatz(st){
     "Bei einer Umfrage unter "+b(f(G))+" Jugendlichen sagen "+b(f(W))+", dass sie jeden Tag Musik streamen. Wie viel Prozent sind das?"])
     + (rund ? " Runde auf eine Nachkommastelle." : "");
   const quot = W/G;
-  return {t:"num", q:q, a:p, unit:"%", tol: rund ? 0.1 : undefined,
+  return {t:"num", q:q, a:p, unit:"%", tol: rund ? 0.05 : undefined,
     tip:"Teile den Anteil durch das Ganze. Das Ergebnis mal 100 ergibt die Prozentzahl.",
     weg:["Formel: p % = W : G",
          "p % = "+f(W)+" : "+f(G)+(rund ? " ≈ "+f(K.round(quot,4)) : " = "+f(rr(quot))),
@@ -7661,7 +7710,7 @@ function pUmw(st){
   if(art === "rund"){
     const [z,n] = pick([[1,3],[2,3],[1,6],[5,6],[1,7],[2,7],[1,9],[2,9],[4,9],[5,12],[7,12],[1,11],[3,7]]);
     const p = K.round(100*z/n, 1);
-    return {t:"num", q:"Schreibe "+b(K.fr(z,n))+" als Prozentzahl. Runde auf eine Nachkommastelle.", a:p, unit:"%", tol:0.1,
+    return {t:"num", q:"Schreibe "+b(K.fr(z,n))+" als Prozentzahl. Runde auf eine Nachkommastelle.", a:p, unit:"%", tol:0.05,
       tip:"Rechne Zähler : Nenner auf mindestens vier Nachkommastellen genau.",
       weg:[z+" : "+n+" = "+f(K.round(z/n,4))+" …", "Das sind ≈ "+b(proz(p))]};
   }
@@ -10163,7 +10212,7 @@ function zJahr(st){
   }
   const Z = r6(K0*p/100), Zr = K.round(Z, 2);
   return {
-    t:"num", a:Zr, tol:0.01, unit:"€",
+    t:"num", a:Zr, tol:0.005, unit:"€",
     q:q+(cent(Z) ? "" : " Runde auf Cent."),
     tip:"Zinsen sind der Prozentwert: Kapital mal Zinssatz geteilt durch 100.",
     weg:["Formel: Z = K · p / 100", "Z = "+F(K0)+" · "+F(p)+" / 100", "Z "+ungefaehr(Z,2)+" <b>"+eur(Zr)+"</b>"]
@@ -10175,7 +10224,7 @@ function zUmkehr(st){
   if(st === 1){
     const K0 = R(2,50)*100, p = R(1,5), Z = r6(K0*p/100);
     return {
-      t:"num", a:K0, tol:0.01, unit:"€",
+      t:"num", a:K0, tol:0.005, unit:"€",
       q:name+" hat nach einem Jahr "+eur(Z)+" Zinsen bekommen. Der Zinssatz war "+F(p)+" %. Wie viel Geld lag auf dem Konto?",
       tip:"Stelle die Formel Z = K · p / 100 nach K um.",
       weg:["Umgestellt: K = Z · 100 / p", "K = "+F(Z)+" · 100 / "+F(p), "K = <b>"+eur(K0)+"</b>"]
@@ -10195,7 +10244,7 @@ function zUmkehr(st){
     let K0, p, m, Z;
     do { K0 = R(6,60)*100; p = pick([1,1.5,2,2.5,3,4]); m = pick([2,3,4,5,6,8,9,10]); Z = r6(K0*p*m/1200); } while(!cent(Z));
     return {
-      t:"num", a:K0, tol:0.01, unit:"€",
+      t:"num", a:K0, tol:0.005, unit:"€",
       q:name+" bekommt für "+m+" Monate "+eur(Z)+" Zinsen. Der Zinssatz beträgt "+F(p)+" % pro Jahr. Wie viel Geld hat "+name+" angelegt?"+BANK,
       tip:"Setze in Z = K · p/100 · m/12 ein und stelle nach K um.",
       weg:["Formel: Z = K · "+frS("p","100")+" · "+frS("m","12")+", umgestellt: K = "+frS("Z · 100 · 12", "p · m"),
@@ -10222,7 +10271,7 @@ function zMonatTag(st){
     K0 = R(2,20)*600; p = R(1,4); const m = R(2,11);
     const Zj = r6(K0*p/100), Z = r6(Zj*m/12);
     return {
-      t:"num", a:K.round(Z,2), tol:0.01, unit:"€",
+      t:"num", a:K.round(Z,2), tol:0.005, unit:"€",
       q:name+" legt "+eur(K0)+" für "+m+" Monate zu "+F(p)+" % Jahreszins an. Wie viel Euro Zinsen gibt es?"+BANK,
       tip:"Berechne zuerst die Zinsen für ein ganzes Jahr und nimm dann den passenden Teil davon.",
       weg:["Jahreszinsen: "+F(K0)+" · "+F(p)+" / 100 = "+eur(Zj), "Für "+m+" Monate: "+eur(Zj)+" · "+frS(m, 12)+" = <b>"+eur(Z)+"</b>"]
@@ -10243,7 +10292,7 @@ function zMonatTag(st){
   const weg = ["Jahreszinsen: "+F(K0)+" · "+F(p)+" / 100 = "+eur(Zj), "Für "+t+" Tage: "+eur(Zj)+" · "+frS(t, 360)+" "+ungefaehr(Z,2)+" <b>"+eur(Zr)+"</b>"];
   if(weg0) weg.unshift(weg0);
   return {
-    t:"num", a:Zr, tol:0.01, unit:"€",
+    t:"num", a:Zr, tol:0.005, unit:"€",
     q:q+(cent(Z) ? "" : " Runde auf Cent.")+BANK,
     tip:"Berechne zuerst die Zinsen für ein ganzes Jahr und nimm dann den Anteil Tage durch 360.",
     weg:weg
@@ -10256,7 +10305,7 @@ function zKonto(st){
     const K0 = st === 1 ? R(2,40)*100 : R(20,400)*25, p = st === 1 ? R(1,5) : pick([0.5,1.25,1.5,1.75,2.25,2.5,3.5]);
     const Z = r6(K0*p/100), Zr = K.round(Z,2), Kn = r6(K0 + Zr);
     return {
-      t:"num", a:Kn, tol:0.01, unit:"€",
+      t:"num", a:Kn, tol:0.005, unit:"€",
       q:name+" hat "+eur(K0)+" auf dem Sparkonto. Die Bank zahlt "+F(p)+" % Zinsen pro Jahr, die am Jahresende gutgeschrieben werden. Wie hoch ist der Kontostand nach einem Jahr?"+(cent(Z) ? "" : " Runde auf Cent."),
       tip:"Berechne die Zinsen und zähle sie zum Anfangskapital dazu.",
       weg:["Zinsen: "+F(K0)+" · "+F(p)+" / 100 "+ungefaehr(Z,2)+" "+eur(Zr), "Kontostand: "+eur(K0)+" + "+eur(Zr)+" = <b>"+eur(Kn)+"</b>", "Schneller geht es mit dem Faktor "+qF(p)+": "+F(K0)+" · "+qF(p)+" "+ungefaehr(K0*(1+p/100),2)+" "+eur(Kn)]
@@ -10265,7 +10314,7 @@ function zKonto(st){
   if(st === 2){
     const K0 = R(10,80)*100, p = pick([1.5,2,2.5,3,3.5,4,4.5]), Kn = r6(K0*(100 + p)/100);
     return {
-      t:"num", a:K0, tol:0.01, unit:"€",
+      t:"num", a:K0, tol:0.005, unit:"€",
       q:"Nach einem Jahr sind auf "+gen2(name)+" Konto "+eur(Kn)+". Der Zinssatz betrug "+F(p)+" %. Wie viel Geld war am Anfang auf dem Konto?",
       tip:"Nach einem Jahr hat man "+F(100 + p)+" % des Anfangskapitals – rechne rückwärts.",
       weg:["Nach einem Jahr sind es "+F(100 + p)+" % vom Anfangskapital, also der Faktor "+qF(p)+".", "K = "+F(Kn)+" : "+qF(p), "K = <b>"+eur(K0)+"</b>"]
@@ -10274,7 +10323,7 @@ function zKonto(st){
   let K0, p, n, z;
   do { K0 = R(10,100)*100 + pick([0,50]); p = pick([1.5,2,2.5,3,3.5,4]); n = pick([2,3]); z = zzJahre(K0, Array(n).fill(p)); } while(Math.abs(z.jahr - z.exakt) > 0.001);
   return {
-    t:"num", a:z.exakt, tol:0.01, unit:"€",
+    t:"num", a:z.exakt, tol:0.005, unit:"€",
     q:name+" legt "+eur(K0)+" für "+n+" Jahre zu "+F(p)+" % an. Die Zinsen bleiben auf dem Konto und werden mitverzinst (Zinseszins). Wie hoch ist der Kontostand nach "+n+" Jahren? Runde auf Cent.",
     tip:"Jedes Jahr wird der Kontostand mit demselben Faktor 1 + p/100 multipliziert.",
     weg:["Wachstumsfaktor: q = 1 + "+frS(F(p),"100")+" = "+qF(p), "K<sub>"+n+"</sub> = "+F(K0)+" · "+qF(p)+"<sup>"+n+"</sup>", "K<sub>"+n+"</sub> ≈ <b>"+eur(z.exakt)+"</b>"]
@@ -10287,7 +10336,7 @@ function zZinseszins(st){
     const K0 = R(5,50)*100, p = R(1,5), q = 1 + p/100;
     const K1 = K.round(K0*q, 2), K2 = K.round(K1*q, 2);
     return {
-      t:"num", a:K2, tol:0.01, unit:"€",
+      t:"num", a:K2, tol:0.005, unit:"€",
       q:name+" legt "+eur(K0)+" für 2 Jahre zu "+F(p)+" % an. Die Zinsen werden mitverzinst (Zinseszins). Wie viel Geld ist nach 2 Jahren auf dem Konto?",
       tip:"Berechne den Kontostand nach dem ersten Jahr und verzinse dann diesen Betrag noch einmal.",
       weg:["Faktor: 1 + "+frS(F(p),"100")+" = "+qF(p), "Nach 1 Jahr: "+F(K0)+" · "+qF(p)+" = "+eur(K1), "Nach 2 Jahren: "+F(K1)+" · "+qF(p)+" = <b>"+eur(K2)+"</b>"]
@@ -10298,7 +10347,7 @@ function zZinseszins(st){
     do { K0 = R(10,100)*100; p = pick([1.5,2,2.5,3,3.5,4,5]); z = zzJahre(K0, [p,p,p]); } while(Math.abs(z.jahr - z.exakt) > 0.001);
     const Z = r6(z.exakt - K0);
     return {
-      t:"num", a:Z, tol:0.01, unit:"€",
+      t:"num", a:Z, tol:0.005, unit:"€",
       q:name+" legt "+eur(K0)+" für 3 Jahre zu "+F(p)+" % mit Zinseszins an. Wie viel Euro Zinsen gibt es insgesamt? Runde auf Cent.",
       tip:"Berechne zuerst den Kontostand nach 3 Jahren und ziehe dann das Anfangskapital ab.",
       weg:["Kontostand: K<sub>3</sub> = "+F(K0)+" · "+qF(p)+"³ ≈ "+eur(z.exakt), "Zinsen: "+eur(z.exakt)+" "+MI+" "+eur(K0)+" = <b>"+eur(Z)+"</b>"]
@@ -10308,7 +10357,7 @@ function zZinseszins(st){
   do { K0 = R(10,100)*100; ps = pick([[1,1.5,2],[1.5,2,2.5],[0.5,1,2],[1,2,3],[2,2.5,3.5]]); z = zzJahre(K0, ps); } while(Math.abs(z.jahr - z.exakt) > 0.001);
   const K1 = K.round(K0*(1 + ps[0]/100), 2), K2 = K.round(K1*(1 + ps[1]/100), 2);
   return {
-    t:"num", a:z.jahr, tol:0.01, unit:"€",
+    t:"num", a:z.jahr, tol:0.005, unit:"€",
     q:name+" schließt einen Zuwachssparvertrag über "+eur(K0)+" ab: Im 1. Jahr gibt es "+F(ps[0])+" %, im 2. Jahr "+F(ps[1])+" % und im 3. Jahr "+F(ps[2])+" % Zinsen. Die Zinsen werden mitverzinst. Wie hoch ist der Kontostand nach 3 Jahren? Runde auf Cent.",
     tip:"Multipliziere den Kontostand jedes Jahr mit dem Faktor, der zum Zinssatz in diesem Jahr passt.",
     weg:["1. Jahr: "+F(K0)+" · "+qF(ps[0])+" "+ungefaehr(K0*(1+ps[0]/100),2)+" "+eur(K1),
@@ -10344,7 +10393,7 @@ Für m Monate: <b>Z = K · ${frS("p","100")} · ${frS("m","12")}</b> &nbsp; Für
    ========================================================================== */
 const RUNDE = " Runde auf eine Nachkommastelle.";
 const PI = Math.PI;
-const kNum = (x, unit) => ({t:"num", a:K.round(x, 1), tol:0.1, tolRel:0.003, unit:unit});
+const kNum = (x, unit) => ({t:"num", a:K.round(x, 1), tol:0.05, tolRel:0.0006, unit:unit});
 const rd = x => K.fmtD(K.round(x, 1), 1);
 
 /* Kreisring als SVG: la/li Beschriftungen, mode "r" (Radien) oder "d" (Durchmesser) */
@@ -10852,7 +10901,7 @@ function wTeilweise(st){
 function wRunden(st){
   if(st === 1){
     const n = nichtQuadrat(2,99), v = Math.sqrt(n), k = Math.floor(v), a = K.round(v,1);
-    return {t:"num", a:a, tol:0.1, q:"Berechne √"+n+" mit dem Taschenrechner und runde auf eine Nachkommastelle.",
+    return {t:"num", a:a, tol:0.05, q:"Berechne √"+n+" mit dem Taschenrechner und runde auf eine Nachkommastelle.",
       tip:"Überlege vorher, zwischen welchen ganzen Zahlen das Ergebnis liegen muss – so erkennst du Tippfehler.",
       weg:["Überschlag: "+k+"² = "+(k*k)+" und "+(k+1)+"² = "+((k+1)*(k+1))+", also liegt √"+n+" zwischen "+k+" und "+(k+1)+".",
            "Taschenrechner: √"+n+" = "+tr(v), "Gerundet: √"+n+" ≈ "+fD(a,1)]};
@@ -10865,18 +10914,18 @@ function wRunden(st){
       ["Ein quadratisches Solarmodul hat eine Fläche von ", [2,9], " m². Wie lang ist eine Seite?", "m"]
     ]);
     const A = nichtQuadrat(ctx[1][0], ctx[1][1]), v = Math.sqrt(A), a = K.round(v,1);
-    return {t:"num", a:a, tol:0.1, unit:ctx[3], q:ctx[0]+f(A)+ctx[2]+" Runde auf eine Nachkommastelle.",
+    return {t:"num", a:a, tol:0.05, unit:ctx[3], q:ctx[0]+f(A)+ctx[2]+" Runde auf eine Nachkommastelle.",
       tip:"Beim Quadrat ist die Fläche Seite mal Seite – rechne also rückwärts.",
       weg:["Für ein Quadrat gilt A = s · s = s², also s = √A.", "s = √"+f(A)+" = "+tr(v)+" "+ctx[3], "s ≈ "+fD(a,1)+" "+ctx[3]]};
   }
   if(Math.random() < 0.5){
     const n = nichtQuadrat(100,999), v = Math.sqrt(n), a = K.round(v,2);
-    return {t:"num", a:a, tol:0.01, q:"Berechne √"+f(n)+" mit dem Taschenrechner und runde auf zwei Nachkommastellen.",
+    return {t:"num", a:a, tol:0.005, q:"Berechne √"+f(n)+" mit dem Taschenrechner und runde auf zwei Nachkommastellen.",
       tip:"Schau dir die dritte Nachkommastelle an: Ist sie 5 oder größer, wird aufgerundet.",
       weg:["Überschlag: √"+f(n)+" liegt zwischen "+Math.floor(v)+" und "+(Math.floor(v)+1)+".", "Taschenrechner: √"+f(n)+" = "+tr(v), "Gerundet: √"+f(n)+" ≈ "+fD(a,2)]};
   }
   const A = nichtQuadrat(100,900), s = Math.sqrt(A), u = 4*s, a = K.round(u,1);
-  return {t:"num", a:a, tol:0.1, unit:"m",
+  return {t:"num", a:a, tol:0.05, unit:"m",
     q:"Eine quadratische Weide hat eine Fläche von "+f(A)+" m². Wie lang muss der Zaun rundherum sein? Runde auf eine Nachkommastelle.",
     tip:"Berechne zuerst die Seitenlänge und dann den Umfang. Runde erst am Ende.",
     weg:["Seitenlänge: s = √"+f(A)+" ≈ "+fD(s,3)+" m", "Umfang: u = 4 · s ≈ 4 · "+fD(s,3)+" m", "u ≈ "+fD(a,1)+" m"]};
@@ -11163,11 +11212,11 @@ function pyHyp(st){
       fig:K.rtriSvg({la:a, lb:b, a:"a = "+f(a)+" "+u, b:"b = "+f(b)+" "+u, c:"c = ?"}),
       q:"Berechne die Länge der Hypotenuse c."+(st === 2 ? " Runde auf eine Nachkommastelle." : ""),
       weg:["c liegt gegenüber dem rechten Winkel: c² = a² + b²", "c² = "+f(a)+"² + "+f(b)+"² = "+f(a*a)+" + "+f(b*b)+" = "+f(s), "c = √"+f(s)+(st === 1 ? " = "+f(c) : " ≈ "+fD(c,1))+" "+u]};
-    if(st === 2) it.tol = 0.1;
+    if(st === 2) it.tol = 0.05;
     return it;
   }
   const L = lage(), pq = dezKatheten(), p = pq[0], q = pq[1], s = K.round(p*p+q*q, 4), c = K.round(Math.sqrt(s),1);
-  return {t:"num", a:c, tol:0.1, unit:u, tip:"Suche zuerst den rechten Winkel – die Seite gegenüber ist die Hypotenuse.",
+  return {t:"num", a:c, tol:0.05, unit:u, tip:"Suche zuerst den rechten Winkel – die Seite gegenüber ist die Hypotenuse.",
     fig:rwSvg({p:p, q:q, rot:L.rot, ecken:L.ecken, sp:L.kp+" = "+f(p)+" "+u, sq:L.kq+" = "+f(q)+" "+u, sh:L.hyp+" = ?"}),
     q:"Im Dreieck "+L.name+" liegt der rechte Winkel bei "+L.rw+". Berechne die Seite "+L.hyp+". Runde auf eine Nachkommastelle.",
     weg:["Gegenüber dem rechten Winkel bei "+L.rw+" liegt die Hypotenuse "+L.hyp+": "+L.hyp+"² = "+L.kp+"² + "+L.kq+"²",
@@ -11192,12 +11241,12 @@ function pyKathete(st){
       fig:K.rtriSvg({la:a, lb:b, a:ges === "a" ? "a = ?" : "a = "+f(a)+" "+u, b:ges === "b" ? "b = ?" : "b = "+f(b)+" "+u, c:"c = "+f(c)+" "+u}),
       q:"Berechne die Länge der Kathete "+ges+"."+(st === 2 ? " Runde auf eine Nachkommastelle." : ""),
       weg:["c ist die Hypotenuse, also: "+ges+"² = c² − "+bek+"²", ges+"² = "+f(c)+"² − "+f(kb)+"² = "+f(c*c)+" − "+f(kb*kb)+" = "+f(d), ges+" = √"+f(d)+(st === 1 ? " = "+f(res) : " ≈ "+fD(res,1))+" "+u]};
-    if(st === 2) it.tol = 0.1;
+    if(st === 2) it.tol = 0.05;
     return it;
   }
   const L = lage(), pq = dezKatheten(), p = pq[0], q = pq[1], h = K.round(Math.sqrt(p*p+q*q),1);
   const d = K.round(h*h-q*q, 4), res = K.round(Math.sqrt(d),1);
-  return {t:"num", a:res, tol:0.1, unit:u, tip:"Suche zuerst den rechten Winkel – die Seite gegenüber ist die Hypotenuse.",
+  return {t:"num", a:res, tol:0.05, unit:u, tip:"Suche zuerst den rechten Winkel – die Seite gegenüber ist die Hypotenuse.",
     fig:rwSvg({p:p, q:q, rot:L.rot, ecken:L.ecken, sp:L.kp+" = ?", sq:L.kq+" = "+f(q)+" "+u, sh:L.hyp+" = "+f(h)+" "+u}),
     q:"Im Dreieck "+L.name+" liegt der rechte Winkel bei "+L.rw+". Berechne die Seite "+L.kp+". Runde auf eine Nachkommastelle.",
     weg:["Hypotenuse ist "+L.hyp+" (gegenüber von "+L.rw+"), also: "+L.kp+"² = "+L.hyp+"² − "+L.kq+"²",
@@ -11240,7 +11289,7 @@ function pySach(st){
     if(typ === "leiter"){
       const t = pick([[7,24,25,0.2],[5,12,13,0.5],[9,40,41,0.1],[12,35,37,0.2],[8,15,17,0.4]]);
       const d = K.round(t[0]*t[3],2), h = K.round(t[1]*t[3],2), L = K.round(t[2]*t[3],2);
-      return {t:"num", a:h, tol:0.01, unit:"m",
+      return {t:"num", a:h, tol:0.005, unit:"m",
         q:"Eine "+f(L)+" m lange Leiter lehnt an einer Hauswand. Ihr Fuß steht "+f(d)+" m von der Wand entfernt. In welcher Höhe berührt die Leiter die Wand?",
         fig:leiterSvg({d:d, h:h, ld:f(d)+" m", lh:"h = ?", ll:f(L)+" m"}),
         tip:"Wand, Boden und Leiter bilden ein rechtwinkliges Dreieck. Welche Seite ist die Hypotenuse?",
@@ -11266,14 +11315,14 @@ function pySach(st){
       const L = pick([3,3.5,4,4.5,5,5.5,6,7]), d = K.round(L*R(18,30)/100,1), h = Math.sqrt(L*L-d*d);
       if(typ === "leiter"){
         const s = K.round(L*L-d*d,4), a = K.round(h,1);
-        return {t:"num", a:a, tol:0.1, unit:"m",
+        return {t:"num", a:a, tol:0.05, unit:"m",
           q:"Eine "+f(L)+" m lange Leiter lehnt an einer Wand. Ihr Fuß steht "+f(d)+" m von der Wand entfernt. Wie hoch reicht die Leiter? Runde auf eine Nachkommastelle.",
           fig:leiterSvg({d:d, h:h, ld:f(d)+" m", lh:"h = ?", ll:f(L)+" m"}),
           tip:"Die Leiter ist die längste Seite im rechtwinkligen Dreieck aus Wand, Boden und Leiter.",
           weg:["Die Leiter ist die Hypotenuse: h² = "+f(L)+"² − "+f(d)+"²", "h² = "+q2(L)+" − "+q2(d)+" = "+f(s), "h = √"+f(s)+" ≈ "+fD(a,1)+" m"]};
       }
       const hh = K.round(h,1), s = K.round(hh*hh+d*d,4), a = K.round(Math.sqrt(s),1);
-      return {t:"num", a:a, tol:0.1, unit:"m",
+      return {t:"num", a:a, tol:0.05, unit:"m",
         q:"Eine Leiter soll an einer Wand bis in "+f(hh)+" m Höhe reichen. Ihr Fuß soll "+f(d)+" m von der Wand entfernt stehen. Wie lang muss die Leiter sein? Runde auf eine Nachkommastelle.",
         fig:leiterSvg({d:d, h:hh, ld:f(d)+" m", lh:f(hh)+" m", ll:"L = ?"}),
         tip:"Gesucht ist die längste Seite des rechtwinkligen Dreiecks.",
@@ -11281,13 +11330,13 @@ function pySach(st){
     }
     if(typ === "feld"){
       const F = pick(FELDER), a = F[1], b = F[2], s = K.round(a*a+b*b,4), d = K.round(Math.sqrt(s),1);
-      return {t:"num", a:d, tol:0.1, unit:"m", q:F[0]+" ist "+f(a)+" m lang und "+f(b)+" m breit. Wie lang ist die Diagonale? Runde auf eine Nachkommastelle.",
+      return {t:"num", a:d, tol:0.05, unit:"m", q:F[0]+" ist "+f(a)+" m lang und "+f(b)+" m breit. Wie lang ist die Diagonale? Runde auf eine Nachkommastelle.",
         fig:rechteckDiagSvg({la:a, lb:b, a:f(a)+" m", b:f(b)+" m", d:"d = ?"}),
         tip:"Die Diagonale teilt das Feld in zwei rechtwinklige Dreiecke.",
         weg:["Die Diagonale ist die Hypotenuse: d² = "+f(a)+"² + "+f(b)+"²", "d² = "+q2(a)+" + "+q2(b)+" = "+f(s), "d = √"+f(s)+" ≈ "+fD(d,1)+" m"]};
     }
     const w = R(30,70), h = K.round(w*9/16,1), s = K.round(w*w+h*h,4), d = K.round(Math.sqrt(s),1);
-    return {t:"num", a:d, tol:0.1, unit:"cm", q:"Ein Monitor ist "+f(w)+" cm breit und "+f(h)+" cm hoch. Wie lang ist die Bildschirmdiagonale? Runde auf eine Nachkommastelle.",
+    return {t:"num", a:d, tol:0.05, unit:"cm", q:"Ein Monitor ist "+f(w)+" cm breit und "+f(h)+" cm hoch. Wie lang ist die Bildschirmdiagonale? Runde auf eine Nachkommastelle.",
       fig:rechteckDiagSvg({la:w, lb:h, a:f(w)+" cm", b:f(h)+" cm", d:"d = ?"}),
       tip:"Breite, Höhe und Diagonale bilden ein rechtwinkliges Dreieck.",
       weg:["d² = "+f(w)+"² + "+f(h)+"²", "d² = "+q2(w)+" + "+q2(h)+" = "+f(s), "d = √"+f(s)+" ≈ "+fD(d,1)+" cm"]};
@@ -11298,7 +11347,7 @@ function pySach(st){
     do{ L = pick([4,5,6,8]); d1 = K.round(L*R(15,22)/100,1); dd = pick([0.5,0.8,1,1.2]);
         h1 = Math.sqrt(L*L-d1*d1); h2 = Math.sqrt(L*L-(d1+dd)*(d1+dd)); a = K.round(h1-h2,1); }while(a < 0.1);
     const d2 = K.round(d1+dd,1);
-    return {t:"num", a:a, tol:0.1, unit:"m",
+    return {t:"num", a:a, tol:0.05, unit:"m",
       q:"Eine "+f(L)+" m lange Leiter lehnt an einer Wand, ihr Fuß steht "+f(d1)+" m von der Wand entfernt. Jemand zieht den Fuß "+f(dd)+" m weiter von der Wand weg. Um wie viel rutscht die Leiter oben nach unten? Runde auf eine Nachkommastelle.",
       fig:leiterSvg({d:d1, h:h1, ld:f(d1)+" m", lh:"h", ll:f(L)+" m"}),
       tip:"Berechne die Höhe vorher und nachher. Runde erst das Endergebnis.",
@@ -11317,7 +11366,7 @@ function pySach(st){
   }
   const a = R(40,120), b = R(20, a-10), s = a*a+b*b, d = Math.sqrt(s), sp2 = K.round(a+b-d,1);
   const ort = pick(["Ein rechteckiger Park","Eine rechteckige Wiese","Ein rechteckiger Schulhof"]);
-  return {t:"num", a:sp2, tol:0.1, unit:"m",
+  return {t:"num", a:sp2, tol:0.05, unit:"m",
     q:ort+" ist "+a+" m lang und "+b+" m breit. Lisa geht quer (diagonal) von einer Ecke zur gegenüberliegenden Ecke, statt außen an zwei Seiten entlang. Wie viele Meter spart sie? Runde auf eine Nachkommastelle.",
     fig:rechteckDiagSvg({la:a, lb:b, a:a+" m", b:b+" m", d:"d"}),
     tip:"Vergleiche den Weg über zwei Seiten mit der Länge der Diagonale.",
@@ -12022,7 +12071,7 @@ function wProzent(st){
     q = "Du wirfst zwei normale Würfel. Mit welcher Wahrscheinlichkeit ist die Augensumme "+s+"?";
   }
   const a = K.round(k/n*100,1);
-  return {t:"num", a:a, tol:0.1, unit:"%", q:q+" Gib sie in Prozent an und runde auf eine Nachkommastelle.", tip:tip,
+  return {t:"num", a:a, tol:0.05, unit:"%", q:q+" Gib sie in Prozent an und runde auf eine Nachkommastelle.", tip:tip,
     weg:["P = "+frK(k,n), "= "+k+" : "+n+" ≈ "+fD(K.round(k/n,4),4), "≈ "+fD(a,1)+" %"]};
 }
 
@@ -12462,7 +12511,7 @@ function trigSach(q, fig, fn, w, bek, bekTxt, ges, zaehlerGes, erg, erkl, tip, e
     fn+"("+w+"°) = "+(zaehlerGes ? frH(ges, bekTxt) : frH(bekTxt, ges)),
     ges+" = "+bekTxt+(zaehlerGes ? " · " : " : ")+fn+"("+w+"°) "+gl(bek, 1)+" m"];
   if(extra) weg.push(extra);
-  return {t:"num", q:q, fig:fig, a:erg, tol:0.1, unit:"m", tip:tip, weg:weg};
+  return {t:"num", q:q, fig:fig, a:erg, tol:0.05, unit:"m", tip:tip, weg:weg};
 }
 
 /* Dreieck zeichnen, Form begrenzen (sehr spitze Dreiecke werden unleserlich; die Zeichnung ist nicht maßstäblich) */
@@ -12554,7 +12603,7 @@ Winkel berechnest du mit sin<sup>−1</sup>, cos<sup>−1</sup> oder tan<sup>−
       const fn = fnVon(kn, ge), zr = ZN[fn][0], nr = ZN[fn][1];
       const nm = r => r === kn ? f(kv)+" "+unit : P[r];
       const erg = R(val[ge], 1);
-      return {t:"num", a:erg, tol:0.1, unit:unit, fig:rtri(o),
+      return {t:"num", a:erg, tol:0.05, unit:unit, fig:rtri(o),
         q:"Im rechtwinkligen Dreieck ist "+wn+" = "+w+"° und "+P[kn]+" = "+f(kv)+" "+unit+". Berechne "+P[ge]+". Runde auf eine Nachkommastelle.",
         tip:"Bestimme von "+wn+" aus, welche Seite gegeben und welche gesucht ist – dann wähle sin, cos oder tan.",
         weg:["Von "+wn+" aus ist "+P[kn]+" die "+ROLLE[kn]+" und "+P[ge]+" die "+ROLLE[ge]+" → "+FNAME[fn]+".",
@@ -12586,7 +12635,7 @@ Winkel berechnest du mit sin<sup>−1</sup>, cos<sup>−1</sup> oder tan<sup>−
       ["G","A","H"].forEach(r => { o[P[r]] = r === zr || r === nr ? P[r]+" = "+f(val[r])+" "+unit : P[r]; });
       o[ang] = wn+" = ?";
       const erg = R(w, 1), rr = R(ratio, 4);
-      return {t:"num", a:erg, tol:0.2, unit:"°", fig:rtri(o),
+      return {t:"num", a:erg, tol:0.05, unit:"°", fig:rtri(o),
         q:"Im rechtwinkligen Dreieck ist "+P[zr]+" = "+f(x1)+" "+unit+" und "+P[nr]+" = "+f(x2)+" "+unit+". Berechne den Winkel "+wn+". Runde auf eine Nachkommastelle.",
         tip:"Welche der beiden Seiten liegt "+wn+" gegenüber, welche an "+wn+" an? Daraus folgt sin, cos oder tan.",
         weg:["Von "+wn+" aus ist "+P[zr]+" die "+ROLLE[zr]+" und "+P[nr]+" die "+ROLLE[nr]+" → "+FNAME[fn]+".",
@@ -12668,7 +12717,7 @@ Winkel berechnest du mit sin<sup>−1</sup>, cos<sup>−1</sup> oder tan<sup>−
                 : K.pick(["seilbahn","prozentAus","strasseKm"]);
       const winkel = (q, fig, fn, wert, weg0, weg1, tip) => {
         const w = fn === "sin" ? asinD(wert) : fn === "cos" ? acosD(wert) : atanD(wert), erg = R(w, 1);
-        return {t:"num", a:erg, tol:0.2, unit:"°", q:q, fig:fig, tip:tip,
+        return {t:"num", a:erg, tol:0.05, unit:"°", q:q, fig:fig, tip:tip,
           weg:[weg0, weg1+" "+gl(wert, 4), "Winkel = "+inv(fn)+"("+f(R(wert, 4))+") ≈ "+f(erg)+"°"]};
       };
       if(typ === "prozent"){
@@ -12718,7 +12767,7 @@ Winkel berechnest du mit sin<sup>−1</sup>, cos<sup>−1</sup> oder tan<sup>−
       }
       /* prozentAus: Steigung in Prozent aus dem Winkel */
       const w = K.rnd(3,25), p = 100*tanD(w), erg = R(p, 1);
-      return {t:"num", a:erg, tol:0.1, unit:"%",
+      return {t:"num", a:erg, tol:0.05, unit:"%",
         q:"Eine Straße steigt mit einem Winkel von "+w+"° an. Wie viel Prozent Steigung stehen auf dem Verkehrsschild? Runde auf eine Nachkommastelle.",
         fig:rtri({la:100, lb:Math.max(p, 15), a:"100 m", b:"? m", beta:w+"°", ecken:false}),
         tip:"Prozent-Steigung = Höhe : waagerechte Strecke · 100 %.",
@@ -12796,7 +12845,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
                qg >= 1 ? "Das ist eine Zunahme um "+f(R((qg-1)*100, 4))+" %." : "Das ist eine Abnahme um "+f(R((1-qg)*100, 4))+" %."]};
       }
       const p = K.rnd(2,12), n = K.rnd(2,4), qv = 1 + p/100, g = Math.pow(qv, n), erg = R((g-1)*100, 2);
-      return {t:"num", a:erg, tol:0.01, unit:"%",
+      return {t:"num", a:erg, tol:0.005, unit:"%",
         q:"Ein Guthaben wächst "+n+" Jahre lang um jeweils "+p+" % pro Jahr (Zinseszins). Um wie viel Prozent ist es insgesamt gewachsen? Runde auf zwei Nachkommastellen.",
         tip:"Rechne mit dem Wachstumsfaktor hoch "+n+" – nicht "+n+" · "+p+" %.",
         weg:["q = "+f(qv)+", Gesamtfaktor = "+pw(f(qv), n)+" "+gl(g, 6),
@@ -12831,28 +12880,28 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
       }
       if(typ === "kapital"){
         const K0 = K.rnd(2,20)*500, p = K.rnd(2,9)/2, n = K.rnd(3,10), qv = 1 + p/100, B = K0*Math.pow(qv, n), erg = R(B, 2);
-        return {t:"num", a:erg, tol:0.01, unit:"€",
+        return {t:"num", a:erg, tol:0.005, unit:"€",
           q:f(K0)+" € werden "+n+" Jahre lang mit "+f(p)+" % Zinsen pro Jahr angelegt (Zinseszins). Wie groß ist das Guthaben dann? Runde auf Cent.",
           tip:"Nutze B = B<sub>0</sub> · q<sup>n</sup> mit dem passenden Wachstumsfaktor.",
           weg:[qTxt(true, p), "K = "+f(K0)+" € · "+pw(f(qv), n), "K ≈ "+K.fmtD(erg, 2)+" €"]};
       }
       if(typ === "auto"){
         const P0 = K.rnd(18,40)*1000, p = K.pick([10,12,15,18,20]), n = K.rnd(2,6), qv = 1 - p/100, B = P0*Math.pow(qv, n), erg = R(B, 0);
-        return {t:"num", a:erg, tol:1, unit:"€",
+        return {t:"num", a:erg, tol:0.5, unit:"€",
           q:"Ein Auto kostet neu "+f(P0)+" €. Es verliert jedes Jahr "+p+" % seines Wertes. Wie viel ist es nach "+n+" Jahren noch wert? Runde auf ganze Euro.",
           tip:"Wertverlust ist eine Abnahme – der Faktor ist kleiner als 1.",
           weg:[qTxt(false, p), "W = "+f(P0)+" € · "+pw(f(R(qv, 4)), n), "W ≈ "+f(erg)+" €"]};
       }
       if(typ === "stadt"){
         const E0 = K.rnd(20,90)*1000, p = K.rnd(5,25)/10, n = K.rnd(5,15), qv = 1 + p/100, B = E0*Math.pow(qv, n), erg = R(B, 0);
-        return {t:"num", a:erg, tol:1,
+        return {t:"num", a:erg, tol:0.5,
           q:"Eine Stadt hat "+f(E0)+" Einwohner. Die Einwohnerzahl wächst jedes Jahr um "+f(p)+" %. Wie viele Einwohner hat sie nach "+n+" Jahren? Runde auf eine ganze Zahl.",
           tip:"Bestimme den Wachstumsfaktor und rechne mit der Hochzahl "+n+".",
           weg:[qTxt(true, p), "E = "+f(E0)+" · "+pw(f(R(qv, 4)), n), "E ≈ "+f(erg)+" Einwohner"]};
       }
       if(typ === "baktP"){
         const B0 = K.rnd(4,20)*50, p = K.rnd(15,40), n = K.rnd(4,12), qv = 1 + p/100, B = B0*Math.pow(qv, n), erg = R(B, 0);
-        return {t:"num", a:erg, tol:1,
+        return {t:"num", a:erg, tol:0.5,
           q:"In einer Nährlösung sind "+f(B0)+" Bakterien. Ihre Anzahl wächst jede Stunde um "+p+" %. Wie viele Bakterien sind es nach "+n+" Stunden? Runde auf eine ganze Zahl.",
           tip:"Das ist kein Verdoppeln – nutze den Faktor 1 + p : 100.",
           weg:[qTxt(true, p), "B = "+f(B0)+" · "+pw(f(R(qv, 4)), n), "B ≈ "+f(erg)+" Bakterien"]};
@@ -12861,7 +12910,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
         const s = K.pick([["Cäsium-137", 30], ["Strontium-90", 29], ["Tritium", 12]]);
         let t; do { t = K.rnd(5,100); } while(t % s[1] === 0);
         const B0 = K.rnd(20,200), B = B0*Math.pow(0.5, t/s[1]), erg = R(B, 1);
-        return {t:"num", a:erg, tol:0.1, unit:"g",
+        return {t:"num", a:erg, tol:0.05, unit:"g",
           q:s[0]+" hat eine Halbwertszeit von "+s[1]+" Jahren. Von "+B0+" g ist nach "+t+" Jahren noch wie viel übrig? Runde auf eine Nachkommastelle.",
           tip:"Die Anzahl der Halbwertszeiten darf auch eine Kommazahl sein.",
           weg:["Anzahl der Halbwertszeiten: n = "+frH(t, s[1])+" "+gl(t/s[1], 4),
@@ -12869,7 +12918,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
                "B ≈ "+f(erg)+" g"]};
       }
       const D = K.rnd(4,16)*50, p = K.rnd(10,30), n = K.rnd(3,8), qv = 1 - p/100, B = D*Math.pow(qv, n), erg = R(B, 1);
-      return {t:"num", a:erg, tol:0.1, unit:"mg",
+      return {t:"num", a:erg, tol:0.05, unit:"mg",
         q:"Ein Patient nimmt "+f(D)+" mg eines Wirkstoffs ein. Der Körper baut jede Stunde "+p+" % der noch vorhandenen Menge ab. Wie viel mg sind nach "+n+" Stunden noch im Körper? Runde auf eine Nachkommastelle.",
         tip:"Abgebaut werden "+p+" %, es bleiben also "+(100-p)+" % übrig.",
         weg:[qTxt(false, p), "B = "+f(D)+" mg · "+pw(f(R(qv, 4)), n), "B ≈ "+f(erg)+" mg"]};
@@ -12910,7 +12959,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
                art === "linear" ? "Also linear (Zunahme um "+f(dv)+" pro Schritt)." : art === "exponentiell" ? "Also exponentiell mit q = "+f(qv)+"." : "Also weder linear noch exponentiell."]};
       }
       const shown = ys.slice(0, 4).concat(["?"]), erg = ys[4];
-      return {t:"num", a:erg, tol:0.001, fig:tabSvg("x", xs, "y", shown),
+      return {t:"num", a:erg, tol:0.0005, fig:tabSvg("x", xs, "y", shown),
         q:"Die Werte in der Tabelle wachsen entweder linear oder exponentiell. Welcher Wert gehört zu x = 4?",
         tip:"Berechne Differenzen und Quotienten benachbarter Werte – was davon bleibt gleich?",
         weg: art === "linear"
@@ -12962,13 +13011,13 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
       if(st === 2){
         if(K.rnd(0,1)){
           const K0 = K.rnd(4,40)*250, p = K.rnd(2,9)/2, n = K.rnd(3,8), qv = 1 + p/100, B = R(K0*Math.pow(qv, n), 2);
-          return {t:"num", a:R(B/Math.pow(qv, n), 0), tol:1, unit:"€",
+          return {t:"num", a:R(B/Math.pow(qv, n), 0), tol:0.5, unit:"€",
             q:"Nach "+n+" Jahren mit "+f(p)+" % Zinsen pro Jahr (Zinseszins) sind "+K.fmtD(B, 2)+" € auf dem Konto. Wie viel Geld wurde am Anfang angelegt? Runde auf ganze Euro.",
             tip:"Aus B = B<sub>0</sub> · q<sup>n</sup> folgt B<sub>0</sub> = B : q<sup>n</sup>.",
             weg:[qTxt(true, p), "B<sub>0</sub> = "+K.fmtD(B, 2)+" € : "+pw(f(qv), n), "B<sub>0</sub> ≈ "+f(K0)+" €"]};
         }
         const P0 = K.rnd(15,40)*1000, p = K.pick([10,15,20]), n = K.rnd(2,4), qv = 1 - p/100, B = R(P0*Math.pow(qv, n), 0);
-        return {t:"num", a:R(B/Math.pow(qv, n), 0), tol:1, unit:"€",
+        return {t:"num", a:R(B/Math.pow(qv, n), 0), tol:0.5, unit:"€",
           q:"Ein Auto verliert jedes Jahr "+p+" % seines Wertes. Nach "+n+" Jahren ist es noch "+f(B)+" € wert. Wie viel hat es neu gekostet? Runde auf ganze Euro.",
           tip:"Teile den heutigen Wert durch den Gesamtfaktor.",
           weg:[qTxt(false, p), "Neupreis = "+f(B)+" € : "+pw(f(qv), n), "Neupreis ≈ "+f(R(B/Math.pow(qv, n), 0))+" €"]};
@@ -12976,7 +13025,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
       const zu = K.rnd(0,2) > 0, p = zu ? K.rnd(2,16)/2 : K.rnd(1,8)/2, n = K.rnd(2,5), B0 = K.rnd(10,90)*1000;
       const qv = zu ? 1 + p/100 : 1 - p/100, B = R(B0*Math.pow(qv, n), 0);
       const qb = Math.pow(B/B0, 1/n), erg = R(Math.abs(qb - 1)*100, 1);
-      return {t:"num", a:erg, tol:0.1, unit:"%",
+      return {t:"num", a:erg, tol:0.05, unit:"%",
         q:"Die Einwohnerzahl einer Stadt "+(zu ? "wächst" : "sinkt")+" in "+n+" Jahren gleichmäßig (jedes Jahr um denselben Prozentsatz) von "+f(B0)+" auf "+f(B)+". Um wie viel Prozent "+(zu ? "wächst" : "sinkt")+" sie pro Jahr? Runde auf eine Nachkommastelle.",
         tip:"Bestimme zuerst den Gesamtfaktor und ziehe dann die "+n+". Wurzel.",
         weg:[pw("q", n)+" = "+f(B)+" : "+f(B0)+" "+gl(B/B0, 4),
@@ -12991,7 +13040,7 @@ Bestand nach n Schritten: <b>B(n) = B<sub>0</sub> · q<sup>n</sup></b> (B<sub>0<
    ===================================================================== */
 const DRITTEL = K.fr(1,3), VIERDRITTEL = K.fr(4,3);
 /* π-Ergebnis: auf n Stellen gerundet */
-const piNum = (x, n, unit, q, tip, weg, fig) => ({t:"num", a:R(x, n), tol:Math.pow(10, -n), tolRel:0.003, unit:unit, q:q, tip:tip, weg:weg, fig:fig});
+const piNum = (x, n, unit, q, tip, weg, fig) => ({t:"num", a:R(x, n), tol:Math.pow(10, -n)/2, tolRel:0.0006, unit:unit, q:q, tip:tip, weg:weg, fig:fig});
 
 thema({
   id: "k10-koerper",
@@ -13052,7 +13101,7 @@ thema({
       }
       if(art === "pyramide3"){
         const a = K.rnd(30,120)/10, h = K.rnd(15,60)/10, V = a*a*h/3;
-        return {t:"num", a:R(V, 1), tol:0.1, unit:"m³", fig:K.koerperSvg("pyramide", {a:"a = "+f(a)+" m", h:"h = "+f(h)+" m"}),
+        return {t:"num", a:R(V, 1), tol:0.05, unit:"m³", fig:K.koerperSvg("pyramide", {a:"a = "+f(a)+" m", h:"h = "+f(h)+" m"}),
           q:"Ein Glasdach hat die Form einer quadratischen Pyramide mit a = "+f(a)+" m und h = "+f(h)+" m. Wie groß ist ihr Volumen?"+rund,
           tip:"V = ⅓ · Grundfläche · Höhe – die Grundfläche ist ein Quadrat.",
           weg:["V = "+DRITTEL+" · a² · h", "V = "+DRITTEL+" · "+pw(f(a), 2)+" · "+f(h)+" m³", "V "+gl(V, 1)+" m³"]};
@@ -13219,7 +13268,7 @@ thema({
       const typ = st === 1 ? K.pick(["doseV","karton"]) : st === 2 ? K.pick(["doseO","ballV","waffelV","ballO"]) : K.pick(["waffelM","tipi","zelt","stahl"]);
       if(typ === "doseV"){
         const d = K.pick([6,6.5,7,7.5,8]), h = K.rnd(9,16), r = d/2, V = Math.PI*r*r*h;
-        return {t:"num", a:R(V, 0), tol:1, tolRel:0.003, unit:"ml", fig:K.koerperSvg("zylinder", {h:"h = "+h+" cm"}),
+        return {t:"num", a:R(V, 0), tol:0.5, tolRel:0.0006, unit:"ml", fig:K.koerperSvg("zylinder", {h:"h = "+h+" cm"}),
           q:"Eine Getränkedose ist innen "+h+" cm hoch und hat den Durchmesser "+f(d)+" cm. Wie viele Milliliter passen hinein? Runde auf ganze Milliliter.",
           tip:"1 cm³ = 1 ml – und nimm den Radius, nicht den Durchmesser.",
           weg:["r = "+f(d)+" cm : 2 = "+f(r)+" cm", "V = π · "+pw(f(r), 2)+" · "+h+" cm³", "V ≈ "+f(R(V, 0))+" cm³ = "+f(R(V, 0))+" ml"]};
@@ -13233,7 +13282,7 @@ thema({
       }
       if(typ === "doseO"){
         const d = K.pick([6,7,8,10]), h = K.rnd(8,15), r = d/2, O = 2*Math.PI*r*r + 2*Math.PI*r*h;
-        return {t:"num", a:R(O, 0), tol:1, tolRel:0.003, unit:"cm²", fig:K.koerperSvg("zylinder", {h:"h = "+h+" cm"}),
+        return {t:"num", a:R(O, 0), tol:0.5, tolRel:0.0006, unit:"cm²", fig:K.koerperSvg("zylinder", {h:"h = "+h+" cm"}),
           q:"Wie viel Blech braucht man für eine geschlossene Dose mit dem Durchmesser "+d+" cm und der Höhe "+h+" cm (ohne Falze)? Runde auf ganze cm².",
           tip:"Die Dose besteht aus Boden, Deckel und Mantel.",
           weg:["r = "+d+" cm : 2 = "+f(r)+" cm", "O = 2 · π · "+pw(f(r), 2)+" + 2 · π · "+f(r)+" · "+h+" cm²", "O ≈ "+f(R(O, 0))+" cm²"]};
@@ -13248,14 +13297,14 @@ thema({
             K.koerperSvg("kugel", {}));
         }
         const O = 4*Math.PI*r*r;
-        return {t:"num", a:R(O, 0), tol:1, tolRel:0.003, unit:"cm²", fig:K.koerperSvg("kugel", {}),
+        return {t:"num", a:R(O, 0), tol:0.5, tolRel:0.0006, unit:"cm²", fig:K.koerperSvg("kugel", {}),
           q:"Ein "+b[0]+" hat einen Durchmesser von etwa "+b[1]+" cm. Wie viel Material braucht man ungefähr für seine Oberfläche? Runde auf ganze cm².",
           tip:"Kugeloberfläche O = 4πr² – mit dem Radius!",
           weg:["r = "+b[1]+" cm : 2 = "+f(r)+" cm", "O = 4 · π · "+pw(f(r), 2)+" cm²", "O ≈ "+f(R(O, 0))+" cm²"]};
       }
       if(typ === "waffelV"){
         const r = K.pick([2.5,3,3.5]), h = K.rnd(10,13), V = Math.PI*r*r*h/3;
-        return {t:"num", a:R(V, 0), tol:1, tolRel:0.003, unit:"ml", fig:K.koerperSvg("kegel", {r:"r = "+f(r)+" cm", h:"h = "+h+" cm"}),
+        return {t:"num", a:R(V, 0), tol:0.5, tolRel:0.0006, unit:"ml", fig:K.koerperSvg("kegel", {r:"r = "+f(r)+" cm", h:"h = "+h+" cm"}),
           q:"Eine kegelförmige Waffeltüte hat innen den Radius "+f(r)+" cm und ist "+h+" cm tief. Wie viel Milliliter Eis passen hinein, wenn sie bis zum Rand gefüllt ist? Runde auf ganze Milliliter.",
           tip:"Kegelvolumen – und 1 cm³ = 1 ml.",
           weg:["V = "+DRITTEL+" · π · r² · h", "V = "+DRITTEL+" · π · "+pw(f(r), 2)+" · "+h+" cm³", "V ≈ "+f(R(V, 0))+" cm³ = "+f(R(V, 0))+" ml"]};
@@ -13264,7 +13313,7 @@ thema({
         const w = typ === "waffelM";
         const t = w ? K.pick([[3.5,12,12.5],[4,7.5,8.5],[2.5,6,6.5],[3,4,5]]) : K.pick([[3,4,5],[2.4,3.2,4],[1.8,2.4,3],[2.1,2.8,3.5]]);
         const r = t[0], h = t[1], s = t[2], Mn = Math.PI*r*s, u = w ? "cm" : "m";
-        return {t:"num", a:R(Mn, 1), tol:0.1, tolRel:0.003, unit:u+"²", fig:K.koerperSvg("kegel", {r:"r = "+f(r)+" "+u, h:"h = "+f(h)+" "+u}),
+        return {t:"num", a:R(Mn, 1), tol:0.05, tolRel:0.0006, unit:u+"²", fig:K.koerperSvg("kegel", {r:"r = "+f(r)+" "+u, h:"h = "+f(h)+" "+u}),
           q: w ? "Eine Waffeltüte ist ein Kegel mit dem Radius "+f(r)+" cm und der Höhe "+f(h)+" cm. Wie viel Waffel (Mantelfläche) braucht man? Runde auf eine Nachkommastelle."
                : "Ein kegelförmiges Tipi-Zelt hat den Radius "+f(r)+" m und ist "+f(h)+" m hoch. Wie viel m² Stoff braucht man für den Mantel? Runde auf eine Nachkommastelle.",
           tip:"Für den Mantel M = π · r · s brauchst du die Mantellinie s (Pythagoras).",
@@ -13274,7 +13323,7 @@ thema({
       if(typ === "zelt"){
         const t = K.pick([[2.4,1.6,2],[3,2,2.5],[1.8,1.2,1.5],[3.2,1.2,2]]);
         const a = t[0], h = t[1], hs = t[2], S = 2*a*hs;
-        return {t:"num", a:R(S, 6), tol:0.01, unit:"m²", fig:K.koerperSvg("pyramide", {a:"a = "+f(a)+" m", h:"h = "+f(h)+" m"}),
+        return {t:"num", a:R(S, 6), tol:0.005, unit:"m²", fig:K.koerperSvg("pyramide", {a:"a = "+f(a)+" m", h:"h = "+f(h)+" m"}),
           q:"Ein Zelt hat die Form einer quadratischen Pyramide mit a = "+f(a)+" m und der Höhe h = "+f(h)+" m. Wie viel m² Stoff braucht man für die vier Seitenwände (ohne Boden)?",
           tip:"Du brauchst die Höhe h<sub>s</sub> eines Seitendreiecks – Pythagoras mit h und a : 2.",
           weg:["h<sub>s</sub> = √("+pw(f(h), 2)+" + "+pw(f(a/2), 2)+") = √"+f(R(h*h+a*a/4, 6))+" = "+f(hs)+" m",
@@ -13282,7 +13331,7 @@ thema({
                "Vier Dreiecke: 4 · "+f(R(a*hs/2, 6))+" = "+f(R(S, 6))+" m²"]};
       }
       const r = K.rnd(2,6), V = 4/3*Math.PI*r*r*r, m = V*7.85;
-      return {t:"num", a:R(m, 0), tol:1, tolRel:0.003, unit:"g", fig:K.koerperSvg("kugel", {r:"r = "+r+" cm"}),
+      return {t:"num", a:R(m, 0), tol:0.5, tolRel:0.0006, unit:"g", fig:K.koerperSvg("kugel", {r:"r = "+r+" cm"}),
         q:"Eine Kugel aus Stahl hat den Radius "+r+" cm. 1 cm³ Stahl wiegt 7,85 g. Wie schwer ist die Kugel? Runde auf ganze Gramm.",
         tip:"Erst das Volumen in cm³, dann mal 7,85 g.",
         weg:["V = "+VIERDRITTEL+" · π · "+pw(r, 3)+" cm³ "+gl(V, 1)+" cm³", "m = "+f(R(V, 1))+" · 7,85 g", "m ≈ "+f(R(m, 0))+" g"]};
@@ -13420,7 +13469,7 @@ ${urnenBaum(urne([3,2], true), FARBEN[0])}
     function(st){
       const pr = x => f(R(x*100, 4))+" %";
       const dz = x => f(R(x, 6));
-      const erg = (P, q, fig, tip, weg) => ({t:"num", a:R(P*100, 1), tol:0.1, unit:"%", q:q+" Gib das Ergebnis in Prozent an, gerundet auf eine Nachkommastelle.", fig:fig, tip:tip, weg:weg.concat(["P "+gl(P*100, 1)+" %"])});
+      const erg = (P, q, fig, tip, weg) => ({t:"num", a:R(P*100, 1), tol:0.05, unit:"%", q:q+" Gib das Ergebnis in Prozent an, gerundet auf eine Nachkommastelle.", fig:fig, tip:tip, weg:weg.concat(["P "+gl(P*100, 1)+" %"])});
       if(st < 3){
         const typ = st === 1 ? K.pick(["wurfBeide","ampelBeide"]) : K.pick(["wurfGenau","wurfMind","ausschuss","ampelGenau"]);
         if(typ.indexOf("wurf") === 0){
@@ -13601,7 +13650,7 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
       if(st === 1){
         const b = K.pick([2,3,5,1.5,1.2,4]); let c; do { c = K.rnd(3,200); } while(Math.abs(Math.log(c)/Math.log(b) - Math.round(Math.log(c)/Math.log(b))) < 1e-9);
         const x = Math.log(c)/Math.log(b);
-        return {t:"num", a:R(x, 2), tol:0.01, q:"Löse die Gleichung "+pw(f(b), "x")+" = "+c+"."+rund,
+        return {t:"num", a:R(x, 2), tol:0.005, q:"Löse die Gleichung "+pw(f(b), "x")+" = "+c+"."+rund,
           tip:"Die Lösung ist ein Logarithmus – der Taschenrechner rechnet ihn mit lg aus.",
           weg:["x = "+logH(b, c), "x = lg("+c+") : lg("+f(b)+")", "x ≈ "+f(R(x, 2))]};
       }
@@ -13609,7 +13658,7 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
         const b = K.pick([1.05,1.1,1.2,1.5,2,3,0.8,0.5,0.9]), a = K.pick([2,3,4,5,10,50]);
         let ratio; do { ratio = b > 1 ? K.rnd(3,40)/2 : K.rnd(1,19)/20; } while(ratio === 1);
         const c = R(a*ratio, 6), x = Math.log(ratio)/Math.log(b);
-        return {t:"num", a:R(x, 2), tol:0.01, q:"Löse die Gleichung "+a+" · "+pw(f(b), "x")+" = "+f(c)+"."+rund,
+        return {t:"num", a:R(x, 2), tol:0.005, q:"Löse die Gleichung "+a+" · "+pw(f(b), "x")+" = "+f(c)+"."+rund,
           tip:"Teile zuerst durch "+a+", dann logarithmiere.",
           weg:["Teile durch "+a+": "+pw(f(b), "x")+" = "+f(ratio), "x = "+logH(b, f(ratio))+" = lg("+f(ratio)+") : lg("+f(b)+")", "x ≈ "+f(R(x, 2))]};
       }
@@ -13618,21 +13667,21 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
         const b = K.pick([2,3,1.5]), a = K.pick([2,3,4]), d = K.rndNZ(-9,9);
         let y; do { y = K.rnd(3,60); } while(Number.isInteger(Math.log(y)/Math.log(b)));
         const c = a*y + d, x = Math.log(y)/Math.log(b);
-        return {t:"num", a:R(x, 2), tol:0.01, q:"Löse die Gleichung "+a+" · "+pw(f(b), "x")+sg(d)+" = "+f(c)+"."+rund,
+        return {t:"num", a:R(x, 2), tol:0.005, q:"Löse die Gleichung "+a+" · "+pw(f(b), "x")+sg(d)+" = "+f(c)+"."+rund,
           tip:"Bringe die Potenz allein auf eine Seite: erst "+(d > 0 ? "minus" : "plus")+" "+Math.abs(d)+", dann geteilt durch "+a+".",
           weg:[a+" · "+pw(f(b), "x")+" = "+f(c - d)+" ⇒ "+pw(f(b), "x")+" = "+f(y), "x = lg("+y+") : lg("+f(b)+")", "x ≈ "+f(R(x, 2))]};
       }
       if(v === 1){
         const b = K.pick([2,3,5]), k = K.rndNZ(-3,3); let c; do { c = K.rnd(5,300); } while(Number.isInteger(Math.log(c)/Math.log(b)));
         const x = Math.log(c)/Math.log(b) - k, ex = k > 0 ? "x + "+k : "x − "+(-k);
-        return {t:"num", a:R(x, 2), tol:0.01, q:"Löse die Gleichung "+pw(b, ex)+" = "+c+"."+rund,
+        return {t:"num", a:R(x, 2), tol:0.005, q:"Löse die Gleichung "+pw(b, ex)+" = "+c+"."+rund,
           tip:"Logarithmiere zuerst und löse dann nach x auf.",
           weg:[ex+" = "+logH(b, c)+" = lg("+c+") : lg("+b+") "+gl(Math.log(c)/Math.log(b), 4), "x "+gl(Math.log(c)/Math.log(b), 4)+(k > 0 ? " − "+k : " + "+(-k))+" ≈ "+f(R(x, 2))]};
       }
       /* zwei verschiedene Basen: a · b1^x = c · b2^x */
       const pr = K.pick([[1.2,1.5],[1.05,1.1],[2,3],[1.1,1.3],[1.5,2]]), a = K.pick([3,4,5,8,10]), c = K.pick([1,2]);
       const b1 = pr[0], b2 = pr[1], x = Math.log(a/c)/Math.log(b2/b1);
-      return {t:"num", a:R(x, 2), tol:0.01,
+      return {t:"num", a:R(x, 2), tol:0.005,
         q:"Ab welchem x sind beide Seiten gleich? Löse "+a+" · "+pw(f(b1), "x")+" = "+(c === 1 ? "" : c+" · ")+pw(f(b2), "x")+"."+rund,
         tip:"Bringe beide Potenzen auf eine Seite: "+pw("b<sub>2</sub>", "x")+" : "+pw("b<sub>1</sub>", "x")+" = ("+frH("b<sub>2</sub>","b<sub>1</sub>")+")<sup>x</sup>.",
         weg:["Teile durch "+(c === 1 ? "" : c+" · ")+pw(f(b1), "x")+": "+frH(a, c)+" = ("+frH(f(b2), f(b1))+")<sup>x</sup> = "+pw(f(R(b2/b1, 6)).length > 6 ? "("+f(b2)+" : "+f(b1)+")" : f(R(b2/b1, 6)), "x"),
@@ -13645,7 +13694,7 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
       const rund = " Runde auf eine Nachkommastelle.";
       if(st === 1){
         const p = K.rnd(2,16)/2, q = 1 + p/100, n = Math.log(2)/Math.log(q);
-        return {t:"num", a:R(n, 1), tol:0.1, unit:"Jahre",
+        return {t:"num", a:R(n, 1), tol:0.05, unit:"Jahre",
           q:"Ein Guthaben wird mit "+f(p)+" % pro Jahr verzinst (Zinseszins). Nach wie vielen Jahren hat es sich verdoppelt?"+rund,
           tip:"Verdoppeln heißt: "+pw("q", "n")+" = 2 – der Startbetrag spielt keine Rolle.",
           weg:["q = "+f(q)+", gesucht n mit "+pw(f(q), "n")+" = 2.", "n = lg(2) : lg("+f(q)+")", "n ≈ "+f(R(n, 1))+" Jahre"]};
@@ -13656,7 +13705,7 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
         const B0 = stadt ? K.rnd(20,80)*1000 : ctx[0] === "Algenteppich" ? K.rnd(2,20)*5 : K.rnd(2,20)*100;
         const p = stadt ? K.rnd(3,30)/10 : K.rnd(5,40), faktor = K.pick([3,4,5,10]) , ziel = B0*faktor;
         const q = 1 + p/100, n = Math.log(faktor)/Math.log(q);
-        return {t:"num", a:R(n, 1), tol:0.1, unit:ctx[4],
+        return {t:"num", a:R(n, 1), tol:0.05, unit:ctx[4],
           q:(stadt ? "Eine Stadt hat "+f(B0)+" Einwohner, die Zahl wächst" : (ctx[0] === "Algenteppich" ? "Ein Algenteppich bedeckt "+f(B0)+" m² und wächst" : "Eine Bakterienkultur besteht aus "+f(B0)+" Bakterien und wächst"))+" "+ctx[2]+" um "+f(p)+" %. Nach wie vielen "+ctx[3]+" sind es "+f(ziel)+" "+ctx[1]+"?"+rund,
           tip:"Stelle "+f(B0)+" · "+pw("q", "n")+" = "+f(ziel)+" auf und teile zuerst durch "+f(B0)+".",
           weg:[f(B0)+" · "+pw(f(q), "n")+" = "+f(ziel)+" ⇒ "+pw(f(q), "n")+" = "+faktor, "n = lg("+faktor+") : lg("+f(q)+")", "n ≈ "+f(R(n, 1))+" "+ctx[4]]};
@@ -13664,20 +13713,20 @@ Sonderfälle: log<sub>b</sub>(1) = 0, log<sub>b</sub>(b) = 1, log<sub>b</sub>(${
       const v = K.rnd(0,2);
       if(v === 0){
         const D = K.rnd(4,16)*50, p = K.rnd(10,30), grenze = K.pick([10,20,25,50]), q = 1 - p/100, n = Math.log(grenze/D)/Math.log(q);
-        return {t:"num", a:R(n, 1), tol:0.1, unit:"Stunden",
+        return {t:"num", a:R(n, 1), tol:0.05, unit:"Stunden",
           q:"Ein Patient hat "+f(D)+" mg eines Wirkstoffs im Blut. Jede Stunde baut der Körper "+p+" % davon ab. Nach wie vielen Stunden sind nur noch "+grenze+" mg vorhanden?"+rund,
           tip:"Abnahme: Der Faktor ist 1 − "+p+" : 100.",
           weg:[f(D)+" · "+pw(f(q), "n")+" = "+grenze+" ⇒ "+pw(f(q), "n")+" = "+f(R(grenze/D, 6)), "n = lg("+f(R(grenze/D, 6))+") : lg("+f(q)+")", "n ≈ "+f(R(n, 1))+" Stunden"]};
       }
       if(v === 1){
         const p = K.rnd(2,15), q = 1 - p/100, n = Math.log(0.5)/Math.log(q);
-        return {t:"num", a:R(n, 1), tol:0.1, unit:"Jahre",
+        return {t:"num", a:R(n, 1), tol:0.05, unit:"Jahre",
           q:"Ein radioaktiver Stoff verliert jedes Jahr "+p+" % seiner Masse. Wie groß ist seine Halbwertszeit?"+rund,
           tip:"Halbwertszeit: Nach n Jahren ist nur noch die Hälfte da, also "+pw("q", "n")+" = 0,5.",
           weg:["q = 1 − "+frH(p, 100)+" = "+f(q)+", gesucht n mit "+pw(f(q), "n")+" = 0,5.", "n = lg(0,5) : lg("+f(q)+")", "n ≈ "+f(R(n, 1))+" Jahre"]};
       }
       const T = K.pick([5.3,8,12.3,28.8,30]), rest = K.pick([10,20,25,1]), t = T*Math.log(rest/100)/Math.log(0.5);
-      return {t:"num", a:R(t, 1), tol:0.1, unit: T >= 12 || T === 5.3 ? "Jahre" : "Tage",
+      return {t:"num", a:R(t, 1), tol:0.05, unit: T >= 12 || T === 5.3 ? "Jahre" : "Tage",
         q:"Ein radioaktiver Stoff hat eine Halbwertszeit von "+f(T)+" "+(T >= 12 || T === 5.3 ? "Jahren" : "Tagen")+". Nach welcher Zeit sind nur noch "+rest+" % der Anfangsmenge vorhanden?"+rund,
         tip:"Nach t Zeiteinheiten ist der Anteil "+pw("0,5", frH("t", f(T)))+".",
         weg:[pw("0,5", frH("t", f(T)))+" = "+f(rest/100), frH("t", f(T))+" = lg("+f(rest/100)+") : lg(0,5) "+gl(Math.log(rest/100)/Math.log(0.5), 4), "t ≈ "+f(T)+" · "+f(R(Math.log(rest/100)/Math.log(0.5), 4))+" ≈ "+f(R(t, 1))]};
@@ -19942,7 +19991,7 @@ function frage(text, ja, nein){
     document.body.appendChild(ov); setTimeout(() => ok.focus(), 30);
   });
 }
-const QR_SVG = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 37 37\" class=\"qr\"><title>QR-Code: Karo öffnen</title><path fill=\"#fff\" d=\"M0 0h37v37h-37z\"/><path stroke=\"#13203a\" d=\"M2 2.5h7m2 0h2m2 0h1m2 0h6m1 0h1m2 0h7m-33 1h1m5 0h1m3 0h1m1 0h6m4 0h1m1 0h1m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h4m3 0h2m1 0h3m3 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m5 0h3m3 0h1m1 0h1m3 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m4 0h1m1 0h2m2 0h1m4 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m2 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h3m4 0h1m5 0h2m-23 1h1m1 0h5m2 0h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h1m1 0h5m-31 1h2m1 0h3m1 0h1m1 0h4m1 0h3m1 0h4m1 0h1m2 0h2m1 0h4m-29 1h3m2 0h2m4 0h2m1 0h1m3 0h1m5 0h1m1 0h1m-31 1h1m1 0h4m1 0h1m2 0h1m1 0h1m1 0h1m4 0h1m1 0h2m3 0h1m1 0h3m1 0h1m-32 1h2m3 0h7m2 0h1m2 0h1m3 0h1m1 0h2m2 0h2m1 0h1m-31 1h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h3m3 0h1m2 0h1m1 0h2m4 0h2m-31 1h2m1 0h3m1 0h1m2 0h2m3 0h1m1 0h1m2 0h1m1 0h3m1 0h1m1 0h2m-29 1h1m4 0h1m1 0h1m5 0h1m1 0h4m2 0h4m2 0h1m-31 1h1m1 0h1m3 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h2m1 0h1m1 0h3m2 0h1m-33 1h2m7 0h1m2 0h1m1 0h1m2 0h5m1 0h1m2 0h2m1 0h4m-33 1h2m1 0h2m1 0h3m1 0h1m1 0h1m2 0h3m2 0h1m1 0h1m2 0h1m1 0h2m1 0h2m-32 1h2m2 0h2m3 0h1m2 0h1m1 0h1m1 0h3m2 0h1m2 0h1m2 0h5m-30 1h1m1 0h1m1 0h3m2 0h2m1 0h1m1 0h1m8 0h1m1 0h1m1 0h1m2 0h1m-33 1h2m3 0h1m1 0h1m2 0h1m1 0h1m1 0h2m2 0h1m2 0h5m3 0h2m1 0h1m-33 1h1m1 0h5m1 0h2m3 0h4m1 0h1m2 0h1m2 0h1m2 0h2m2 0h1m-32 1h1m1 0h2m8 0h1m1 0h2m5 0h3m1 0h3m1 0h3m-32 1h1m4 0h5m1 0h2m1 0h2m1 0h1m4 0h7m1 0h1m-23 1h4m2 0h1m3 0h4m2 0h1m3 0h1m1 0h3m-33 1h7m3 0h1m2 0h1m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h2m1 0h2m1 0h3m2 0h3m1 0h2m3 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h1m2 0h2m2 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m1 0h2m1 0h2m2 0h2m5 0h1m1 0h2m2 0h1m2 0h2m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h3m2 0h2m1 0h2m1 0h1m2 0h2m-28 1h1m5 0h1m2 0h2m1 0h1m3 0h1m4 0h2m1 0h1m3 0h3m-31 1h7m1 0h1m1 0h2m1 0h1m2 0h2m1 0h1m3 0h3m1 0h1m1 0h1m1 0h1\"/></svg>";
+const QR_SVG = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 33 33\" class=\"qr\"><title>QR-Code: Karo Schlauer öffnen</title><path fill=\"#fff\" d=\"M0 0h33v33h-33z\"/><path stroke=\"#13203a\" d=\"M2 2.5h7M11 2.5h5M18 2.5h4M24 2.5h7M2 3.5h1M8 3.5h1M10 3.5h1M12 3.5h1M14 3.5h1M16 3.5h4M21 3.5h2M24 3.5h1M30 3.5h1M2 4.5h1M4 4.5h3M8 4.5h1M11 4.5h2M14 4.5h3M18 4.5h1M21 4.5h1M24 4.5h1M26 4.5h3M30 4.5h1M2 5.5h1M4 5.5h3M8 5.5h1M14 5.5h4M20 5.5h2M24 5.5h1M26 5.5h3M30 5.5h1M2 6.5h1M4 6.5h3M8 6.5h1M10 6.5h1M12 6.5h1M14 6.5h1M16 6.5h1M21 6.5h1M24 6.5h1M26 6.5h3M30 6.5h1M2 7.5h1M8 7.5h1M11 7.5h2M15 7.5h1M19 7.5h3M24 7.5h1M30 7.5h1M2 8.5h7M10 8.5h1M12 8.5h1M14 8.5h1M16 8.5h1M18 8.5h1M20 8.5h1M22 8.5h1M24 8.5h7M11 9.5h6M18 9.5h2M22 9.5h1M2 10.5h1M4 10.5h1M6 10.5h1M8 10.5h1M11 10.5h2M16 10.5h2M19 10.5h1M21 10.5h2M26 10.5h1M29 10.5h1M3 11.5h2M7 11.5h1M10 11.5h3M14 11.5h1M16 11.5h2M24 11.5h1M27 11.5h1M30 11.5h1M2 12.5h3M6 12.5h1M8 12.5h1M11 12.5h3M15 12.5h1M20 12.5h1M24 12.5h3M28 12.5h3M7 13.5h1M10 13.5h1M17 13.5h1M19 13.5h1M21 13.5h1M24 13.5h2M29 13.5h1M3 14.5h1M5 14.5h2M8 14.5h2M11 14.5h3M18 14.5h2M24 14.5h1M27 14.5h1M29 14.5h2M2 15.5h2M5 15.5h1M9 15.5h1M11 15.5h1M13 15.5h1M15 15.5h1M17 15.5h4M24 15.5h1M27 15.5h1M30 15.5h1M4 16.5h6M11 16.5h1M16 16.5h3M24 16.5h4M29 16.5h2M2 17.5h1M4 17.5h2M9 17.5h1M12 17.5h1M14 17.5h3M18 17.5h4M25 17.5h3M29 17.5h1M3 18.5h2M6 18.5h1M8 18.5h4M13 18.5h2M16 18.5h2M19 18.5h1M21 18.5h1M24 18.5h1M27 18.5h1M29 18.5h2M3 19.5h1M9 19.5h2M13 19.5h1M16 19.5h2M19 19.5h1M24 19.5h1M27 19.5h2M30 19.5h1M2 20.5h1M5 20.5h1M8 20.5h1M10 20.5h1M12 20.5h4M19 20.5h2M22 20.5h1M24 20.5h1M26 20.5h1M29 20.5h2M3 21.5h3M7 21.5h1M9 21.5h1M11 21.5h1M13 21.5h1M17 21.5h1M19 21.5h1M21 21.5h4M26 21.5h2M29 21.5h1M2 22.5h1M4 22.5h2M8 22.5h1M10 22.5h1M12 22.5h3M18 22.5h3M22 22.5h5M10 23.5h1M12 23.5h1M15 23.5h1M17 23.5h2M22 23.5h1M26 23.5h1M28 23.5h3M2 24.5h7M13 24.5h2M16 24.5h4M21 24.5h2M24 24.5h1M26 24.5h2M29 24.5h2M2 25.5h1M8 25.5h1M11 25.5h3M15 25.5h2M18 25.5h2M21 25.5h2M26 25.5h2M29 25.5h2M2 26.5h1M4 26.5h3M8 26.5h1M10 26.5h1M13 26.5h1M16 26.5h4M22 26.5h5M29 26.5h1M2 27.5h1M4 27.5h3M8 27.5h1M13 27.5h1M16 27.5h2M21 27.5h1M23 27.5h1M25 27.5h2M28 27.5h1M2 28.5h1M4 28.5h3M8 28.5h1M10 28.5h2M13 28.5h2M16 28.5h1M20 28.5h4M25 28.5h3M30 28.5h1M2 29.5h1M8 29.5h1M11 29.5h1M13 29.5h4M18 29.5h3M22 29.5h2M29 29.5h1M2 30.5h7M10 30.5h1M16 30.5h4M22 30.5h2M25 30.5h2M29 30.5h2\"/></svg>";
 const STERNE = n => '<span class="sterne" aria-label="'+n+' von 3 Sternen">'+[0,1,2].map(i => ic("stern", i<n?"an":"")).join("")+'</span>';
 const NOTENWORT = ["","sehr gut","gut","befriedigend","ausreichend","mangelhaft","ungenügend"];
 const unterstrich = '<svg viewBox="0 0 120 18" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12c20-6 45-8 70-6s32 3 44 1"/></svg>';
@@ -20166,7 +20215,7 @@ function kapitelVon(k, fach){
 }
 function fortschritt(k, fach){
   const ts = themenVon(k, fach);
-  const geuebt = ts.filter(t => S.themen[t.id] && (S.themen[t.id].runden || S.themen[t.id].tests)).length;
+  const geuebt = ts.filter(t => S.themen[t.id] && (S.themen[t.id].runden || S.themen[t.id].tests || S.themen[t.id].gesamt)).length;
   const noten = ts.map(t => S.themen[t.id] && S.themen[t.id].note).filter(Boolean);
   return {gesamt:ts.length, geuebt:geuebt, schnitt: noten.length ? noten.reduce((a,b)=>a+b,0)/noten.length : null};
 }
@@ -20390,7 +20439,8 @@ function widgetInnen(it, opt){
   if(t === "point"){
     const box = el("div","nl-pick"); let val = null; let gesperrt = false;
     const draw = () => {
-      box.innerHTML = K.nlSvg({min:it.line.min, max:it.line.max, step:it.line.step, labels:it.line.labels, marks: val === null ? [] : [{v:val, label:K.fmt(val)}]});
+      /* Der Wert steht erst nach dem Prüfen am Pfeil, sonst könnte man einfach tippen, bis die gesuchte Zahl dasteht */
+      box.innerHTML = K.nlSvg({min:it.line.min, max:it.line.max, step:it.line.step, labels:it.line.labels, marks: val === null ? [] : [{v:val, label:gesperrt ? K.fmt(val) : ""}]});
       box.querySelector("svg").addEventListener("click", ev => {
         if(gesperrt) return;
         const svg = ev.currentTarget, r = svg.getBoundingClientRect();
@@ -20403,9 +20453,17 @@ function widgetInnen(it, opt){
     };
     draw();
     w.el.appendChild(box);
-    if(!opt.kompakt) w.el.appendChild(el("div","hinweis","Tippe auf die passende Stelle. Du kannst so oft neu tippen, wie du willst."));
+    /* Feinjustieren mit Pfeilen: am Handy liegen die Striche oft nur wenige Pixel auseinander */
+    const schieb = d => { if(gesperrt) return; const mitte = it.line.min + Math.round((it.line.max - it.line.min)/2/it.line.step)*it.line.step;
+      val = val === null ? mitte : Math.max(it.line.min, Math.min(it.line.max, +(val + d*it.line.step).toFixed(6))); draw(); ch(); };
+    const fein = el("div","nl-fein");
+    const links = btn("btn ghost klein", "◀", () => schieb(-1)), rechts = btn("btn ghost klein", "▶", () => schieb(1));
+    links.setAttribute("aria-label", "Pfeil einen Strich nach links"); rechts.setAttribute("aria-label", "Pfeil einen Strich nach rechts");
+    fein.append(links, el("span","leise","einen Strich verschieben"), rechts);
+    w.el.appendChild(fein);
+    if(!opt.kompakt) w.el.appendChild(el("div","hinweis","Tippe auf die passende Stelle. Mit ◀ ▶ kannst du den Pfeil genau einstellen."));
     w.get = () => val; w.set = v => { val = typeof v === "number" ? v : null; draw(); };
-    w.sperren = () => { gesperrt = true; };
+    w.sperren = () => { gesperrt = true; fein.hidden = true; draw(); };
     return w;
   }
 
@@ -20431,8 +20489,8 @@ function widgetInnen(it, opt){
 
 /* ================= Hauptmenü ================= */
 let bereich = "start", zurueck = null;
-const MENUE = [["start","home","Start","Start","#/"],["lernen","buch","Lernen","Lernen","#/lernen"],["heft","heft","Hausaufgaben","Heft","#/heft"],
-  ["ki","ki","KI-Trainer","KI","#/ki"],["buecher","regal","Nachschlagen","Bücher","#/buecher"],["zeugnis","zeugnis","Zeugnis","Zeugnis","#/zeugnis"]];
+const MENUE = [["start","home","Start","Start","#/"],["lernen","buch","Lernen","Lernen","#/lernen"],["heft","heft","Heft","Heft","#/heft"],
+  ["ki","ki","KI","KI","#/ki"],["buecher","regal","Bücher","Bücher","#/buecher"],["zeugnis","zeugnis","Zeugnis","Zeugnis","#/zeugnis"]];
 let xpGezeigt = null;
 function zeigeTopnav(){
   const lv = level(S.xp);
@@ -20453,7 +20511,7 @@ function zeigeTopnav(){
   const tab = document.getElementById("tabbar");
   if(tab) tab.innerHTML = MENUE.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
   const nav = document.getElementById("topnav");
-  if(nav) nav.innerHTML = '<a class="xp-pill" href="#/profil" style="text-decoration:none" title="Level '+lv.n+' · '+K.fmt(S.xp)+' XP">'+ic("blitz")+'<span class="num">Level '+lv.n+'</span></a>'+
+  if(nav) nav.innerHTML = '<a class="xp-pill" href="#/profil" style="text-decoration:none" title="Level '+lv.n+' · '+K.fmt(S.xp)+' XP">'+ic("blitz")+'<span class="num"><span class="lv-w">Level </span>'+lv.n+'</span></a>'+
     '<a class="icon-btn" href="#/profil" aria-label="Profil"><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span></a>';
   if(xpAlt !== null && S.xp > xpAlt && !ruhig()){
     const karte = leiste && leiste.querySelector(".lv-karte"), zahl = karte && karte.querySelector(".num"), bar = karte && karte.querySelector(".bar i");
@@ -20489,6 +20547,7 @@ function route(){
   else if(a === "lernen") seiteLernen(false);
   else if(a === "klasse" && KLASSEN.indexOf(+b) >= 0) seiteKlasse(+b);
   else if(a === "englisch" && EN_KLASSEN.indexOf(+b) >= 0) seiteKlasse(+b, FACH_E);
+  else if(a === "englisch" && +b > 7) seiteKlasse(7, FACH_E, +b);
   else if(a === "vokabeln") seiteVokabeln(b);
   else if(a === "fehler") seiteFehler(b);
   else if(a === "mix") seiteMix();
@@ -20564,7 +20623,7 @@ function seiteStart(){
     html += '<div class="section-h"><h2>Für dich in Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(k, 4).map(themaZeile).join("")+'</div>';
     const ek = EN_KLASSEN.indexOf(k) >= 0 ? k : (k > 7 ? 7 : 5);
-    html += '<div class="section-h"><h2>Englisch</h2><a class="btn ghost klein" href="#/englisch/'+ek+'">Alle Themen '+ic("rechts")+'</a></div>'+
+    html += '<div class="section-h"><h2>Englisch'+(ek !== k ? ' <small class="leise">Wiederholung aus Klasse '+ek+'</small>' : '')+'</h2><a class="btn ghost klein" href="#/englisch/'+(ek !== k ? k : ek)+'">Alle Themen '+ic("rechts")+'</a></div>'+
             '<div class="themen">'+empfehlungen(ek, 3, FACH_E).map(themaZeile).join("")+vokabelZeile()+'</div>';
   }else{
     html += '<div class="section-h"><h2>Wähle deine Klasse</h2></div><div class="hefte">'+KLASSEN.map(heftHtml).join("")+'</div>';
@@ -20607,7 +20666,7 @@ function themaZeile(t){
 }
 
 /* ================= Klassenseite ================= */
-function seiteKlasse(k, fach){
+function seiteKlasse(k, fach, gewollt){
   fach = fach || FACH_M;
   kFarbe(fach === FACH_E ? "e"+k : k);
   crumbs([{t:"Lernen", href:"#/lernen"}, {t:(fach === FACH_E ? "Englisch " : "Klasse ")+k}]);
@@ -20617,6 +20676,7 @@ function seiteKlasse(k, fach){
     '<div class="zahlen"><div><b class="num">'+f.gesamt+'</b><span>Themen</span></div><div><b class="num">'+f.geuebt+'</b><span>geübt</span></div>'+
     '<div><b class="num">'+(f.schnitt ? K.fmtD(f.schnitt,1) : "–")+'</b><span>Ø Note</span></div></div></section>';
   const kap = kapitelVon(k, fach);
+  if(fach === FACH_E && gewollt) html += '<div class="card pad en-hinweis">'+ic("birne")+'<p>Englisch für Klasse '+gewollt+' ist noch in Arbeit. Bis dahin kannst du hier Klasse 7 wiederholen: Das kommt in Klasse '+gewollt+' oft wieder dran.</p></div>';
   if(fach === FACH_E) html += '<section class="kapitel"><h2>Wörter lernen</h2><div class="themen">'+vokabelZeile()+'</div></section>';
   if(!kap.length) html += '<div class="card leer-hinweis" style="margin-top:20px">Die Themen für Klasse '+k+' sind noch in Arbeit.</div>';
   kap.forEach(g => { html += '<section class="kapitel"><h2>'+esc(g.name)+'</h2><div class="themen">'+g.themen.map(themaZeile).join("")+'</div></section>'; });
@@ -20665,7 +20725,7 @@ function vokabelStand(liste){
 }
 function vokabelZeile(){
   const s = vokabelStand();
-  return '<a class="th" data-k="ev" href="#/vokabeln">'+icoHtml("vok")+'<div><h3>Vokabeltrainer</h3><p>'+(s.faellig ? s.faellig+" Wörter sind heute dran" : "Karteikasten mit "+s.gesamt+" Wörtern")+'</p></div>'+
+  return '<a class="th" data-k="ev" href="#/vokabeln">'+icoHtml("vok")+'<div><h3>Vokabeltrainer</h3><p>'+(s.faellig ? (s.faellig === 1 ? "1 Wort ist heute dran" : s.faellig+" Wörter sind heute dran") : "Karteikasten mit "+s.gesamt+" Wörtern")+'</p></div>'+
     '<div class="status">'+(s.faellig ? '<span class="chip laeuft">'+s.faellig+'</span>' : '<span class="chip">'+s.sicher+'/'+s.gesamt+'</span>')+'</div></a>';
 }
 function seiteVokabeln(id){
@@ -20772,7 +20832,7 @@ function seiteProfil(){
     '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div><div id="hgplatz"></div></div>'+
     abzeichenHtml()+'<div id="freundeinst"></div>'+
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
-    '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen und bei claude.ai anmelden. Dann auf den Startbildschirm legen:</p>'+
+    '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen, ganz ohne Anmeldung. Dann auf den Startbildschirm legen:</p>'+
     '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
     '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.</p>'+
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
@@ -20907,7 +20967,7 @@ function nachschlagen(q){
 function seiteBuecher(){
   crumbs([]);
   const q0 = hashQuery();
-  app.innerHTML = '<header class="seiten-kopf"><h1>Nachschlagen</h1><p>Buch vergessen? Hier findest du das Wichtigste aus jedem Fach: Formeln, Verben, Periodensystem, Zeitleisten und die Bibel.</p></header>'+
+  app.innerHTML = '<header class="seiten-kopf"><h1>Bücher zum Nachschlagen</h1><p>Buch vergessen? Hier findest du das Wichtigste aus jedem Fach: Formeln, Verben, Periodensystem, Zeitleisten und die Bibel.</p></header>'+
     '<label class="suche lernen-suche" for="nq">'+ic("suche")+'<input class="suche-feld" id="nq" type="search" placeholder="In allen Büchern suchen, z. B. Satz des Pythagoras, went, Natrium" autocomplete="off"></label>'+
     '<div id="ntreffer"></div><section class="card pad echte-buecher"><div class="eb-kopf">'+ic("regal")+'<div><h2>Deine echten Schulbücher</h2>'+
     '<p>Die Bücher aus dem Unterricht (z. B. <b>Access</b> in Englisch) gibt es digital mit allen Seiten, wenn deine Schule sie für dich freigeschaltet hat. Für dich ist das kostenlos.</p></div></div>'+
@@ -20946,7 +21006,7 @@ function seiteBuch(id, ab){
   if(id === "bibel"){ seiteBibel(); return; }
   const b = buchById[id];
   if(!b){ location.hash = "#/buecher"; return; }
-  crumbs([{t:"Nachschlagen", href:"#/buecher"}, {t:b.titel}]);
+  crumbs([{t:"Bücher", href:"#/buecher"}, {t:b.titel}]);
   const q0 = hashQuery();
   const wrap = el("div","runner");
   wrap.innerHTML = '<div class="th-head">'+fachTag(b.fach, true)+'<div><div class="eyebrow">'+esc(b.fach)+' · Klasse '+esc(b.klassen)+'</div><h1>'+esc(b.titel)+'</h1><p>'+esc(b.kurz)+'</p></div></div>'+
@@ -20963,7 +21023,7 @@ function seiteBuch(id, ab){
   }
 }
 function seiteBibel(){
-  crumbs([{t:"Nachschlagen", href:"#/buecher"}, {t:"Bibel"}]);
+  crumbs([{t:"Bücher", href:"#/buecher"}, {t:"Bibel"}]);
   const B = K.bibel;
   const wrap = el("div","runner stack");
   wrap.innerHTML = '<div class="th-head">'+fachTag("Religion", true)+'<div><div class="eyebrow">Religion · Lutherbibel 1912</div><h1>Bibel</h1>'+
@@ -21220,7 +21280,7 @@ function zeigeUeben(th, box){
       fbBox.appendChild(d);
     }else if(res.st === "falsch"){
       w.sperren(); w.zeigeRichtig();
-      fbBox.appendChild(fb("bad", ic("kreuz")+"Leider falsch", '<p class="loes">Richtig ist: <b>'+K.solHtml(it)+'</b></p><div class="eyebrow" style="margin-top:4px">So geht\'s</div>'+wegHtml(it)));
+      fbBox.appendChild(fb("bad", ic("kreuz")+"Leider falsch", (res.form ? '<p>'+esc(res.form)+'</p>' : '')+'<p class="loes">Richtig ist: <b>'+K.solHtml(it)+'</b></p><div class="eyebrow" style="margin-top:4px">So geht\'s</div>'+wegHtml(it)));
     }else if(res.v === 1){
       fbBox.appendChild(fb("bad", ic("kreuz")+"Noch nicht ganz", '<p>'+(res.form ? esc(res.form) : "Prüf deine Rechnung noch einmal.")+' Du hast noch einen Versuch.</p>'));
     }
@@ -21233,6 +21293,12 @@ function zeigeUeben(th, box){
     rechts.appendChild(hauptB); akt.appendChild(rechts); card.appendChild(akt);
     wrap.appendChild(card);
     if(feinZeiger){ if(res.st) hauptB.focus({preventScroll:true}); else w.fokus(); }
+    /* Am Handy liegt die Rückmeldung sonst unter dem Bildschirmrand: bis zum Weiter-Knopf mitscrollen */
+    if(jetztFrisch && fbBox.firstChild) requestAnimationFrame(() => {
+      const tb = document.querySelector(".tabbar"), tbH = tb && getComputedStyle(tb).display !== "none" ? tb.getBoundingClientRect().height : 0;
+      const unten = akt.getBoundingClientRect().bottom, frei = innerHeight - tbH - 12;
+      if(unten > frei) window.scrollBy({top:Math.min(unten - frei + 12, fbBox.getBoundingClientRect().top - 90), behavior:ruhig() ? "auto" : "smooth"});
+    });
   }
   function fb(art, kopf, body){ const d = el("div","fb "+art); d.innerHTML = '<div class="kopf">'+kopf+'</div>'+body; return d; }
   function haupt(){ const res = R.res[R.i]; if(res.st) weiter(); else pruefen(); }
@@ -21259,6 +21325,7 @@ function zeigeUeben(th, box){
     }else if(res.v < 2){
       res.form = r.form || null;
     }else{
+      res.form = r.form || null;
       res.st = "falsch"; s.gesamt++;
       aufgabeGeschafft(0);
       if(it.fid) fehlerErgebnis(it.fid, "falsch"); else fehlerMerken(it.thId || th.id, it.herkunft || th.titel, it);
@@ -21485,7 +21552,12 @@ function seiteBlatt(b){
 
   const leiste = el("div","leiste"); const lw = el("div","wrap schmal"); leiste.appendChild(lw);
   const info = el("span","rechts", K.fmt(max)+" Punkte möglich");
-  lw.appendChild(btn("btn primary", ic("haken")+"Auswerten", () => auswerten(true)));
+  lw.appendChild(btn("btn primary", ic("haken")+"Auswerten", async () => {
+    const leer = reg.filter(r => K.leer(r.it, r.w.get())).length;
+    if(leer === reg.length && !await frage("Du hast noch nichts eingetragen. Trotzdem auswerten? Das ergibt eine 6 im Zeugnis.", "Trotzdem auswerten", "Weiter lösen")) return;
+    if(leer && leer < reg.length && !await frage("Noch "+leer+" Aufgabe"+(leer === 1 ? " ist" : "n sind")+" leer. Trotzdem auswerten?", "Auswerten", "Weiter lösen")) return;
+    auswerten(true);
+  }));
   lw.appendChild(btn("btn", ic("auge")+"Lösungen", () => {
     reg.forEach(r => { r.w.set(K.solInput(r.it)); B.ans[r.k] = r.w.get(); setzeFb(r, null); });
     B.checked = false; ergebnis.innerHTML = ""; info.textContent = K.fmt(max)+" Punkte möglich"; speichern();
@@ -21939,6 +22011,8 @@ const kiWahl = {art:"arbeit", fach:null, aus:{}, extra:[], karo:{}, verboten:"",
 let kiLauf = null;
 /* Wird die KI-Antwort am Längenlimit abgeschnitten (oder ist sie leicht kaputt), rettet Karo alles,
    was vollständig angekommen ist: kaputte Zeichen reparieren, nach der letzten ganzen Aufgabe abschneiden, Klammern schließen. */
+/* Gibt die KI die ganze Rundungsstufe als Toleranz an (0.1 bei einer Nachkommastelle), zählt sonst auch falsch Gerundetes */
+function halbeStufe(t){ const e = Math.log10(t); return t > 0 && Math.abs(e - Math.round(e)) < 1e-9 ? t/2 : t; }
 function jsonRetten(roh){
   if(typeof roh !== "string") return null;
   const start = roh.search(/[\[{]/);
@@ -22059,9 +22133,9 @@ function kiAufgabe(r){
     const it = {t:t, q:sauber(r.q, 1500), p:Math.max(1, Math.min(6, Math.round(Number(r.p) || 2)))};
     if(!it.q.replace(/<[^>]+>/g,"").trim()) return null;
     if(r.unit) it.unit = sauberText(r.unit, 20);
-    if(t === "num"){ it.a = zahl(r.a); if(r.tol) it.tol = Math.abs(zahl(r.tol)); if(r.stellen !== undefined) it.stellen = Math.max(0, Math.min(4, Math.round(zahl(r.stellen)))); }
+    if(t === "num"){ it.a = zahl(r.a); if(r.tol) it.tol = halbeStufe(Math.abs(zahl(r.tol))); if(r.stellen !== undefined) it.stellen = Math.max(0, Math.min(4, Math.round(zahl(r.stellen)))); }
     else if(t === "nums"){
-      it.felder = (r.felder||[]).slice(0,8).map(f => { const o = {a:zahl(f.a)}; if(f.l) o.l = sauberText(f.l, 24); if(f.tol) o.tol = Math.abs(zahl(f.tol)); if(f.unit) o.unit = sauberText(f.unit, 12); return o; });
+      it.felder = (r.felder||[]).slice(0,8).map(f => { const o = {a:zahl(f.a)}; if(f.l) o.l = sauberText(f.l, 24); if(f.tol) o.tol = halbeStufe(Math.abs(zahl(f.tol))); if(f.unit) o.unit = sauberText(f.unit, 12); return o; });
       if(!it.felder.length) return null;
       /* Kaputte Aufgaben aussortieren: Zahl als Code für ein Wort, z. B. Feld "Wort (parallel/senkrecht)" */
       if((r.felder||[]).some(f => /wort|begriff|name|ja\s*\/\s*nein|[a-zäöü]{3,}\s*\/\s*[a-zäöü]{3,}/i.test(String(f.l || "")))) return null;
@@ -22114,7 +22188,7 @@ function kiThemen(){
 }
 const KI_FORMATE =
     "Antwortformate (Feld t):\n"+
-    '- num: eine Zahl. {"t":"num","q":"…","a":12.5,"unit":"cm","tol":0.1}\n'+
+    '- num: eine Zahl. {"t":"num","q":"…","a":12.5,"unit":"cm","tol":0.05}\n'+
     '- nums: mehrere Zahlen. Entweder Lücken [] im Text: {"t":"nums","q":"3 · [] = 12 und [] + 4 = 9","felder":[{"a":4},{"a":5}]} oder beschriftet: {"t":"nums","q":"Löse das Gleichungssystem …","felder":[{"l":"x =","a":2},{"l":"y =","a":-1}]}\n'+
     '- frac: ein Bruch. {"t":"frac","q":"…","a":[3,4],"kurz":true}\n'+
     '- expr: ein Term mit Variablen. {"t":"expr","q":"Vereinfache …","a":"5x - 3","vars":["x"],"einfach":true} (ohneKlammer:true, wenn Klammern aufgelöst sein müssen)\n'+
@@ -22166,7 +22240,7 @@ function kiPrompt(){
     "- Jede Aufgabe muss eindeutig lösbar sein und genau eine richtige Antwort haben. Keine offenen Aufgaben wie Aufsätze oder Begründungen – nur die Antwortformate unten.\n"+
     "- Hausaufgaben wie „Buch S. 112 Nr. 3“ kennst du nicht wörtlich: nutze nur das Thema dahinter.\n"+
     (fremd ? "- Fremdsprache: Aufgabenstellungen auf Deutsch, Beispielsätze und Lösungen in der Fremdsprache, passend zu Klasse "+kl+". Bei Lückentexten mit Wörtern nimm t=\"text\" mit allen korrekten Schreibweisen.\n" : "")+
-    (mathe ? "- Rechenaufgaben: gib Zahlen in \"a\" als JSON-Zahl mit Punkt an. Wenn gerundet werden muss, sage in q worauf, und setze \"tol\" (z. B. 0.1). Taschenrechner ist erlaubt.\n" :
+    (mathe ? "- Rechenaufgaben: gib Zahlen in \"a\" als JSON-Zahl mit Punkt an. Wenn gerundet werden muss, sage in q worauf, und setze \"a\" auf den gerundeten Wert und \"tol\" auf die halbe Rundungsstufe (0.05 bei einer Nachkommastelle). Taschenrechner ist erlaubt.\n" :
       "- Das ist KEINE Mathearbeit: frag Fachwissen ab (Begriffe, Namen, Orte, Zuordnungen, Reihenfolgen, Ursachen und Folgen). Keine Diagramme, keine Zahlentabellen, keine Rechenaufgaben. Höchstens EINE Aufgabe darf eine Zahl als Antwort haben, und nur wenn sie fest zum Fach gehört (z. B. Maßstab in Erdkunde).\n")+
     (mathe ? "- Nutze Grafiken (fig) oder Material, wo es hilft: mindestens ein Drittel der Aufgaben. Die Grafik muss genau zu den Zahlen der Aufgabe passen.\n"
            : "- Material (ein kurzer Lesetext oder eine Quelle) nur, wenn es wirklich hilft.\n")+
@@ -22472,7 +22546,7 @@ function fotoPrompt(kl, wunsch, gelesen){
     "3. Eine Probe-Klassenarbeit mit genau 8 Aufgaben, andere Aufgaben als bei den Übungen, mit Punkten \"p\".\n"+
     "Schreib Aufgaben vom Bild nicht nur ab: nimm ähnliche Aufgaben mit anderen Zahlen oder Beispielen. Ist kein Schulstoff zu erkennen, setze \"fehler\" auf einen kurzen Satz und lass den Rest leer.\n\n"+
     "Regeln:\n- Jede Aufgabe eindeutig lösbar, genau eine richtige Antwort, keine offenen Aufgaben.\n"+
-    "- Zahlen in \"a\" als JSON-Zahl mit Punkt; bei Rundung in q sagen worauf und \"tol\" setzen.\n"+
+    "- Zahlen in \"a\" als JSON-Zahl mit Punkt; bei Rundung in q sagen worauf, \"a\" gerundet angeben und \"tol\" auf die halbe Rundungsstufe setzen (0.05 bei einer Nachkommastelle).\n"+
     "- Fremdsprachen: Aufgabenstellung auf Deutsch, Beispiele in der Fremdsprache; kurze Wortantworten mit t=\"text\" und allen korrekten Schreibweisen.\n"+
     "- Nutze Grafiken (fig) oder Material, wo es hilft. In Texten nur <b>, <i>, <sup>, <sub>, <br>.\n"+
     "- Bei t=\"text\" und bei Lücken: nimm ALLE Antworten in a auf, die auch richtig sind (andere Namen, übergeordnete Orte, Schreibweisen), z. B. Nullmeridian: [\"Greenwich\",\"London\",\"Greenwich (London)\"].\n"+
@@ -22974,7 +23048,23 @@ function hintergrundSetzen(){
   }
   hg.innerHTML = h;
   if(art === "glas") Glas.einrichten(hg); else Glas.c = null;
+  hammerKnopf(art === "glas");
 }
+/* Hammer: Am Handy gibt es kaum freie Stellen. Mit dem Hammer kann man überall hintippen, bis man ihn wieder weglegt. */
+function hammerAus(){ const f = document.getElementById("hammer-flaeche"); if(f) f.remove(); const k = document.getElementById("hammer"); if(k){ k.classList.remove("an"); k.setAttribute("aria-pressed","false"); } }
+function hammerKnopf(zeigen){
+  let k = document.getElementById("hammer");
+  if(!zeigen){ hammerAus(); if(k) k.remove(); return; }
+  if(k) return;
+  k = btn("hammer-knopf", "🔨", () => {
+    if(document.getElementById("hammer-flaeche")){ hammerAus(); return; }
+    const f = el("div","hammer-flaeche", '<span class="hammer-hinweis">Tipp irgendwo hin! Nochmal 🔨 = fertig</span>'); f.id = "hammer-flaeche";
+    document.body.appendChild(f); k.classList.add("an"); k.setAttribute("aria-pressed","true");
+  });
+  k.id = "hammer"; k.setAttribute("aria-label","Hammer: Glas zerbrechen"); k.setAttribute("aria-pressed","false");
+  document.body.appendChild(k);
+}
+window.addEventListener("hashchange", hammerAus);
 /* ================= Glas zum Zerbrechen =================
    Tippen auf eine freie Stelle im Hintergrund: 1. Sprung, 2. größerer Riss, 3. die Scheibe zerspringt.
    Gezeichnet auf einer Leinwand hinter den Karten, die Karten aus Milchglas verschwimmen die Risse. */
@@ -23114,7 +23204,7 @@ function hintergrundWahl(){
   HINTERGRUENDE.forEach(([id, e, name]) => {
     const b = btn("hg-kachel hgv-"+id, '<span class="hg-vorschau"></span><span class="hg-name">'+e+' '+esc(name)+'</span>', () => {
       S.hg = id; speichern(); hintergrundSetzen(); themaSetzen();
-      if(id === "glas") toast("Tipp: Tippe 3-mal auf eine freie Stelle im Hintergrund!");
+      if(id === "glas") toast("Tipp: Nimm den Hammer 🔨 unten rechts und tipp 3-mal auf den Bildschirm!");
       box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
     });
     b.setAttribute("aria-pressed", (S.hg || "bunt") === id ? "true" : "false"); box.appendChild(b);
@@ -23202,7 +23292,7 @@ function freundSvg(stufe, laune, extra){
 }
 function freundSpruch(stufe, laune){
   const rest = Math.max(0, TAGESZIEL - heuteN()), f = freund();
-  if(stufe === 0){ const bis = 300 - S.xp; return bis > 0 ? "*klopf klopf* … Noch "+bis+" XP, dann schlüpfe ich!" : "*knack* Gleich bin ich da!"; }
+  if(stufe === 0){ const bis = 300 - S.xp; return bis > 0 ? K.pick(["*klopf klopf* … Noch "+bis+" XP, dann schlüpfe ich!", "Bei Level 3 schlüpfe ich! Noch "+bis+" XP.", "Jede Aufgabe macht mich stärker. Noch "+bis+" XP!", "Hallo da draußen! Löst du Aufgaben, damit ich rauskomme? 🥚"]) : "*knack* Gleich bin ich da!"; }
   const liste = {
     schlaf:["Zzz … Ich hab dich vermisst!", "Wollen wir heute ein bisschen üben?", "Ich hab geträumt, dass wir zusammen Aufgaben lösen …"],
     hunger:["Ich hab Hunger! Jede gelöste Aufgabe ist Futter für mich.", "Noch "+rest+" Aufgaben, dann bin ich satt.", "Lust auf den Tagesmix? Da ist alles gemischt drin!"],
@@ -23322,8 +23412,7 @@ function freundKarte(){
     const t = performance.now();
     if(t < gesperrtBis || t < klickSperre) return;
     klicks.push(t); while(klicks.length && t - klicks[0] > 2500) klicks.shift();
-    if(st.stufe === 0){ leben.mach("wackeln-stark", 900); herz("✨"); sag(freundSpruch(0, laune)); return; }
-    if(st.laune === "schlaf" && t > wachBis){
+    if(st.stufe > 0 && st.laune === "schlaf" && t > wachBis){
       st.laune = "hunger"; wachBis = t + 6000;
       tier.innerHTML = freundSvg(st.stufe, "hunger"); c.classList.remove("laune-schlaf"); c.classList.add("laune-hunger");
       leben.mach("gaehnen", 1700); sag("Huch! Ich bin wach! Lass uns ein bisschen üben?");
@@ -23335,6 +23424,7 @@ function freundKarte(){
       leben.schwindel(3600, () => { tier.classList.remove("gesperrt"); if(document.body.contains(tier)) sag(K.pick(["Puh … jetzt ist alles wieder gerade! 😅","Uff, die Welt dreht sich nicht mehr!","Nochmal? Nee, lieber nicht! 😵"])); });
       sag("Hihi, mir ist ganz schwindelig! 😵‍💫"); herz("💫"); return;
     }
+    if(st.stufe === 0){ leben.mach("wackeln-stark", 900); herz("✨"); sag(freundSpruch(0, laune)); return; }
     const a = K.pick(["hops","hops","drehen","winken","tanzen"]);
     leben.mach(a, {hops:750, drehen:900, winken:1500, tanzen:2000}[a]); herz();
     sag(freundSpruch(st.stufe, st.laune));
@@ -23342,7 +23432,7 @@ function freundKarte(){
   /* Anfassen: ziehen und loslassen (federt zurück), lange drücken (kitzeln), hin und her reiben (streicheln) */
   let druck = null, kitzelUhr = null, streichelWeg = 0, streichelZeit = 0, streichelPause = 0;
   const streicheln = () => {
-    const t = performance.now(); if(t < streichelPause || st.stufe === 0) return; streichelPause = t + 4000;
+    const t = performance.now(); if(t < streichelPause) return; streichelPause = t + 4000;
     leben.gluecklich(2200); for(let i = 0; i < 4; i++) setTimeout(() => herz(K.pick(["❤️","💕","💖"])), i*180);
     sag(K.pick(["Mmmh, das ist schön … ☺️","Mehr streicheln, bitte! 🥰","Du bist mein Lieblingsmensch! 💕"]));
   };
@@ -23358,7 +23448,7 @@ function freundKarte(){
   };
   if(!ruhig()){
     tier.addEventListener("pointerdown", e => {
-      if(performance.now() < gesperrtBis || st.stufe === 0) return;
+      if(performance.now() < gesperrtBis) return;
       druck = {x:e.clientX, y:e.clientY, lx:0, ly:0, weg:0, maxAbstand:0, px:e.clientX, py:e.clientY, gezogen:false, gekitzelt:false};
       try{ tier.setPointerCapture(e.pointerId); }catch(x){}
       clearTimeout(kitzelUhr);

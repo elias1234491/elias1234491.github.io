@@ -332,6 +332,46 @@ sup, sub{font-size:.7em; line-height:0}
 .hammer-flaeche{position:fixed; inset:0; z-index:61; cursor:crosshair; touch-action:manipulation}
 .hammer-hinweis{position:fixed; left:50%; top:calc(12px + env(safe-area-inset-top, 0px)); transform:translateX(-50%); background:rgba(19,32,58,.85); color:#fff; font-weight:700; font-size:14px; padding:8px 14px; border-radius:99px; white-space:nowrap; pointer-events:none}
 @media (max-width:999.98px){ .hammer-knopf{bottom:calc(84px + env(safe-area-inset-bottom, 0px))} }
+/* ================= Stundenplan ================= */
+.plan-gitter{display:grid; gap:6px; padding:12px; overflow:hidden}
+.plan-ecke{min-height:10px}
+.plan-tag{font-weight:800; text-align:center; padding:6px 4px; border-radius:10px; font-size:15px}
+.plan-tag.heute{background:var(--brand-soft); color:var(--brand)}
+.plan-tag small, .plan-liste-h small{font-size:11px; text-transform:uppercase; letter-spacing:.06em; margin-left:4px; opacity:.8}
+.plan-zeit{display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:1px; border:none; background:none; color:var(--ink-2); font:inherit; cursor:pointer; padding:4px 6px; border-radius:10px; text-align:left}
+.plan-zeit b{font-size:16px; color:var(--ink)} .plan-zeit small{font-size:12px; font-variant-numeric:tabular-nums}
+.plan-zeit:hover{background:var(--paper-2)}
+.plan-feld{position:relative; min-height:64px; border-radius:12px; border:1.5px dashed var(--line-2); background:transparent; font:inherit; color:var(--ink); cursor:pointer; padding:8px 10px;
+  display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:2px; text-align:left; min-width:0; transition:transform .12s, box-shadow .12s}
+.plan-feld:hover{transform:translateY(-1px); box-shadow:var(--shadow-1)}
+.plan-feld.voll{border:none; background:color-mix(in srgb, var(--f) 16%, var(--paper)); box-shadow:inset 4px 0 0 var(--f)}
+.plan-feld b{font-size:14.5px; line-height:1.2; overflow-wrap:anywhere; max-width:100%}
+.plan-feld small{font-size:12px; color:var(--ink-2); overflow-wrap:anywhere; max-width:100%}
+.plan-feld .plan-ha{font-style:normal; font-size:11.5px; font-weight:700; color:var(--bad)}
+.plan-feld.jetzt{outline:3px solid var(--gold); outline-offset:1px}
+.plan-feld.jetzt::after, .plan-feld.gleich::after{content:"jetzt"; position:absolute; top:-8px; right:6px; background:var(--gold); color:#3a2a00; font-size:10.5px; font-weight:800; padding:1px 7px; border-radius:99px; text-transform:uppercase; letter-spacing:.04em}
+.plan-feld.gleich{outline:2px dashed var(--gold); outline-offset:1px}
+.plan-feld.gleich::after{content:"gleich"}
+.plan-plus{color:var(--ink-3); opacity:.6; align-self:center} .plan-plus .ic{width:20px; height:20px}
+.plan-tage{display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:4px; padding:4px; background:var(--paper); border:1px solid var(--line); border-radius:14px; margin-bottom:12px; box-shadow:var(--shadow-1)}
+.plan-tab{height:44px; border:none; border-radius:10px; background:none; font:inherit; font-weight:800; color:var(--ink-2); cursor:pointer; position:relative}
+.plan-tab[aria-pressed="true"]{background:var(--brand); color:#fff}
+.plan-tab.heute::after{content:""; position:absolute; bottom:5px; left:50%; width:6px; height:6px; margin-left:-3px; border-radius:50%; background:var(--gold)}
+.plan-liste{padding:14px; display:flex; flex-direction:column; gap:8px}
+.plan-liste-h{font-size:19px; margin-bottom:4px}
+.plan-zeile{display:grid; grid-template-columns:92px minmax(0, 1fr); gap:8px; align-items:stretch}
+.plan-unten{margin-top:14px}
+.plan-doppel{flex-direction:row !important; align-items:center; gap:10px !important; font-weight:600 !important}
+.plan-doppel input{width:22px; height:22px}
+.plan-karte{display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit; margin-top:14px}
+.plan-karte-kopf{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+.plan-karte h3{display:flex; align-items:center; gap:8px; font-size:18px}
+.plan-chips{display:flex; flex-wrap:wrap; gap:6px}
+.plan-chip{display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:99px; background:color-mix(in srgb, var(--f) 16%, var(--paper)); box-shadow:inset 3px 0 0 var(--f); font-size:14px; font-weight:600}
+.plan-chip i{font-style:normal; font-size:12px}
+.plan-chip small{font-size:10.5px; font-weight:800; text-transform:uppercase; background:var(--gold); color:#3a2a00; border-radius:99px; padding:1px 6px}
+.plan-chip.jetzt{outline:2px solid var(--gold)}
+.dialog.formular input[type="time"]{font:inherit; font-size:17px; padding:10px 12px; border-radius:12px; border:2px solid var(--line-2); background:var(--paper-2); color:var(--ink)}
 .nl-fein{display:flex; align-items:center; justify-content:center; gap:10px; margin-top:8px}
 .nl-fein .btn{min-width:48px; font-size:18px}
 /* Handy: Zahlenstrahl ganz zeigen statt seitlich wischen, dafür größere Schrift */
@@ -20615,7 +20655,7 @@ function route(){
   kFarbe(null);
   zeigeTopnav();
   const [a, b, c] = teile;
-  bereich = !a ? "start" : (["klasse","thema","blatt","lernen","suche","englisch","vokabeln","fehler","mix"].indexOf(a) >= 0 ? "lernen" : a === "foto" ? "ki" : a === "buch" ? "buecher" : a);
+  bereich = !a ? "start" : (["klasse","thema","blatt","lernen","suche","englisch","vokabeln","fehler","mix"].indexOf(a) >= 0 ? "lernen" : a === "foto" ? "ki" : a === "buch" ? "buecher" : a === "stundenplan" ? "heft" : a);
   zurueck = null;
   zeigeTopnav();
   if(!a) seiteStart();
@@ -20633,6 +20673,7 @@ function route(){
   else if(a === "profil") seiteProfil();
   else if(a === "suche") seiteLernen(true);
   else if(a === "heft") seiteHeft();
+  else if(a === "stundenplan") seiteStundenplan();
   else if(a === "ki" && b) seiteKiArbeit(b, c);
   else if(a === "ki") seiteKi();
   else if(a === "foto" && b) seiteFoto(b, c);
@@ -20712,11 +20753,12 @@ function seiteStart(){
     html += '<div class="section-h"><h2>Wähle deine Klasse</h2></div><div class="hefte">'+KLASSEN.map(heftHtml).join("")+'</div>';
   }
   const offen = Heft.sortiert().filter(e => e.aufgabe && !e.erledigt);
+  html += planKarte();
   html += '<section class="duo"><div class="card"><h3>'+ic("heft")+'Hausaufgaben</h3>'+
     (offen.length ? '<div class="mini-ha">'+offen.slice(0,3).map(e =>
       '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div>'
       : '<p class="weich" style="font-size:15px">Keine offenen Hausaufgaben. Trag ein, was ihr im Unterricht gemacht habt.</p>')+
-    '<div><a class="btn" href="#/heft">'+(offen.length ? "Alle "+offen.length+" ansehen" : ic("plus")+"Eintragen")+'</a></div></div>'+
+    '<div class="row" style="gap:8px;flex-wrap:wrap"><a class="btn" href="#/heft">'+(offen.length ? "Alle "+offen.length+" ansehen" : ic("plus")+"Eintragen")+'</a>'+(planLeer() ? '<a class="btn ghost" href="#/stundenplan">'+ic("plan")+'Stundenplan eintragen</a>' : '')+'</div></div>'+
     (claudeRT ? '<div class="card ki-karte"><h3>'+ic("ki")+'KI-Trainer</h3><p style="font-size:15px">Foto von Arbeitsblatt, Buch oder Tafel machen: Die KI macht daraus Lernzettel, Übungen mit Tipps und eine Probe-Arbeit. Für jedes Fach.</p>'+
     '<div class="row"><a class="btn brand" href="#/ki">'+ic("kamera")+'Foto-Trainer</a></div></div>'
     : '<div class="card ki-karte"><h3>'+ic("drucker")+'Übungsblätter</h3><p style="font-size:15px">Zu jedem Thema ein Blatt zum Ausdrucken, mit Lösungsseite. Oder gleich hier am Bildschirm lösen.</p>'+
@@ -20942,8 +20984,8 @@ function seiteProfil(){
   });
   box.querySelector("#intro").addEventListener("click", () => einfuehrung());
   box.querySelector("#reset").addEventListener("click", async () => {
-    if(!await frage("Wirklich zurücksetzen? Gelöscht werden: XP und Level, alle Noten und Sterne, Serie, laufende Runden, Fehler-Heft, Vokabel-Fortschritt, Abzeichen und Blitz-Rekorde. Karli wird wieder ein Ei. Es bleiben: Name, Klasse, Hausaufgaben-Heft, deine KI-Arbeiten und Einstellungen.", "Zurücksetzen")) return;
-    const behalten = {profil:S.profil, theme:S.theme, hg:S.hg, intro:S.intro, glasTipp:S.glasTipp, heft:S.heft, ki:S.ki, fotos:S.fotos, sph:S.sph,
+    if(!await frage("Wirklich zurücksetzen? Gelöscht werden: XP und Level, alle Noten und Sterne, Serie, laufende Runden, Fehler-Heft, Vokabel-Fortschritt, Abzeichen und Blitz-Rekorde. Karli wird wieder ein Ei. Es bleiben: Name, Klasse, Hausaufgaben-Heft, Stundenplan, deine KI-Arbeiten und Einstellungen.", "Zurücksetzen")) return;
+    const behalten = {profil:S.profil, theme:S.theme, hg:S.hg, intro:S.intro, glasTipp:S.glasTipp, heft:S.heft, ki:S.ki, fotos:S.fotos, plan:S.plan,
       freund:S.freund ? {name:S.freund.name, farbe:S.freund.farbe, stufe:null} : undefined};
     S = leer(); Object.keys(behalten).forEach(k => { if(behalten[k] !== undefined) S[k] = behalten[k]; });
     speichern(); themaSetzen(); hintergrundSetzen(); toast("Fortschritt zurückgesetzt"); route();
@@ -21790,14 +21832,164 @@ function heftBearbeiten(e){
   document.addEventListener("keydown", taste);
   document.body.appendChild(ov); setTimeout(() => q("#hb-t").focus(), 30);
 }
+/* ================= Stundenplan =================
+   Die eigene Woche Mo–Fr: pro Stunde Fach, Raum und Lehrkraft. Heute und die laufende Stunde sind markiert,
+   offene Hausaufgaben stehen beim Fach, und das Heft wählt das Fach der aktuellen Stunde schon vor. */
+IC.plan = '<rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v3M16 3v3M9 13h2M13 13h2M9 16.5h2"/>';
+GLYPH.plan = "Plan";
+const TAGE = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag"], TAGE_K = ["Mo","Di","Mi","Do","Fr"];
+const ZEITEN_STD = [["7:45","8:30"],["8:30","9:15"],["9:35","10:20"],["10:20","11:05"],["11:25","12:10"],["12:10","12:55"],["13:30","14:15"],["14:15","15:00"],["15:00","15:45"],["15:45","16:30"],["16:30","17:15"],["17:15","18:00"]];
+function plan(){
+  if(!S.plan || !Array.isArray(S.plan.tage)) S.plan = {n:6, tage:[[],[],[],[],[]], zeiten:ZEITEN_STD.map(z => z.slice())};
+  while(S.plan.zeiten.length < 12) S.plan.zeiten.push(ZEITEN_STD[S.plan.zeiten.length].slice());
+  return S.plan;
+}
+function planLeer(){ return !S.plan || !Array.isArray(S.plan.tage) || !S.plan.tage.some(t => (t || []).some(x => x && x.f)); }
+const minuten = t => { const m = String(t || "").match(/^(\d{1,2})[:.](\d{2})$/); return m ? +m[1]*60 + +m[2] : null; };
+/* Wo stehen wir heute? {tag, stunde, laeuft} – stunde = laufende oder nächste Stunde, -1 = Schule ist aus */
+function planJetzt(){
+  const d = new Date(), wt = (d.getDay() + 6) % 7; if(wt > 4) return null;
+  const P = plan(), m = d.getHours()*60 + d.getMinutes();
+  for(let i = 0; i < P.n; i++){
+    const A = minuten(P.zeiten[i][0]), B = minuten(P.zeiten[i][1]); if(A === null || B === null) continue;
+    if(m < A) return {tag:wt, stunde:i, laeuft:false};
+    if(m <= B) return {tag:wt, stunde:i, laeuft:true};
+  }
+  return {tag:wt, stunde:-1, laeuft:false};
+}
+/* Fach der laufenden oder zuletzt gehaltenen Stunde von heute (für das Heft) */
+function planFachJetzt(){
+  if(planLeer()) return null;
+  const j = planJetzt(); if(!j) return null;
+  const P = plan(), t = P.tage[j.tag] || [];
+  for(let i = j.stunde === -1 ? P.n - 1 : (j.laeuft ? j.stunde : j.stunde - 1); i >= 0; i--) if(t[i] && t[i].f) return t[i].f;
+  return null;
+}
+function offeneJeFach(){ const o = {}; (typeof Heft !== "undefined" ? Heft.liste : []).forEach(e => { if(e.aufgabe && !e.erledigt) o[e.fach] = (o[e.fach] || 0) + 1; }); return o; }
+/* Karte für die Startseite: die Stunden von heute (am Wochenende: Montag) */
+function planKarte(){
+  if(planLeer()) return "";
+  const P = plan(), j = planJetzt(), tag = j ? j.tag : 0, t = P.tage[tag] || [], offen = offeneJeFach();
+  const stunden = []; for(let i = 0; i < P.n; i++) if(t[i] && t[i].f) stunden.push(i);
+  const titel = j ? (j.stunde === -1 ? "Heute ist Schluss 🎉 · Morgen" : "Heute") : "Montag";
+  let zeigTag = tag, liste = stunden;
+  if(j && j.stunde === -1){ zeigTag = (tag + 1) % 5; liste = []; for(let i = 0; i < P.n; i++) if(P.tage[zeigTag][i] && P.tage[zeigTag][i].f) liste.push(i); }
+  const zt = P.tage[zeigTag] || [];
+  return '<a class="card plan-karte" href="#/stundenplan"><div class="plan-karte-kopf"><h3>'+ic("plan")+'Stundenplan</h3><span class="leise">'+esc(titel)+(zeigTag !== tag || !j ? " ("+TAGE[zeigTag]+")" : "")+'</span></div>'+
+    (liste.length ? '<div class="plan-chips">'+liste.map(i => {
+      const x = zt[i], jetzt = j && zeigTag === j.tag && j.stunde === i;
+      return '<span class="plan-chip'+(jetzt ? (j.laeuft ? " jetzt" : " gleich") : "")+'" style="--f:'+fachFarbe(x.f)+'"><b>'+(i+1)+'.</b> '+esc(fachKurz(x.f))+(offen[x.f] ? ' <i title="offene Hausaufgaben">📝'+offen[x.f]+'</i>' : '')+(jetzt ? '<small>'+(j.laeuft ? "jetzt" : "gleich")+'</small>' : '')+'</span>';
+    }).join("")+'</div>' : '<p class="weich" style="font-size:15px">Keine Stunden eingetragen.</p>')+'</a>';
+}
+let planTagWahl = null;
+function seiteStundenplan(){
+  crumbs([{t:"Heft", href:"#/heft"}, {t:"Stundenplan"}]);
+  const P = plan();
+  const wrap = el("div","runner plan-seite");
+  wrap.innerHTML = '<div class="th-head">'+icoHtml("plan")+'<div><div class="eyebrow">Deine Woche</div><h1>Stundenplan</h1>'+
+    '<p>Tippe auf ein Feld und trag Fach und Raum ein. Heute und die laufende Stunde sind markiert.</p></div></div>';
+  const box = el("div"); wrap.appendChild(box);
+  const unten = el("div","card pad stack plan-unten"); wrap.appendChild(unten);
+  app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
+  function zeichne(){
+    const j = planJetzt(), offen = offeneJeFach(), breit = innerWidth >= 760;
+    if(planTagWahl === null) planTagWahl = j ? j.tag : 0;
+    const feld = (tag, i) => {
+      const x = (P.tage[tag] || [])[i], jetzt = j && j.tag === tag && j.stunde === i;
+      const b = btn("plan-feld"+(x && x.f ? " voll" : "")+(jetzt ? (j.laeuft ? " jetzt" : " gleich") : ""),
+        x && x.f ? '<b>'+esc(x.f)+'</b>'+(x.r || x.l ? '<small>'+esc([x.r, x.l].filter(Boolean).join(" · "))+'</small>' : '')+(offen[x.f] ? '<i class="plan-ha">📝 '+offen[x.f]+' offen</i>' : '')
+                 : '<span class="plan-plus">'+ic("plus")+'</span>', () => feldBearbeiten(tag, i));
+      if(x && x.f) b.style.setProperty("--f", fachFarbe(x.f));
+      b.setAttribute("aria-label", TAGE[tag]+", "+(i+1)+". Stunde: "+(x && x.f ? x.f : "frei")+". Bearbeiten");
+      return b;
+    };
+    const zeitKnopf = i => { const z = btn("plan-zeit", '<b>'+(i+1)+'.</b><small>'+esc(P.zeiten[i][0])+'–'+esc(P.zeiten[i][1])+'</small>', () => zeitBearbeiten(i)); z.setAttribute("aria-label", (i+1)+". Stunde, Uhrzeit ändern"); return z; };
+    box.innerHTML = "";
+    if(breit){
+      const g = el("div","plan-gitter card"); g.style.gridTemplateColumns = "88px repeat(5, minmax(0, 1fr))";
+      g.appendChild(el("div","plan-ecke"));
+      TAGE.forEach((t, k) => g.appendChild(el("div","plan-tag"+(j && j.tag === k ? " heute" : ""), esc(t)+(j && j.tag === k ? ' <small>heute</small>' : ''))));
+      for(let i = 0; i < P.n; i++){ g.appendChild(zeitKnopf(i)); for(let k = 0; k < 5; k++) g.appendChild(feld(k, i)); }
+      box.appendChild(g);
+    }else{
+      const tabs = el("div","plan-tage");
+      TAGE_K.forEach((t, k) => { const b = btn("plan-tab"+(j && j.tag === k ? " heute" : ""), t, () => { planTagWahl = k; zeichne(); }); b.setAttribute("aria-pressed", planTagWahl === k ? "true" : "false"); tabs.appendChild(b); });
+      box.appendChild(tabs);
+      const l = el("div","plan-liste card"); l.appendChild(el("h3","plan-liste-h", esc(TAGE[planTagWahl])+(j && j.tag === planTagWahl ? ' <small>heute</small>' : '')));
+      for(let i = 0; i < P.n; i++){ const z = el("div","plan-zeile"); z.appendChild(zeitKnopf(i)); z.appendChild(feld(planTagWahl, i)); l.appendChild(z); }
+      box.appendChild(l);
+    }
+    unten.innerHTML = '<div class="row" style="flex-wrap:wrap;gap:8px;align-items:center"><span style="font-weight:700">'+P.n+' Stunden am Tag</span></div>';
+    const r = unten.querySelector(".row");
+    const weniger = btn("btn klein", "− Stunde", () => { if(P.n > 4){ P.n--; speichern(); zeichne(); } }); weniger.disabled = P.n <= 4;
+    const mehr = btn("btn klein", "+ Stunde", () => { if(P.n < 12){ P.n++; speichern(); zeichne(); } }); mehr.disabled = P.n >= 12;
+    r.append(weniger, mehr);
+    r.appendChild(btn("btn ghost klein", ic("muell")+"Alles löschen", async () => {
+      if(!await frage("Den ganzen Stundenplan löschen? Die Uhrzeiten bleiben.", "Löschen")) return;
+      P.tage = [[],[],[],[],[]]; speichern(); zeichne();
+    }));
+    unten.insertAdjacentHTML("beforeend", '<p class="weich" style="font-size:14.5px">Tipp: Wenn du im Hausaufgaben-Heft etwas einträgst, ist das Fach der aktuellen Stunde schon ausgewählt. Die Uhrzeiten änderst du, indem du links auf die Stunde tippst.</p>');
+  }
+  function dialog(titel, inhalt, speichernFn, leerenFn){
+    const alt = document.querySelector(".overlay.frage"); if(alt) alt.remove();
+    const ov = el("div","overlay frage"); ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+    const d = el("div","dialog stack formular"); d.innerHTML = '<h2 style="font-size:22px">'+titel+'</h2>'+inhalt;
+    const zu = () => { document.removeEventListener("keydown", taste); ov.remove(); };
+    const taste = x => { if(x.key === "Escape") zu(); if(x.key === "Enter" && x.target.tagName !== "TEXTAREA" && x.target.tagName !== "SELECT"){ x.preventDefault(); ok.click(); } };
+    const row = el("div","row"); row.style.justifyContent = "flex-end"; row.style.flexWrap = "wrap";
+    if(leerenFn) row.appendChild(btn("btn ghost", "Feld leeren", () => { leerenFn(); zu(); speichern(); zeichne(); }));
+    row.appendChild(btn("btn", "Abbrechen", zu));
+    const ok = btn("btn brand", "Speichern", () => { if(speichernFn(d) === false) return; zu(); speichern(); zeichne(); });
+    row.appendChild(ok); d.appendChild(row); ov.appendChild(d);
+    ov.addEventListener("click", x => { if(x.target === ov) zu(); });
+    document.addEventListener("keydown", taste);
+    document.body.appendChild(ov); setTimeout(() => { const f = d.querySelector("select, input"); if(f) f.focus(); }, 30);
+  }
+  function feldBearbeiten(tag, i){
+    const x = (P.tage[tag] || [])[i] || {};
+    const naechste = (P.tage[tag] || [])[i+1];
+    dialog(esc(TAGE[tag])+', '+(i+1)+'. Stunde <small class="leise" style="font-size:15px">'+esc(P.zeiten[i][0])+'–'+esc(P.zeiten[i][1])+'</small>',
+      '<label>Fach<select id="pf"><option value="">– frei –</option>'+FAECHER.map(f => '<option'+(f[0] === x.f ? " selected" : "")+'>'+esc(f[0])+'</option>').join("")+'</select></label>'+
+      '<div class="zwei"><label>Raum<input type="text" id="pr" maxlength="20" placeholder="z. B. R 204"></label><label>Lehrkraft<input type="text" id="pl" maxlength="30" placeholder="optional"></label></div>'+
+      (i + 1 < P.n ? '<label class="plan-doppel"><input type="checkbox" id="pd"'+(naechste && naechste.f && naechste.f === x.f ? " checked" : "")+'> Doppelstunde (auch die '+(i+2)+'. Stunde)</label>' : ''),
+      d => {
+        const f = d.querySelector("#pf").value, r = d.querySelector("#pr").value.trim().slice(0,20), l = d.querySelector("#pl").value.trim().slice(0,30);
+        P.tage[tag] = P.tage[tag] || [];
+        P.tage[tag][i] = f ? {f:f, r:r, l:l} : null;
+        const dp = d.querySelector("#pd");
+        if(dp && dp.checked && f) P.tage[tag][i+1] = {f:f, r:r, l:l};
+      },
+      x.f ? () => { P.tage[tag][i] = null; } : null);
+    const d = document.querySelector(".overlay.frage .dialog");
+    d.querySelector("#pr").value = x.r || ""; d.querySelector("#pl").value = x.l || "";
+  }
+  function zeitBearbeiten(i){
+    dialog((i+1)+'. Stunde: Uhrzeit', '<div class="zwei"><label>Beginn<input type="time" id="za"></label><label>Ende<input type="time" id="zb"></label></div>',
+      d => {
+        const a = d.querySelector("#za").value, b = d.querySelector("#zb").value;
+        if(minuten(a) === null || minuten(b) === null || minuten(b) <= minuten(a)){ d.querySelector("#zb").focus(); return false; }
+        P.zeiten[i] = [a.replace(/^0(\d)/, "$1"), b.replace(/^0(\d)/, "$1")];
+      });
+    const d = document.querySelector(".overlay.frage .dialog"), pad = t => { const m = minuten(t); return m === null ? "" : String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"); };
+    d.querySelector("#za").value = pad(P.zeiten[i][0]); d.querySelector("#zb").value = pad(P.zeiten[i][1]);
+  }
+  zeichne();
+  /* Handy drehen oder Fenster ändern: zwischen Wochen-Gitter und Tages-Liste wechseln */
+  let breitAlt = innerWidth >= 760, uhr = null;
+  const neuMessen = () => { clearTimeout(uhr); uhr = setTimeout(() => { const b = innerWidth >= 760; if(b !== breitAlt){ breitAlt = b; zeichne(); } }, 150); };
+  window.addEventListener("resize", neuMessen);
+  const tick = setInterval(zeichne, 60000);
+  aufraeumen = () => { window.removeEventListener("resize", neuMessen); clearInterval(tick); };
+}
 let heftFilter = "alle";
 function seiteHeft(){
   crumbs([{t:"Start", href:"#/"}, {t:"Hausaufgaben"}]);
   const wrap = el("div","runner");
   wrap.innerHTML = '<div class="th-head">'+icoHtml("heft")+'<div><div class="eyebrow">Alle Fächer</div><h1>Hausaufgaben-Heft</h1>'+
-    '<p>Trag ein, was ihr in der Stunde gemacht habt.'+(claudeRT ? ' Aus diesen Themen schreibt dir die KI später eine passende Klassenarbeit.' : '')+'</p></div></div>';
+    '<p>Trag ein, was ihr in der Stunde gemacht habt.'+(claudeRT ? ' Aus diesen Themen schreibt dir die KI später eine passende Klassenarbeit.' : '')+'</p>'+
+    '<div class="row" style="margin-top:10px"><a class="btn klein" href="#/stundenplan">'+ic("plan")+(planLeer() ? "Stundenplan eintragen" : "Stundenplan")+'</a></div></div></div>';
   const form = el("form","card pad formular");
-  const letztesFach = S.letztesFach || "Mathematik";
+  const letztesFach = planFachJetzt() || S.letztesFach || "Mathematik";
   form.innerHTML = '<h3 style="font-size:20px">Neuer Eintrag</h3>'+
     '<div class="zwei"><label>Datum der Stunde<input type="date" id="hdat" required></label>'+
     '<label>Fach<select id="hfach">'+FAECHER.map(f => '<option'+(f[0] === letztesFach ? " selected" : "")+'>'+esc(f[0])+'</option>').join("")+'</select></label></div>'+

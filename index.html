@@ -361,6 +361,8 @@ sup, sub{font-size:.7em; line-height:0}
 .plan-liste-h{font-size:19px; margin-bottom:4px}
 .plan-zeile{display:grid; grid-template-columns:92px minmax(0, 1fr); gap:8px; align-items:stretch}
 .plan-unten{margin-top:14px}
+.plan-sph{display:flex; flex-direction:column; gap:6px; align-items:flex-start; padding:12px 14px; border-radius:12px; background:var(--brand-soft)}
+.plan-sph .leise{font-size:14px}
 .plan-doppel{flex-direction:row !important; align-items:center; gap:10px !important; font-weight:600 !important}
 .plan-doppel input{width:22px; height:22px}
 .plan-karte{display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit; margin-top:14px}
@@ -21928,6 +21930,23 @@ function seiteStundenplan(){
       if(!await frage("Den ganzen Stundenplan löschen? Die Uhrzeiten bleiben.", "Löschen")) return;
       P.tage = [[],[],[],[],[]]; speichern(); zeichne();
     }));
+    const sph = el("div","plan-sph");
+    if(nativ && sphDaten()){
+      sph.innerHTML = '<b>Schulportal Hessen</b><span class="leise">'+(P.quelle === "schulportal" && P.stand ? "Stundenplan aus dem Schulportal · Stand "+new Date(P.stand).toLocaleString("de-DE", {day:"numeric", month:"numeric", hour:"2-digit", minute:"2-digit"}) : "Noch nicht aus dem Schulportal geholt")+'</span>';
+      const hol = btn("btn brand klein", ic("neu")+(P.quelle === "hand" ? "Aus dem Schulportal übernehmen" : "Jetzt holen"), async () => {
+        if(P.quelle === "hand" && !planLeer() && !await frage("Deinen eigenen Stundenplan durch den aus dem Schulportal ersetzen?", "Ersetzen")) return;
+        hol.disabled = true; hol.innerHTML = "Wird geholt …";
+        const r = await sphAbruf({planErzwingen:true});
+        toast(r.ok ? (r.plan ? "Stundenplan aus dem Schulportal übernommen" : "Im Schulportal wurde kein Stundenplan gefunden") : r.code === "login" ? "Anmeldung beim Schulportal hat nicht geklappt" : "Keine Verbindung zum Schulportal");
+        zeichne();
+      });
+      sph.appendChild(hol);
+    }else if(nativ){
+      sph.innerHTML = '<b>Schulportal Hessen</b><span class="leise">Verbinde das Schulportal im Hausaufgaben-Heft, dann kommt dein Stundenplan automatisch.</span><a class="btn klein" href="#/heft">Verbinden</a>';
+    }else{
+      sph.innerHTML = '<b>Automatisch aus dem Schulportal?</b><span class="leise">Das geht in der Karo-App für Android (Schulportal Hessen). Im Browser erlaubt das Schulportal keine Verbindung von anderen Seiten, deshalb trägst du den Plan hier selbst ein.</span>';
+    }
+    unten.appendChild(sph);
     unten.insertAdjacentHTML("beforeend", '<p class="weich" style="font-size:14.5px">Tipp: Wenn du im Hausaufgaben-Heft etwas einträgst, ist das Fach der aktuellen Stunde schon ausgewählt. Die Uhrzeiten änderst du, indem du links auf die Stunde tippst.</p>');
   }
   function dialog(titel, inhalt, speichernFn, leerenFn){
@@ -21955,7 +21974,7 @@ function seiteStundenplan(){
       d => {
         const f = d.querySelector("#pf").value, r = d.querySelector("#pr").value.trim().slice(0,20), l = d.querySelector("#pl").value.trim().slice(0,30);
         P.tage[tag] = P.tage[tag] || [];
-        P.tage[tag][i] = f ? {f:f, r:r, l:l} : null;
+        P.tage[tag][i] = f ? {f:f, r:r, l:l} : null; P.quelle = "hand";
         const dp = d.querySelector("#pd");
         if(dp && dp.checked && f) P.tage[tag][i+1] = {f:f, r:r, l:l};
       },
@@ -22228,8 +22247,66 @@ function sphAuswerten(html){
   });
   return out;
 }
+/* Stundenplan aus stundenplan.php lesen. Tolerant gebaut: Tabelle mit Wochentagen im Kopf finden,
+   erste Spalte = Stunde mit Uhrzeit, Zellen mit rowspan = Doppelstunden. Fach = erstes fett gedrucktes Wort. */
+function sphPlanAuswerten(html){
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const TN = ["montag","dienstag","mittwoch","donnerstag","freitag"];
+  const tageIn = el => TN.filter(d => el.textContent.toLowerCase().indexOf(d) >= 0).length;
+  const tab = Array.from(doc.querySelectorAll("table")).find(t => { const r = Array.from(t.querySelectorAll("tr")).find(x => tageIn(x) >= 3); return !!r; });
+  if(!tab) return null;
+  const rows = Array.from(tab.querySelectorAll("tr"));
+  const kopf = rows.findIndex(r => tageIn(r) >= 3);
+  const spalteTag = []; let sp = 0;
+  Array.from(rows[kopf].children).forEach(c => { const n = +c.getAttribute("colspan") || 1; const d = TN.findIndex(x => c.textContent.toLowerCase().indexOf(x) >= 0); for(let i = 0; i < n; i++) spalteTag[sp++] = i === 0 ? d : -1; });
+  const breite = spalteTag.length, offen = new Array(breite).fill(0), weiter = new Array(breite).fill(null);
+  const tage = [[],[],[],[],[]], zeiten = []; let h = 0, anzahl = 0;
+  const text = x => x ? x.textContent.replace(/\s+/g, " ").trim() : "";
+  const stunde = td => {
+    const box = td.querySelector(".stunde, .lesson, div") || td;
+    const fett = box.querySelector("b, strong");
+    const teile = (box.innerText || box.textContent).split(/\n+/).map(v => v.trim()).filter(Boolean);
+    const kurs = text(fett) || teile[0] || "";
+    if(!kurs) return null;
+    const klein = Array.from(box.querySelectorAll("small")).map(text).filter(Boolean);
+    const rest = klein.length ? klein : teile.slice(1);
+    const raum = rest.find(v => /\d/.test(v)) || "", lehr = rest.find(v => v !== raum) || "";
+    const fach = sphFach(kurs);
+    return {f:fach, r:(fach === "Anderes" ? kurs+(raum ? " · "+raum : "") : raum).slice(0,20), l:lehr.slice(0,30)};
+  };
+  rows.slice(kopf + 1).forEach(tr => {
+    const zellen = Array.from(tr.children); if(!zellen.length) return;
+    let zi = 0, gefunden = false;
+    const zeile = new Array(breite).fill(null);
+    for(let c = 0; c < breite; c++){
+      if(offen[c] > 0){ offen[c]--; zeile[c] = weiter[c]; continue; }
+      const td = zellen[zi++]; if(!td) break;
+      const rs = +td.getAttribute("rowspan") || 1;
+      if(spalteTag[c] === -1 && c === 0){
+        const m = td.textContent.match(/(\d{1,2})[:.](\d{2})\s*[-–]\s*(\d{1,2})[:.](\d{2})/);
+        if(m){ zeiten[h] = [+m[1]+":"+m[2], +m[3]+":"+m[4]]; gefunden = true; }
+        else if(/\d/.test(td.textContent)) gefunden = true;
+        continue;
+      }
+      const x = td.textContent.trim() ? stunde(td) : null;
+      zeile[c] = x; if(rs > 1){ offen[c] = rs - 1; weiter[c] = x; }
+    }
+    if(!gefunden) return;
+    zeile.forEach((x, c) => { const d = spalteTag[c]; if(d >= 0 && x){ tage[d][h] = x; anzahl++; } });
+    h++;
+  });
+  if(anzahl < 3 || !h) return null;
+  return {n:Math.max(4, Math.min(12, h)), tage:tage, zeiten:zeiten};
+}
+function sphPlanUebernehmen(neu, erzwingen){
+  const P = plan();
+  if(!erzwingen && !planLeer() && P.quelle !== "schulportal") return false;
+  P.n = neu.n; P.tage = neu.tage; P.quelle = "schulportal"; P.stand = new Date().toISOString();
+  neu.zeiten.forEach((z, i) => { if(z && i < 12) P.zeiten[i] = z; });
+  speichern(); return true;
+}
 let sphLaeuft = null;
-function sphAbruf(){
+function sphAbruf(opt){
   const d = sphDaten();
   if(!d || !nativ) return Promise.resolve({ok:false, code:"aus"});
   if(sphLaeuft) return sphLaeuft;
@@ -22244,12 +22321,18 @@ function sphAbruf(){
     const r = await H.request({url:"https://start.schulportal.hessen.de/meinunterricht.php", method:"GET", headers:kopf, responseType:"text"});
     const html = typeof r.data === "string" ? r.data : "";
     if(String(r.url || "").indexOf("login.schulportal") >= 0 || !/logout|abmelden/i.test(html)) throw {code:"login"};
+    let planNeu = false;
+    try{
+      const rp = await H.request({url:"https://start.schulportal.hessen.de/stundenplan.php", method:"GET", headers:kopf, responseType:"text"});
+      const pl = sphPlanAuswerten(typeof rp.data === "string" ? rp.data : "");
+      if(pl) planNeu = sphPlanUebernehmen(pl, opt && opt.planErzwingen);
+    }catch(e){}
     const liste = sphAuswerten(html);
-    if(!liste.length) throw {code:"leer"};
+    if(!liste.length && !planNeu) throw {code:"leer"};
     let neu = 0; liste.forEach(e => { if(Heft.neu(e, e.id, "schulportal")) neu++; });
     const d2 = sphDaten() || d; d2.letzter = new Date().toISOString();
     d2.meldung = neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge") : "nichts Neues"; sphSpeichern(d2);
-    return {ok:true, neu:neu, gesamt:liste.length};
+    return {ok:true, neu:neu, gesamt:liste.length, plan:planNeu};
   })().catch(e => {
     const code = e && e.code === "login" ? "login" : e && e.code === "leer" ? "leer" : "netz";
     const d2 = sphDaten(); if(d2){ d2.letzter = new Date().toISOString(); d2.meldung = {login:"Anmeldung fehlgeschlagen", leer:"keine Einträge erkannt", netz:"keine Verbindung"}[code]; sphSpeichern(d2); }
@@ -22274,7 +22357,7 @@ function portalKarte(){
     const d = sphDaten();
     if(!d){
       c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("heft")+'Schulportal Hessen verbinden <small class="leise" style="font-size:13px;font-weight:600">(nur für Schulen in Hessen)</small></h3>'+
-        '<p class="weich" style="font-size:15.5px">Einmal anmelden, dann holt Karo die Themen und Hausaufgaben aus „Mein Unterricht“ selbst: beim Öffnen der App und jede Stunde. Deine Zugangsdaten bleiben nur auf diesem Handy.</p>'+
+        '<p class="weich" style="font-size:15.5px">Einmal anmelden, dann holt Karo die Themen und Hausaufgaben aus „Mein Unterricht“ und deinen Stundenplan selbst: beim Öffnen der App und jede Stunde. Deine Zugangsdaten bleiben nur auf diesem Handy.</p>'+
         '<label>Schulnummer<input type="text" id="sphschule" inputmode="numeric" autocomplete="off" placeholder="z. B. 5120"></label>'+
         '<p class="leise" style="margin-top:-8px">Die Zahl hinter <b>?i=</b> in der Adresse der Schulportal-Anmeldeseite.</p>'+
         '<label>Benutzername<input type="text" id="sphuser" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false"></label>'+

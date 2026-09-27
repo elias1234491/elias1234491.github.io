@@ -1392,6 +1392,18 @@ a.pill{text-decoration:none; color:inherit}
 .abz-mehr summary::-webkit-details-marker{display:none}
 .abz-mehr[open] summary{margin-bottom:10px}
 .portal-screenshot{margin:0 0 14px; white-space:normal; text-align:left}
+.sph-pruef{display:block; margin-top:8px; font-size:11.5px; color:var(--ink-3); word-break:break-word; font-family:ui-monospace, monospace}
+.vp-karte{margin-top:18px; display:flex; flex-direction:column; gap:10px}
+.plan-seite .vp-karte{margin:0 0 16px}
+.vp-kopf{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap}
+.vp-kopf h3{display:flex; align-items:center; gap:8px; font-size:19px}
+.vp-kopf h3 .ic{width:20px; height:20px; color:var(--brand)}
+.vp-datum{font-weight:800; font-size:14px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em; margin:4px 0 6px}
+.vp-zeile{display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:center; padding:8px 10px; border-radius:12px; background:var(--paper-2); margin-bottom:6px}
+.vp-zeile b{font-size:15px}
+.vp-zeile .vp-art{display:inline-block; margin-left:8px; font-size:12.5px; font-weight:800; padding:2px 8px; border-radius:99px; background:var(--brand-soft); color:var(--brand)}
+.vp-zeile.entfall .vp-art{background:var(--bad-bg); color:var(--bad)}
+.vp-zeile small{display:block; font-size:13px; color:var(--ink-2); margin-top:2px}
 </style>
 <aside class="seite" id="seitenleiste" aria-label="Hauptmenü"></aside>
 <header class="top">
@@ -20842,7 +20854,7 @@ function seiteStart(){
       '<div class="card mini-ha-karte"><div class="mini-ha">'+offen.slice(0,3).map(e =>
       '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema || e.fach)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div></div>';
   }
-  html += planKarte();
+  html += vertretungKarte(true) + planKarte();
   if(!offen.length && !sphDaten() && sphMoeglich())
     html += '<a class="tipp-leiste" href="#/heft">'+ic("heft")+'<span>Hausaufgaben automatisch aus dem <b>Schulportal</b> holen</span>'+ic("rechts")+'</a>';
   if(k && themenVon(k).length){
@@ -21127,7 +21139,8 @@ var Konto = {
   name(u){ return String((u && u.email) || "").split("@")[0]; },
   email(name){ return String(name).trim().toLowerCase()+"@"+KONTO_DOMAIN; },
   /* Beim Start: war schon jemand angemeldet? Dann Stand vom Konto holen */
-  async start(){
+  start(){ this.bereit = this.starten(); return this.bereit; },
+  async starten(){
     if(!this.an() || !this.hatSitzung()) return;
     try{
       const sb = await this.client();
@@ -21170,7 +21183,8 @@ var Konto = {
     if(error) throw error;
     const k = S.konto || {};
     if(!data){ await this.hochladen(true); return; }
-    if(k.id === this.nutzer.id && k.stand === data.aktualisiert){ if(k.geaendert) await this.hochladen(true); return; }
+    const gleich = k.stand && Date.parse(k.stand) === Date.parse(data.aktualisiert);
+    if(k.id === this.nutzer.id && gleich){ if(k.geaendert) await this.hochladen(true); return; }
     const lokalLeer = !S.xp && !Object.keys(S.themen || {}).length;
     let nimmKonto = true;
     if(!lokalLeer && (k.id !== this.nutzer.id ? frisch : k.geaendert)){
@@ -21178,15 +21192,20 @@ var Konto = {
     }
     if(nimmKonto){
       const neu = data.daten; neu.konto = {id:this.nutzer.id, stand:data.aktualisiert, geaendert:false};
+      /* Hausaufgaben von diesem Gerät, die im Konto noch fehlen, behalten (z. B. gerade aus dem Schulportal geholt) */
+      const imKonto = {}; (neu.heft || []).forEach(e => { imKonto[e.id] = true; });
+      const fehlen = (S.heft || []).filter(e => e && !imKonto[e.id]);
+      if(fehlen.length){ neu.heft = (neu.heft || []).concat(fehlen); neu.konto.geaendert = true; }
       S = neu; Object.keys(leer()).forEach(x => { if(S[x] === undefined) S[x] = leer()[x]; });
       try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
       if(typeof Heft !== "undefined" && !Heft.db) Heft.liste = Heft.lokal().map(x => Object.assign({}, x));
       themaSetzen(); hintergrundSetzen(); route();
+      if(neu.konto.geaendert) await this.hochladen(true);
     }else await this.hochladen(true);
   },
   /* Nach jedem Speichern: kurz warten, dann hochladen (spart Anfragen) */
   merken(){
-    if(!this.nutzer) return;
+    if(!this.nutzer){ if(this.an() && this.hatSitzung() && S.konto) S.konto.geaendert = true; return; }
     S.konto = Object.assign(S.konto || {}, {id:this.nutzer.id, geaendert:true});
     clearTimeout(this.uhr); this.uhr = setTimeout(() => this.hochladen(), 2500);
   },
@@ -22173,6 +22192,7 @@ function seiteStundenplan(){
   const wrap = el("div","runner plan-seite");
   wrap.innerHTML = '<div class="th-head">'+icoHtml("plan")+'<div><div class="eyebrow">Deine Woche</div><h1>Stundenplan</h1>'+
     '<p>Tippe auf ein Feld und trag Fach und Raum ein. Heute und die laufende Stunde sind markiert.</p></div></div>';
+  const vp = vertretungKarte(false); if(vp) wrap.insertAdjacentHTML("beforeend", vp);
   const box = el("div"); wrap.appendChild(box);
   const unten = el("div","card pad stack plan-unten"); wrap.appendChild(unten);
   app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
@@ -22585,6 +22605,68 @@ function sphPlanAuswerten(html){
   if(anzahl < 3 || !h) return null;
   return {n:Math.max(4, Math.min(12, h)), tage:tage, zeiten:zeiten};
 }
+/* Vertretungsplan aus vertretungsplan.php lesen. Tolerant: Tabellen „vtable…“ oder Tabellen mit Kopf „Stunde“ und
+   „Vertreter/Hinweis/Art/Raum/Fach“. Spalten werden über die Überschrift gefunden, das Datum über id, data-tag oder Text davor. */
+function sphVertretungAuswerten(html){
+  if(!html) return null;
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const zwei = n => String(n).padStart(2, "0");
+  const datumAus = text => { const m = /(\d{1,2})[_.](\d{1,2})[_.](\d{4})/.exec(text || ""); return m ? m[3]+"-"+zwei(m[2])+"-"+zwei(m[1]) : null; };
+  const tabellen = Array.from(doc.querySelectorAll("table")).filter(t => {
+    const kopf = (t.querySelector("thead") || t.querySelector("tr") || t).textContent.toLowerCase();
+    return /^vtable/i.test(t.id) || (/stunde/.test(kopf) && /(vertret|hinweis|art|raum|fach)/.test(kopf));
+  });
+  if(!tabellen.length) return null;
+  const tage = [];
+  tabellen.forEach(t => {
+    let d = datumAus(t.id);
+    const box = t.closest("[data-tag]"); if(!d && box) d = datumAus(box.getAttribute("data-tag"));
+    for(let x = t, n = 0; !d && x && n < 4; x = x.parentElement, n++){
+      for(let v = x.previousElementSibling, k = 0; !d && v && k < 3; v = v.previousElementSibling, k++) d = datumAus(v.textContent);
+    }
+    const zeilen = Array.from(t.querySelectorAll("tr"));
+    const kopf = zeilen.find(r => r.querySelector("th")) || zeilen[0];
+    const spalten = Array.from(kopf.children).map(c => c.textContent.replace(/\s+/g, " ").trim().toLowerCase());
+    const sp = (...namen) => spalten.findIndex(s => namen.some(n => s.indexOf(n) >= 0));
+    const I = {stunde:sp("stunde"), klasse:sp("klasse"), vertreter:sp("vertreter", "vertretung"), lehrer:sp("lehrer"), fach:sp("fach"), raum:sp("raum"), art:sp("art"), hinweis:sp("hinweis", "text", "bemerkung")};
+    const eintraege = [];
+    zeilen.forEach(r => {
+      if(r === kopf) return;
+      const tds = Array.from(r.querySelectorAll("td")); if(tds.length < 3) return;
+      const w = i => i >= 0 && tds[i] ? tds[i].textContent.replace(/\s+/g, " ").trim() : "";
+      const e = {stunde:w(I.stunde), klasse:w(I.klasse), fach:w(I.fach), vertreter:w(I.vertreter), lehrer:w(I.lehrer), raum:w(I.raum), art:w(I.art), hinweis:w(I.hinweis)};
+      if(!e.stunde && !e.fach && !e.art) return;
+      eintraege.push(e);
+    });
+    if(d && tage.some(x => x.datum === d)) tage.find(x => x.datum === d).eintraege.push(...eintraege);
+    else tage.push({datum:d, eintraege:eintraege});
+  });
+  return tage;
+}
+/* Vertretungen für heute und die nächsten Tage (ältere fallen weg) */
+function vertretungen(){
+  const V = S.vertretung; if(!V || !Array.isArray(V.tage)) return [];
+  const heute = datum(0);
+  return V.tage.filter(t => !t.datum || t.datum >= heute).sort((a, b) => String(a.datum).localeCompare(String(b.datum)));
+}
+function vertretungZeile(e){
+  const fach = e.fach ? sphFach(e.fach) : "";
+  const was = e.art || (e.vertreter ? "Vertretung" : "Änderung");
+  const entfall = /entfall|fällt aus|ausfall|frei/i.test(was + " " + e.hinweis);
+  const mehr = [e.vertreter && !entfall ? "bei "+e.vertreter : "", e.raum ? "Raum "+e.raum : "", e.hinweis].filter(Boolean).join(" · ");
+  return '<div class="vp-zeile'+(entfall ? " entfall" : "")+'">'+(fach ? fachTag(fach) : '<span class="fachtag">…</span>')+
+    '<div><b>'+esc(e.stunde ? e.stunde.replace(/\s*-\s*/, ".–")+". Stunde" : "")+(e.fach ? " · "+esc(fach && fach !== "Anderes" ? fach : e.fach) : "")+'</b><span class="vp-art">'+esc(was)+'</span>'+(mehr ? '<small>'+esc(mehr)+'</small>' : '')+'</div></div>';
+}
+function vertretungKarte(nurHeute){
+  const V = S.vertretung; if(!V) return "";
+  let tage = vertretungen(); if(nurHeute) tage = tage.filter(t => t.datum === datum(0) && t.eintraege.length);
+  if(nurHeute && !tage.length) return "";
+  const stand = V.stand ? new Date(V.stand).toLocaleString("de-DE", {weekday:"short", hour:"2-digit", minute:"2-digit"}) : "";
+  return '<section class="card pad vp-karte"><div class="vp-kopf"><h3>'+ic("plan")+'Vertretungsplan</h3>'+(stand ? '<span class="leise">Stand '+esc(stand)+'</span>' : '')+'</div>'+
+    (tage.length ? tage.map(t => '<div class="vp-tag"><div class="vp-datum">'+esc(t.datum ? tagName(t.datum) : "Demnächst")+'</div>'+
+      (t.eintraege.length ? t.eintraege.map(vertretungZeile).join("") : '<p class="weich" style="font-size:14.5px">Keine Vertretungen.</p>')+'</div>').join("")
+      : '<p class="weich" style="font-size:14.5px">Gerade keine Vertretungen für dich.</p>')+'</section>';
+}
 function sphPlanUebernehmen(neu, erzwingen){
   const P = plan();
   if(!erzwingen && !planLeer() && P.quelle !== "schulportal") return false;
@@ -22608,16 +22690,26 @@ async function sphHolen(d){
     const H = window.Capacitor.Plugins.CapacitorHttp;
     const kopf = {"User-Agent":"Mozilla/5.0 (Linux; Android) Karo"};
     const login = "https://login.schulportal.hessen.de/?i="+encodeURIComponent(d.schule);
+    /* Wie die echte Anmeldeseite: Schule und Login-Adresse als Cookies */
+    const C = window.Capacitor.Plugins.CapacitorCookies;
+    if(C) for(const [k, v] of [["i", d.schule], ["schulportal_lastschool", d.schule], ["schulportal_logindomain", "login.schulportal.hessen.de"]]){
+      for(const u of ["https://login.schulportal.hessen.de", "https://connect.schulportal.hessen.de", "https://start.schulportal.hessen.de"]) try{ await C.setCookie({url:u, key:k, value:v, path:"/"}); }catch(e){}
+    }
     await H.request({url:login, method:"GET", headers:kopf});
-    await H.request({url:login, method:"POST", headers:Object.assign({"Content-Type":"application/x-www-form-urlencoded"}, kopf),
-      data:{user2:d.benutzer, user:d.schule+"."+d.benutzer, password:d.passwort}});
+    const zz = String(-new Date().getTimezoneOffset()/60);
+    const rl = await H.request({url:login, method:"POST", headers:Object.assign({"Content-Type":"application/x-www-form-urlencoded"}, kopf), responseType:"text",
+      data:{url:"", timezone:zz, skin:"sp", user2:d.benutzer, user:d.schule+"."+d.benutzer, password:d.passwort}});
+    const lemon = /id="lemon_code">\s*(\d+)/.exec(typeof rl.data === "string" ? rl.data : "");
+    if(lemon && (lemon[1] === "4" || lemon[1] === "5")) throw {code:"login"};
     await H.request({url:"https://connect.schulportal.hessen.de/", method:"GET", headers:kopf});
     const r = await H.request({url:"https://start.schulportal.hessen.de/meinunterricht.php", method:"GET", headers:kopf, responseType:"text"});
     const mu = typeof r.data === "string" ? r.data : "";
-    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !sphAngemeldet(mu)) throw {code:"login"};
+    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !sphAngemeldet(mu)) throw {code:"sitzung"};
     let plan = "";
     try{ const rp = await H.request({url:"https://start.schulportal.hessen.de/stundenplan.php", method:"GET", headers:kopf, responseType:"text"}); plan = typeof rp.data === "string" ? rp.data : ""; }catch(e){}
-    return {mu:mu, plan:plan};
+    let vp = "";
+    try{ const rv = await H.request({url:"https://start.schulportal.hessen.de/vertretungsplan.php", method:"GET", headers:kopf, responseType:"text"}); vp = typeof rv.data === "string" ? rv.data : ""; }catch(e){}
+    return {mu:mu, plan:plan, vp:vp};
   }
   const ctl = new AbortController(), uhr = setTimeout(() => ctl.abort(), 45000);
   try{
@@ -22625,8 +22717,8 @@ async function sphHolen(d){
       headers:{"Content-Type":"application/json", apikey:KONTO_KEY}, body:JSON.stringify({schule:d.schule, benutzer:d.benutzer, passwort:d.passwort})});
     if(r.status === 404) throw {code:"helfer"};
     const j = await r.json().catch(() => ({}));
-    if(!j.ok) throw {code:j.code === "login" ? "login" : j.code === "helfer" ? "helfer" : "netz"};
-    return {mu:j.mu || "", plan:j.plan || ""};
+    if(!j.ok) throw {code:["login","sitzung","helfer"].indexOf(j.code) >= 0 ? j.code : "netz", weg:j.weg};
+    return {mu:j.mu || "", plan:j.plan || "", vp:j.vp || "", weg:j.weg};
   }finally{ clearTimeout(uhr); }
 }
 function sphAbruf(opt){
@@ -22634,19 +22726,24 @@ function sphAbruf(opt){
   if(!d || !sphMoeglich()) return Promise.resolve({ok:false, code:"aus"});
   if(sphLaeuft) return sphLaeuft;
   sphLaeuft = (async () => {
+    /* Erst den Konto-Abgleich abwarten, sonst überschreibt der Stand aus dem Konto die frisch geholten Einträge */
+    try{ if(typeof Konto !== "undefined" && Konto.bereit) await Konto.bereit; }catch(e){}
     const seiten = await sphHolen(d);
     let planNeu = false;
     try{ const pl = sphPlanAuswerten(seiten.plan); if(pl) planNeu = sphPlanUebernehmen(pl, opt && opt.planErzwingen); }catch(e){}
+    let vpNeu = false;
+    try{ const vp = sphVertretungAuswerten(seiten.vp); if(vp){ S.vertretung = {stand:new Date().toISOString(), tage:vp}; speichern(); vpNeu = true; } }catch(e){}
     const liste = sphAuswerten(seiten.mu);
-    if(!liste.length && !planNeu) throw {code:"leer"};
+    if(!liste.length && !planNeu && !vpNeu) throw {code:"leer", weg:seiten.weg};
     let neu = 0; liste.forEach(e => { if(Heft.neu(e, e.id, "schulportal")) neu++; });
     const d2 = sphDaten() || d; d2.letzter = new Date().toISOString();
     d2.meldung = neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge") : "nichts Neues"; sphSpeichern(d2);
-    return {ok:true, neu:neu, gesamt:liste.length, plan:planNeu};
+    return {ok:true, neu:neu, gesamt:liste.length, plan:planNeu, vp:vpNeu};
   })().catch(e => {
-    const code = e && ["login","leer","helfer"].indexOf(e.code) >= 0 ? e.code : "netz";
-    const d2 = sphDaten(); if(d2){ d2.letzter = new Date().toISOString(); d2.meldung = {login:"Anmeldung fehlgeschlagen", leer:"keine Einträge erkannt", netz:"keine Verbindung", helfer:"Helfer fehlt"}[code]; sphSpeichern(d2); }
-    return {ok:false, code:code};
+    const code = e && ["login","sitzung","leer","helfer"].indexOf(e.code) >= 0 ? e.code : "netz";
+    const d2 = sphDaten(); if(d2){ d2.letzter = new Date().toISOString(); d2.meldung = {login:"Anmeldung fehlgeschlagen", sitzung:"Anmeldung unterbrochen", leer:"keine Einträge erkannt", netz:"keine Verbindung", helfer:"Helfer fehlt"}[code]; sphSpeichern(d2); }
+    /* Prüfcode: welcher Schritt beim Schulportal schiefging (ohne Zugangsdaten), hilft bei der Fehlersuche */
+    return {ok:false, code:code, weg:e && Array.isArray(e.weg) ? e.weg.join(" · ").slice(0, 400) : ""};
   }).finally(() => { sphLaeuft = null; });
   return sphLaeuft;
 }
@@ -22701,9 +22798,12 @@ function portalKarte(){
     c.querySelectorAll("button").forEach(b => b.disabled = true);
     c.insertAdjacentHTML("beforeend", '<div class="fb tipp" style="margin-top:10px"><div class="kopf">'+ic("neu")+'Karo meldet sich im Schulportal an …</div></div>');
     const r = await sphAbruf({planErzwingen:erstesMal && planLeer()});
-    const box = (art, kopf, text) => '<div class="fb '+art+'" style="margin-top:10px"><div class="kopf">'+kopf+'</div>'+(text ? '<p>'+text+'</p>' : '')+'</div>';
-    if(r.ok) zeichne(box("ok", ic("haken")+(r.neu ? r.neu+(r.neu === 1 ? " neue Hausaufgabe" : " neue Hausaufgaben") : "Alles aktuell"), r.plan ? "Dein Stundenplan wurde auch übernommen." : ""));
+    const pc = r.weg ? '<small class="sph-pruef">Prüfcode: '+esc(r.weg)+'</small>' : '';
+    const box = (art, kopf, text) => '<div class="fb '+art+'" style="margin-top:10px"><div class="kopf">'+kopf+'</div>'+(text ? '<p>'+text+'</p>' : '')+(art === "ok" ? '' : pc)+'</div>';
+    if(r.ok) zeichne(box("ok", ic("haken")+(r.neu ? r.neu+(r.neu === 1 ? " neuer Eintrag" : " neue Einträge") : "Alles aktuell"),
+      [r.plan ? "Dein Stundenplan wurde übernommen." : "", r.vp ? "Der Vertretungsplan ist aktuell." : ""].filter(Boolean).join(" ")));
     else if(r.code === "login"){ if(erstesMal){ sphSpeichern(null); offen = true; } zeichne(box("bad", ic("kreuz")+"Anmeldung hat nicht geklappt", "Prüf Schulnummer, Benutzername und Passwort. Es sind dieselben wie auf der Schulportal-Webseite.")); }
+    else if(r.code === "sitzung") zeichne(box("bad", ic("kreuz")+"Anmeldung wurde unterbrochen", "Das Schulportal hat die Daten angenommen, aber Karo kam danach nicht weiter. Schick ein Bildschirmfoto von dieser Meldung an das Karo-Team."));
     else if(r.code === "leer") zeichne(box("info", ic("birne")+"Angemeldet, aber nichts gefunden", "Bei „Mein Unterricht“ steht gerade nichts, oder das Schulportal sieht anders aus als erwartet."));
     else if(r.code === "helfer") zeichne(box("bad", ic("kreuz")+"Der Schulportal-Helfer ist noch nicht eingerichtet", "Er muss einmal auf dem Karo-Server installiert werden."));
     else zeichne(box("bad", ic("kreuz")+"Keine Verbindung", "Prüf das Internet und versuch es gleich noch einmal."));

@@ -363,17 +363,31 @@ sup, sub{font-size:.7em; line-height:0}
 .plan-unten{margin-top:14px}
 .konto-karte h3{display:flex; align-items:center; gap:8px}
 .konto-tabs{display:flex; gap:6px}
-.konto-form{gap:12px}
+.konto-form{gap:12px} .konto-form[hidden]{display:none}
 .konto-form .fb{margin:0}
+/* Hausaufgaben: aufgeräumt */
+.heft-knoepfe{display:flex; gap:10px; margin:4px 0 16px}
+.heft-knoepfe > *{flex:1 1 0; justify-content:center; min-width:0; white-space:nowrap; padding-left:12px; padding-right:12px}
+.heft-seite .ha .meta{display:flex; align-items:center; gap:6px; flex-wrap:nowrap; min-width:0}
+.heft-seite .ha .meta > span{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.heft-seite .ha .meta .klein-x{width:44px; height:44px; margin:-4px -8px -4px 0}
+.heft-seite .ha .meta .klein-x:first-of-type{margin-left:auto}
+.heft-form{margin-bottom:16px}
+.portal-karte{margin-bottom:16px}
+.portal-kopf{display:flex; gap:14px; align-items:flex-start; margin-bottom:12px}
+.portal-kopf > .ic{flex:none; width:40px; height:40px; padding:9px; border-radius:12px; background:var(--brand-soft); color:var(--brand)}
+.portal-kopf h3{font-size:18px; margin-bottom:2px}
+.portal-kopf p{font-size:15px}
+.portal-form{margin-top:4px}
+.portal-karte.verbunden{padding:10px 12px}
+.portal-leiste{display:flex; align-items:center; gap:10px}
+.portal-leiste > div{flex:1; min-width:0; display:flex; flex-direction:column}
+.portal-leiste small{color:var(--ink-3); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.portal-ok{flex:none; width:32px; height:32px; border-radius:50%; background:var(--ok-bg, #e3f6ea); color:var(--ok, #1f8f5a); display:grid; place-items:center}
+.portal-ok .ic{width:18px; height:18px}
+@media (max-width:400px){ .portal-leiste #sphjetzt span{display:none} }
 .plan-sph{display:flex; flex-direction:column; gap:6px; align-items:flex-start; padding:12px 14px; border-radius:12px; background:var(--brand-soft)}
 .plan-sph .leise{font-size:14px}
-.sph-browser{gap:10px}
-.sph-weg{width:100%; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:10px 14px}
-.sph-weg summary{cursor:pointer; list-style-position:inside}
-.sph-weg ol{margin:10px 0 10px 20px; display:flex; flex-direction:column; gap:6px; font-size:15px}
-.sph-feld{min-height:70px; border:2px dashed var(--line-2); border-radius:12px; padding:12px; background:var(--paper-2); font-size:15px; color:var(--ink-2); overflow:hidden; max-height:120px}
-.sph-feld:empty::before{content:attr(data-leer); color:var(--ink-3)}
-.sph-feld:focus{outline:none; border-color:var(--brand)}
 .plan-doppel{flex-direction:row !important; align-items:center; gap:10px !important; font-weight:600 !important}
 .plan-doppel input{width:22px; height:22px}
 .plan-karte{display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit; margin-top:14px}
@@ -759,7 +773,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
   .leiste{left:252px}
 }
 @media (max-width:999.98px){
-  .tabbar{display:grid; grid-template-columns:repeat(6, minmax(0, 1fr)); gap:2px; position:fixed; left:0; right:0; bottom:0; z-index:35;
+  .tabbar{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0, 1fr); gap:2px; position:fixed; left:0; right:0; bottom:0; z-index:35;
     background:color-mix(in srgb, var(--paper) 94%, transparent); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
     border-top:1px solid var(--line); padding:7px 6px calc(6px + env(safe-area-inset-bottom, 0px))}
   main{padding-bottom:150px}
@@ -1226,7 +1240,21 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 @media (prefers-reduced-motion: reduce){ *, *::before, *::after{animation:none !important; transition:none !important} }
 .ha .ha-inhalt{color:var(--ink-2); font-size:14.5px; margin-top:2px}
 /* ================= Nachschlagen ================= */
-.echte-buecher{margin:0 0 22px; border-left:5px solid var(--brand); display:flex; flex-direction:column; gap:12px}
+.echte-buecher{margin:22px 0 0; border-left:5px solid var(--brand); padding:14px 18px}
+.echte-buecher summary{display:flex; align-items:center; gap:10px; cursor:pointer; list-style:none; font-size:15.5px; line-height:1.35}
+.echte-buecher summary::-webkit-details-marker{display:none}
+.echte-buecher summary span{flex:1}
+.echte-buecher summary .ic{width:22px; height:22px; flex:none; color:var(--brand)}
+.echte-buecher .zu{transition:transform .2s}
+.echte-buecher[open] .zu{transform:rotate(90deg)}
+.echte-buecher[open] > :not(summary){margin-top:12px}
+.echte-buecher > p{color:var(--ink-2); font-size:15px; line-height:1.5}
+.buch-regal{display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:10px}
+.buch-kachel{display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--paper); border:1px solid var(--line); border-radius:var(--r-l); box-shadow:var(--shadow-1); text-decoration:none; color:var(--ink); transition:box-shadow .15s, transform .15s}
+.buch-kachel:hover{box-shadow:var(--shadow-2)} .buch-kachel:active{transform:scale(.97)}
+.buch-kachel small{display:block; font-size:12.5px; color:var(--ink-3); font-weight:600}
+.buch-kachel b{display:block; font-size:15.5px; line-height:1.25}
+@media (max-width:620px){ .buch-regal{grid-template-columns:1fr 1fr; gap:8px} .buch-kachel{flex-direction:column; align-items:flex-start; gap:8px; padding:12px} }
 .echte-buecher[hidden]{display:none}
 .eb-kopf{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start}
 .eb-kopf > svg{width:40px; height:40px; padding:8px; border-radius:12px; background:var(--brand-soft); color:var(--brand)}
@@ -1312,6 +1340,57 @@ a.pill{text-decoration:none; color:inherit}
 .opt.art[aria-pressed="true"]{border-color:var(--brand); background:var(--brand-soft); box-shadow:inset 0 0 0 1px var(--brand)}
 @media (max-width:560px){ .art-wahl{grid-template-columns:1fr} }
 .chip .ic{width:14px; height:14px; vertical-align:-2px; margin-right:3px}
+/* ================= Startseite aufgeräumt ================= */
+.heute{grid-template-columns:1.3fr 1fr}
+.heute > .weiter-gross{justify-content:center}
+.heute .freund-karte{margin-top:0; flex-direction:column; text-align:center; justify-content:center}
+.heute .freund-info{align-items:center}
+.heute .freund-blase{align-self:center}
+.heute .freund-blase::before{left:calc(50% - 7px); top:-9px; transform:rotate(135deg)}
+.heute .freund-futter{width:100%}
+.heute .freund-anpassen{align-self:center}
+.freund-pills{display:flex; gap:6px; flex-wrap:wrap}
+.freund-pills > *{display:inline-flex; align-items:center; gap:5px; font-size:13px; font-weight:700; padding:4px 10px; border-radius:99px; background:var(--paper-2); border:1px solid var(--line); color:var(--ink); text-decoration:none}
+.freund-pills .ic{width:14px; height:14px}
+.freund-pills .flame{color:#f06a2b} .freund-pills .star{color:#e8a200; fill:#e8a200}
+.kacheln{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px}
+.kachel{display:flex; flex-direction:column; gap:5px; padding:14px; min-height:118px; background:var(--paper); border:1px solid var(--line); border-radius:var(--r-l); box-shadow:var(--shadow-1); text-decoration:none; color:var(--ink); transition:box-shadow .15s, transform .15s}
+.kachel:hover{box-shadow:var(--shadow-2)} .kachel:active{transform:scale(.97)}
+.kachel .ico, .kachel .blitz-logo{width:42px; height:42px; border-radius:12px; font-size:15px; margin-bottom:4px}
+.kachel .ico .ic{width:22px; height:22px}
+.kachel .blitz-logo .ic{width:22px; height:22px}
+.kachel b{font-size:16.5px; font-weight:800}
+.kachel small{font-size:13.5px; color:var(--ink-3); line-height:1.3}
+.kachel.blitz{background:linear-gradient(135deg, color-mix(in srgb, #ffb020 14%, var(--paper)), color-mix(in srgb, #ff5a3c 12%, var(--paper)))}
+.kachel.hat small{color:var(--bad); font-weight:700}
+.kachel.fertig small{color:var(--ok); font-weight:700}
+.mini-ha-karte{padding:10px}
+.tipp-leiste{display:flex; align-items:center; gap:10px; margin-top:18px; padding:12px 16px; border-radius:14px; background:var(--brand-soft); color:var(--brand); text-decoration:none; font-size:15px; line-height:1.35}
+.tipp-leiste span{flex:1}
+.tipp-leiste .ic{width:20px; height:20px; flex:none}
+@media (max-width:620px){
+  .heute{grid-template-columns:1fr}
+  .kacheln{grid-template-columns:1fr 1fr; gap:10px}
+  .kachel{min-height:0}
+  .heute .freund-karte{flex-direction:row; text-align:left; align-items:center; gap:12px; padding:14px 16px}
+  .heute .freund-tier{width:96px; height:96px}
+  .heute .freund-info{align-items:flex-start; gap:6px}
+  .heute .freund-info h3{font-size:22px}
+  .heute .freund-blase{align-self:stretch; font-size:14.5px; min-height:0; padding:8px 12px}
+  .heute .freund-blase::before{left:-9px; top:14px; transform:rotate(45deg)}
+  .heute .freund-anpassen{display:none}
+  .freund-pills{gap:4px}
+  .freund-pills > *{font-size:12.5px; padding:3px 8px}
+}
+.andere-klassen{padding:14px 18px; display:flex; flex-direction:column; gap:12px}
+.andere-klassen > div{display:flex; flex-direction:column; gap:8px}
+.andere-klassen b{font-size:15px}
+.klassen-chips{display:flex; flex-wrap:wrap; gap:8px}
+.klassen-chips a{width:46px; height:46px; display:grid; place-items:center; border-radius:12px; background:var(--k); color:var(--k-ink, #fff); font-weight:800; font-size:17px; text-decoration:none; box-shadow:var(--shadow-1); transition:transform .15s}
+.klassen-chips a:active{transform:scale(.94)}
+.abz-mehr summary{list-style:none; cursor:pointer; margin-top:4px}
+.abz-mehr summary::-webkit-details-marker{display:none}
+.abz-mehr[open] summary{margin-bottom:10px}
 </style>
 <aside class="seite" id="seitenleiste" aria-label="Hauptmenü"></aside>
 <header class="top">
@@ -20221,8 +20300,10 @@ function abzeichenToast(a){
 function abzeichenHtml(){
   const n = ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length;
   return '<div class="card pad stack" id="abzeichen"><div class="row" style="justify-content:space-between"><h3>Deine Abzeichen</h3><span class="chip">'+n+' von '+ABZEICHEN.length+'</span></div><div class="abz-liste">'+
-    ABZEICHEN.map(a => { const hat = S.abz && S.abz[a.id];
-      return '<div class="abz'+(hat ? "" : " zu")+'" title="'+esc(a.x)+'"><span class="abz-e">'+a.e+'</span><b>'+esc(a.t)+'</b><small>'+esc(a.x)+'</small></div>'; }).join("")+'</div></div>';
+    ABZEICHEN.slice().sort((x, y) => (S.abz && S.abz[y.id] ? 1 : 0) - (S.abz && S.abz[x.id] ? 1 : 0)).map((a, i) => { const hat = S.abz && S.abz[a.id];
+      /* Nur die ersten vier zeigen, der Rest ist eingeklappt */
+      return (i === Math.max(4, n + 2) ? '</div><details class="abz-mehr"><summary class="link-btn">Alle '+ABZEICHEN.length+' Abzeichen ansehen</summary><div class="abz-liste">' : '')+
+        '<div class="abz'+(hat ? "" : " zu")+'" title="'+esc(a.x)+'"><span class="abz-e">'+a.e+'</span><b>'+esc(a.t)+'</b><small>'+esc(a.x)+'</small></div>'; }).join("")+'</div>'+(ABZEICHEN.length > Math.max(4, n + 2) ? '</details>' : '')+'</div>';
 }
 
 /* ================= Fehler-Heft =================
@@ -20631,13 +20712,15 @@ function zeigeTopnav(){
   const leiste = document.getElementById("seitenleiste");
   const wechsel = topnavBereich !== bereich; topnavBereich = bereich;
   const hops = k => (wechsel && bereich === k) ? ' data-hops="1"' : '';
-  if(leiste) leiste.innerHTML = logo + MENUE.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
+  /* Ohne KI (Webseite, Handy-App) gibt es den KI-Knopf nicht, das würde nur verwirren */
+  const menue = MENUE.filter(m => claudeRT || m[0] !== "ki");
+  if(leiste) leiste.innerHTML = logo + menue.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
     '<div class="unten"><a class="lv-karte" href="#/profil"><div class="row"><span class="row" style="gap:6px">'+ic("blitz")+'Level '+lv.n+'</span><span class="num">'+K.fmt(S.xp)+' XP</span></div>'+
     '<div class="bar"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></a>'+
     '<a class="profil-link" href="#/profil"'+akt("profil")+'><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span><span>'+(name ? esc(name) : "Profil")+
     '<small>'+(S.profil.klasse ? "Klasse "+S.profil.klasse+" · " : "")+'Einstellungen</small></span></a></div>';
   const tab = document.getElementById("tabbar");
-  if(tab) tab.innerHTML = MENUE.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
+  if(tab) tab.innerHTML = menue.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
   const nav = document.getElementById("topnav");
   if(nav) nav.innerHTML = '<a class="xp-pill" href="#/profil" style="text-decoration:none" title="Level '+lv.n+' · '+K.fmt(S.xp)+' XP">'+ic("blitz")+'<span class="num"><span class="lv-w">Level </span>'+lv.n+'</span></a>'+
     '<a class="icon-btn" href="#/profil" aria-label="Profil"><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span></a>';
@@ -20723,14 +20806,13 @@ function seiteNichtGefunden(){
 function seiteStart(){
   crumbs([]);
   const name = (S.profil.name || "").trim();
-  const n = heuteN(), serie = serieTage(), lv = level(S.xp);
+  const n = heuteN();
   const tag = new Date().toLocaleDateString("de-DE", {weekday:"long", day:"numeric", month:"long"});
-  const U = 2*Math.PI*48, anteil = Math.min(1, n/TAGESZIEL);
   const k = S.profil.klasse;
   const zuletzt = S.zuletzt.map(id => byId[id]).filter(Boolean)[0];
   const ziel = zuletzt || (k && empfehlungen(k,1)[0]) || THEMEN[0];
   let html = '<header class="seiten-kopf"><div class="eyebrow">'+esc(tag)+'</div><h1>'+(name ? 'Hallo, <span class="hand">'+esc(name)+'</span>!' : 'Willkommen bei Karo')+'</h1>'+
-    '<p>'+(n === 0 ? "Was steht heute an? Mach da weiter, wo du aufgehört hast, oder fang ein neues Thema an."
+    '<p>'+(n === 0 ? "Schön, dass du da bist. Los geht's!"
       : n < TAGESZIEL ? "Schon "+n+" Aufgaben heute. Noch "+(TAGESZIEL-n)+" bis zum Tagesziel." : "Tagesziel geschafft. Alles, was jetzt kommt, ist Bonus.")+'</p></header>';
   html += '<section class="heute">';
   if(ziel){
@@ -20742,46 +20824,37 @@ function seiteStart(){
       (lauf ? '<div class="fort"><span>Aufgabe '+(r.i+1)+' von '+r.items.length+'</span><div class="bar"><i style="width:'+pct+'%"></i></div></div>' : '')+
       '<span class="btn primary gross">'+(lauf ? "Weitermachen" : "Jetzt üben")+' '+ic("pfeil")+'</span></a>';
   }
-  html += '<div class="card ziel-karte"><div class="eyebrow">Tagesziel</div>'+
-    '<div class="ring"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="48"/><circle class="fg'+(anteil>=1?" voll":"")+'" cx="60" cy="60" r="48" stroke-dasharray="'+U.toFixed(1)+'" stroke-dashoffset="'+(U*(1-anteil)).toFixed(1)+'"/></svg>'+
-    '<div class="mitte"><div>'+(n >= TAGESZIEL ? '<b class="num">✓</b><br><span>'+(n > TAGESZIEL ? '+'+(n - TAGESZIEL)+' extra' : 'geschafft')+'</span>' : '<b class="num">'+n+'</b><br><span>von '+TAGESZIEL+'</span>')+'</div></div></div>'+
-    '<div class="pills"><span class="pill">'+ic("flamme","flame")+serie+' '+(serie === 1 ? "Tag" : "Tage")+'</span><span class="pill">'+ic("stern","star")+K.fmt(S.xp)+' XP</span>'+
-    '<a class="pill" href="#/profil" title="Deine Abzeichen">🏅 '+ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length+'</a></div></div>';
-  html += '</section><div id="freundplatz"></div>';
+  html += '<div id="freundplatz"></div></section>';
   const mixR = S.sitz["u:mix"], mixHeute = S.mixTag === datum(0), mixLauf = !mixHeute && mixR && mixR.tag === datum(0) && !mixR.fertig && mixR.i > 0;
-  const fehlerN = (S.fehler || []).length;
-  html += '<section class="duo wiederholen">'+
-    '<a class="card mix-karte" href="#/mix"><h3>'+icoHtml("mix")+'Tagesmix</h3><p class="weich" style="font-size:15px">10 gemischte Aufgaben aus deinen Themen, damit nichts vergessen wird. Jeden Tag neu.</p>'+
-      '<span class="btn '+(mixHeute ? "" : "primary")+'">'+(mixHeute ? ic("haken")+"Heute geschafft" : mixLauf ? "Weitermachen · "+(mixR.i+1)+" von "+mixR.items.length : "Los geht's "+ic("pfeil"))+'</span></a>'+
-    '<a class="card fehler-karte" href="#/fehler"><h3>'+icoHtml("fehler")+'Fehler-Heft</h3><p class="weich" style="font-size:15px">'+
-      (fehlerN ? fehlerN+" Aufgabe"+(fehlerN === 1 ? "" : "n")+" zum Wiederholen. Zweimal richtig, dann sind sie geschafft." : "Hier landen Aufgaben, die du falsch hattest. Gerade ist es leer.")+'</p>'+
-      '<span class="btn">'+(fehlerN ? "Fehler üben "+ic("pfeil") : "Ansehen")+'</span></a></section>'+
-    '<a class="card blitz-banner" href="#/blitz"><div class="blitz-logo">'+ic("blitz")+'</div><div><h3>Blitz</h3><p>60 Sekunden, so viele Aufgaben wie möglich. Allein auf Rekordjagd oder als Duell zu zweit.</p></div>'+
-      '<span class="btn primary">'+(S.blitz && S.blitz.best && S.blitz.best[(S.profil.klasse ? "m"+S.profil.klasse : "m5")] ? "Rekord "+S.blitz.best["m"+(S.profil.klasse || 5)]+" · " : "")+'Spielen '+ic("pfeil")+'</span></a>';
+  const fehlerN = (S.fehler || []).length, rekord = S.blitz && S.blitz.best && S.blitz.best["m"+(k || 5)];
+  const kachel = (href, ico, titel, text, extra) => '<a class="kachel'+(extra || "")+'" href="'+href+'">'+ico+'<b>'+titel+'</b><small>'+text+'</small></a>';
+  html += '<div class="section-h"><h2>Schnell üben</h2></div><section class="kacheln wiederholen">'+
+    kachel("#/mix", icoHtml("mix"), "Tagesmix", mixHeute ? "Heute geschafft ✓" : mixLauf ? "Weiter · "+(mixR.i+1)+" von "+mixR.items.length : "10 gemischte Aufgaben", mixHeute ? " fertig" : "")+
+    kachel("#/blitz", '<span class="blitz-logo">'+ic("blitz")+'</span>', "Blitz", rekord ? "Rekord: "+rekord : "60 Sekunden, allein oder zu zweit", " blitz")+
+    kachel("#/fehler", icoHtml("fehler"), "Fehler-Heft", fehlerN ? fehlerN+" zum Wiederholen" : "Gerade leer", fehlerN ? " hat" : "")+
+    (claudeRT ? kachel("#/ki", '<span class="ico">'+ic("kamera")+'</span>', "KI-Trainer", "Foto machen, Übungen bekommen")
+      : kachel(blattZiel(), '<span class="ico">'+ic("drucker")+'</span>', "Übungsblatt", "Zum Ausdrucken"))+'</section>';
+  /* Hausaufgaben und Stundenplan nur, wenn es etwas zu zeigen gibt */
+  const offen = Heft.sortiert().filter(e => e.aufgabe && !e.erledigt);
+  if(offen.length){
+    html += '<div class="section-h"><h2>Hausaufgaben</h2><a class="btn ghost klein" href="#/heft">Alle '+offen.length+' '+ic("rechts")+'</a></div>'+
+      '<div class="card mini-ha-karte"><div class="mini-ha">'+offen.slice(0,3).map(e =>
+      '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema || e.fach)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div></div>';
+  }
+  html += planKarte();
+  if(!offen.length && !sphDaten() && sphMoeglich())
+    html += '<a class="tipp-leiste" href="#/heft">'+ic("heft")+'<span>Hausaufgaben automatisch aus dem <b>Schulportal</b> holen</span>'+ic("rechts")+'</a>';
   if(k && themenVon(k).length){
-    html += '<div class="section-h"><h2>Für dich in Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle Themen '+ic("rechts")+'</a></div>'+
-            '<div class="themen">'+empfehlungen(k, 4).map(themaZeile).join("")+'</div>';
+    html += '<div class="section-h"><h2>Mathe · Klasse '+k+'</h2><a class="btn ghost klein" href="#/klasse/'+k+'">Alle '+ic("rechts")+'</a></div>'+
+            '<div class="themen">'+empfehlungen(k, 4).filter(t => t !== ziel).slice(0, 3).map(themaZeile).join("")+'</div>';
     const ek = EN_KLASSEN.indexOf(k) >= 0 ? k : (k > 7 ? 7 : 5);
-    html += '<div class="section-h"><h2>Englisch'+(ek !== k ? ' <small class="leise">Wiederholung aus Klasse '+ek+'</small>' : '')+'</h2><a class="btn ghost klein" href="#/englisch/'+(ek !== k ? k : ek)+'">Alle Themen '+ic("rechts")+'</a></div>'+
-            '<div class="themen">'+empfehlungen(ek, 3, FACH_E).map(themaZeile).join("")+vokabelZeile()+'</div>';
+    html += '<div class="section-h"><h2>Englisch'+(ek !== k ? ' <small class="leise">Wiederholung aus Klasse '+ek+'</small>' : '')+'</h2><a class="btn ghost klein" href="#/englisch/'+(ek !== k ? k : ek)+'">Alle '+ic("rechts")+'</a></div>'+
+            '<div class="themen">'+empfehlungen(ek, 3, FACH_E).filter(t => t !== ziel).slice(0, 2).map(themaZeile).join("")+vokabelZeile()+'</div>';
   }else{
     html += '<div class="section-h"><h2>Wähle deine Klasse</h2></div><div class="hefte">'+KLASSEN.map(heftHtml).join("")+'</div>';
   }
-  const offen = Heft.sortiert().filter(e => e.aufgabe && !e.erledigt);
-  html += planKarte();
-  html += '<section class="duo"><div class="card"><h3>'+ic("heft")+'Hausaufgaben</h3>'+
-    (offen.length ? '<div class="mini-ha">'+offen.slice(0,3).map(e =>
-      '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div>'
-      : '<p class="weich" style="font-size:15px">Keine offenen Hausaufgaben. Trag ein, was ihr im Unterricht gemacht habt.</p>')+
-    '<div class="row" style="gap:8px;flex-wrap:wrap"><a class="btn" href="#/heft">'+(offen.length ? "Alle "+offen.length+" ansehen" : ic("plus")+"Eintragen")+'</a>'+(planLeer() ? '<a class="btn ghost" href="#/stundenplan">'+ic("plan")+'Stundenplan eintragen</a>' : '')+'</div></div>'+
-    (claudeRT ? '<div class="card ki-karte"><h3>'+ic("ki")+'KI-Trainer</h3><p style="font-size:15px">Foto von Arbeitsblatt, Buch oder Tafel machen: Die KI macht daraus Lernzettel, Übungen mit Tipps und eine Probe-Arbeit. Für jedes Fach.</p>'+
-    '<div class="row"><a class="btn brand" href="#/ki">'+ic("kamera")+'Foto-Trainer</a></div></div>'
-    : '<div class="card ki-karte"><h3>'+ic("drucker")+'Übungsblätter</h3><p style="font-size:15px">Zu jedem Thema ein Blatt zum Ausdrucken, mit Lösungsseite. Oder gleich hier am Bildschirm lösen.</p>'+
-    '<div class="row"><a class="btn brand" href="'+blattZiel()+'">'+ic("drucker")+'Übungsblatt</a></div></div>')+'</section>';
   app.innerHTML = html + fuss();
   const fp = app.querySelector("#freundplatz"); if(fp) fp.replaceWith(freundKarte());
-  const fg = app.querySelector(".ring .fg");
-  if(fg && !ruhig()){ const ziel = fg.getAttribute("stroke-dashoffset"); fg.style.strokeDashoffset = U.toFixed(1); requestAnimationFrame(() => requestAnimationFrame(() => { fg.style.strokeDashoffset = ziel; })); }
 }
 function heftHtml(k, fach){
   fach = fach || FACH_M;
@@ -20819,7 +20892,12 @@ function seiteKlasse(k, fach, gewollt){
   if(fach === FACH_E && gewollt) html += '<div class="card pad en-hinweis">'+ic("birne")+'<p>Englisch für Klasse '+gewollt+' ist noch in Arbeit. Bis dahin kannst du hier Klasse 7 wiederholen: Das kommt in Klasse '+gewollt+' oft wieder dran.</p></div>';
   if(fach === FACH_E) html += '<section class="kapitel"><h2>Wörter lernen</h2><div class="themen">'+vokabelZeile()+'</div></section>';
   if(!kap.length) html += '<div class="card leer-hinweis" style="margin-top:20px">Die Themen für Klasse '+k+' sind noch in Arbeit.</div>';
-  kap.forEach(g => { html += '<section class="kapitel"><h2>'+esc(g.name)+'</h2><div class="themen">'+g.themen.map(themaZeile).join("")+'</div></section>'; });
+  /* Kapitel mit nur einem Thema brauchen keine eigene Überschrift (sonst steht alles doppelt da) */
+  let einzeln = [], schonThemen = false;
+  const einzelnRaus = () => { if(einzeln.length){ html += '<section class="kapitel"><h2>'+(schonThemen ? "Weitere Themen" : "Themen")+'</h2><div class="themen">'+einzeln.map(themaZeile).join("")+'</div></section>'; einzeln = []; schonThemen = true; } };
+  kap.forEach(g => { if(g.themen.length === 1){ einzeln.push(g.themen[0]); return; }
+    einzelnRaus(); html += '<section class="kapitel"><h2>'+esc(g.name)+'</h2><div class="themen">'+g.themen.map(themaZeile).join("")+'</div></section>'; });
+  einzelnRaus();
   const kas = fach === FACH_E ? [] : KA.filter(b => b.klasse === k);
   if(kas.length){
     html += '<section class="kapitel"><h2>Klassenarbeiten zum Üben</h2><div class="themen">'+kas.map(b => {
@@ -20834,7 +20912,7 @@ function seiteKlasse(k, fach, gewollt){
 /* ================= Lernen: Klassen und Suche ================= */
 function seiteLernen(suchFokus){
   crumbs([]);
-  app.innerHTML = '<header class="seiten-kopf"><h1>Lernen</h1><p>Wähle deine Klasse oder such direkt nach einem Thema.</p></header>'+
+  app.innerHTML = '<header class="seiten-kopf"><h1>Lernen</h1><p>Wähle ein Heft oder such direkt nach einem Thema.</p></header>'+
     '<label class="suche lernen-suche" for="q">'+ic("suche")+'<input class="suche-feld" id="q" type="search" placeholder="Thema suchen, z. B. Brüche, Prozent, Simple Past" autocomplete="off"></label>'+
     '<div id="treffer"></div>' + fuss();
   const q = document.getElementById("q"), out = document.getElementById("treffer");
@@ -20849,10 +20927,21 @@ function seiteLernen(suchFokus){
   const zeig = () => {
     const w = q.value.trim().split(/\s+/).map(falte).filter(Boolean);
     if(!w.length){ const vs = vokabelStand();
-      out.innerHTML = '<div class="section-h"><h2>Mathematik</h2></div><div class="hefte">'+KLASSEN.map(k => heftHtml(k)).join("")+'</div>'+
-      '<div class="section-h" style="margin-top:30px"><h2>Englisch</h2></div><div class="hefte">'+EN_KLASSEN.map(k => heftHtml(k, FACH_E)).join("")+
-      '<a class="heft" data-k="ev" href="#/vokabeln"><span class="gross-n" aria-hidden="true">Aa</span><div class="etikett"><div class="fach">Vokabeln</div><div class="kl">Karteikasten</div><div class="linie"></div><div class="wer">'+(S.profil.name ? esc(S.profil.name) : "&nbsp;")+'</div></div>'+
-      '<div class="fort"><span>'+vs.sicher+' von '+vs.gesamt+' Wörtern sicher</span><div class="bar"><i style="width:'+Math.round(vs.sicher/Math.max(1, vs.gesamt)*100)+'%"></i></div></div></a></div>'; return; }
+      const vokHeft = '<a class="heft" data-k="ev" href="#/vokabeln"><span class="gross-n" aria-hidden="true">Aa</span><div class="etikett"><div class="fach">Vokabeln</div><div class="kl">Karteikasten</div><div class="linie"></div><div class="wer">'+(S.profil.name ? esc(S.profil.name) : "&nbsp;")+'</div></div>'+
+      '<div class="fort"><span>'+vs.sicher+' von '+vs.gesamt+' Wörtern sicher</span><div class="bar"><i style="width:'+Math.round(vs.sicher/Math.max(1, vs.gesamt)*100)+'%"></i></div></div></a>';
+      const k = S.profil.klasse;
+      if(k && KLASSEN.indexOf(k) >= 0){
+        /* Eigene Klasse groß, alle anderen Klassen als kleine Knöpfe darunter */
+        const eigenE = EN_KLASSEN.indexOf(k) >= 0;
+        const chips = (liste, fach) => liste.map(n => '<a data-k="'+(fach === FACH_E ? "e"+n : n)+'" href="'+klasseHref(n, fach)+'" aria-label="'+fach+' Klasse '+n+'">'+n+'</a>').join("");
+        out.innerHTML = '<div class="section-h"><h2>Deine Hefte · Klasse '+k+'</h2></div><div class="hefte">'+heftHtml(k)+(eigenE ? heftHtml(k, FACH_E) : "")+vokHeft+'</div>'+
+          '<div class="section-h" style="margin-top:30px"><h2>Andere Klassen</h2></div><div class="card andere-klassen">'+
+          '<div><b>Mathe</b><div class="klassen-chips">'+chips(KLASSEN.filter(n => n !== k), FACH_M)+'</div></div>'+
+          '<div><b>Englisch</b><div class="klassen-chips">'+chips(EN_KLASSEN.filter(n => !eigenE || n !== k), FACH_E)+'</div></div></div>';
+        return;
+      }
+      out.innerHTML = '<div class="section-h"><h2>Mathematik</h2></div><div class="hefte">'+KLASSEN.map(n => heftHtml(n)).join("")+'</div>'+
+      '<div class="section-h" style="margin-top:30px"><h2>Englisch</h2></div><div class="hefte">'+EN_KLASSEN.map(n => heftHtml(n, FACH_E)).join("")+vokHeft+'</div>'; return; }
     const liste = heu.filter(x => w.every(v => passt(x, v))).map(x => x.t);
     out.innerHTML = liste.length ? '<p class="leise" style="margin-bottom:10px">'+liste.length+' Treffer</p><div class="themen">'+liste.map(themaZeile).join("")+'</div>'
       : '<div class="card leer-hinweis">Nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Prozent“, „Gleichung“ oder „Simple Past“.</div>';
@@ -20975,14 +21064,14 @@ function seiteProfil(){
     '<div style="font-family:var(--display);font-size:26px;font-weight:800">'+K.fmt(S.xp)+' XP</div></div>'+
     '<div class="leise">noch '+K.fmt(lv.bis - S.xp)+' XP bis Level '+(lv.n+1)+'</div></div>'+
     '<div class="bar" style="background:var(--line);color:var(--gold)"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></div>'+
-    '<div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
+    '<div id="kontoplatz"></div><div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Deine Klasse</div><div class="kl-wahl" id="pkl"></div></div>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div><div id="hgplatz"></div></div>'+
-    abzeichenHtml()+'<div id="freundeinst"></div>'+
-    '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
+    '<div id="freundeinst"></div>'+abzeichenHtml()+
+    (nativ ? '' : '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen, ganz ohne Anmeldung. Dann auf den Startbildschirm legen:</p>'+
-    '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
-    '<div id="kontoplatz"></div><div class="card pad stack"><h3>Deine Daten</h3><p class="weich">'+(Konto.an() ? 'Ohne Konto speichert Karo alles nur in diesem Browser auf diesem Gerät. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg. Mit einem Konto (oben) ist er gesichert.' : 'Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.')+'</p>'+
+    '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>')+
+    '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">'+(Konto.an() ? 'Ohne Konto speichert Karo alles nur in diesem Browser auf diesem Gerät. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg. Mit einem Konto (oben) ist er gesichert.' : 'Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.')+'</p>'+
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
   app.appendChild(box); app.insertAdjacentHTML("beforeend", fuss());
   if(Konto.an()){ const kk = kontoKarte(); box.querySelector("#kontoplatz").replaceWith(kk); aufraeumen = () => Konto.hoerer.clear(); } else box.querySelector("#kontoplatz").remove();
@@ -21154,12 +21243,13 @@ function kontoKarte(){
       '<p class="leise" style="font-size:13px">Gespeichert werden nur Benutzername, Passwort (verschlüsselt) und dein Spielstand, auf Servern von Supabase in der EU. Du kannst das Konto jederzeit löschen. <a href="#/datenschutz">Datenschutz</a></p>';
     let modus = "neu";
     const tabs = c.querySelector(".konto-tabs"), form = c.querySelector("form"), knopf = form.querySelector("button"), meld = form.querySelector(".konto-meldung"), hinweis = form.querySelector(".konto-hinweis");
-    const setze = m => { modus = m; tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === m ? "true" : "false"));
+    const setze = m => { modus = m; form.hidden = false; tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === m ? "true" : "false"));
       knopf.innerHTML = m === "neu" ? ic("plus")+"Konto erstellen" : ic("haken")+"Anmelden";
       form.querySelector("#kpw").setAttribute("autocomplete", m === "neu" ? "new-password" : "current-password");
       hinweis.textContent = m === "neu" ? "Benutzername: 3 bis 20 Zeichen, nur Buchstaben, Zahlen, Punkt, Strich. Passwort: mindestens 8 Zeichen. Merk es dir gut, man kann es nicht zurücksetzen." : ""; meld.innerHTML = ""; };
     [["neu","Neues Konto"],["an","Anmelden"]].forEach(([m, l]) => { const b = btn("opt", l, () => setze(m)); b.dataset.m = m; tabs.appendChild(b); });
-    setze(S.konto ? "an" : "neu");
+    /* Formular erst zeigen, wenn man „Neues Konto“ oder „Anmelden“ antippt */
+    form.hidden = true;
     form.addEventListener("submit", async ev => {
       ev.preventDefault();
       const name = form.querySelector("#kname").value.trim(), pw = form.querySelector("#kpw").value;
@@ -21299,24 +21389,23 @@ function nachschlagen(q){
 function seiteBuecher(){
   crumbs([]);
   const q0 = hashQuery();
-  app.innerHTML = '<header class="seiten-kopf"><h1>Bücher zum Nachschlagen</h1><p>Buch vergessen? Hier findest du das Wichtigste aus jedem Fach: Formeln, Verben, Periodensystem, Zeitleisten und die Bibel.</p></header>'+
-    '<label class="suche lernen-suche" for="nq">'+ic("suche")+'<input class="suche-feld" id="nq" type="search" placeholder="In allen Büchern suchen, z. B. Satz des Pythagoras, went, Natrium" autocomplete="off"></label>'+
-    '<div id="ntreffer"></div><section class="card pad echte-buecher"><div class="eb-kopf">'+ic("regal")+'<div><h2>Deine echten Schulbücher</h2>'+
-    '<p>Die Bücher aus dem Unterricht (z. B. <b>Access</b> in Englisch) gibt es digital mit allen Seiten, wenn deine Schule sie für dich freigeschaltet hat. Für dich ist das kostenlos.</p></div></div>'+
+  app.innerHTML = '<header class="seiten-kopf"><h1>Bücher</h1><p>Buch vergessen? Hier steht das Wichtigste aus jedem Fach.</p></header>'+
+    '<label class="suche lernen-suche" for="nq">'+ic("suche")+'<input class="suche-feld" id="nq" type="search" placeholder="Suchen, z. B. Pythagoras, went, Natrium" autocomplete="off"></label>'+
+    '<div id="ntreffer"></div><div id="nregal"></div>'+
+    '<details class="card echte-buecher"><summary>'+ic("regal")+'<span>Deine echten Schulbücher digital (z. B. <b>Access</b>)</span>'+ic("rechts","zu")+'</summary>'+
+    '<p>Die Bücher aus dem Unterricht gibt es digital mit allen Seiten, wenn deine Schule sie für dich freigeschaltet hat. Für dich ist das kostenlos.</p>'+
     '<ol class="eb-schritte"><li>Im Schulportal deiner Schule anmelden (in Hessen: <b>Schulportal Hessen</b>).</li><li>Dort <b>Bildungslogin</b> oder <b>Medienregal</b> öffnen. Da stehen deine Bücher.</li><li>Nichts gefunden? Frag deine Lehrkraft: „Wie komme ich an unsere digitalen Schulbücher?“</li></ol>'+
     '<div class="row" style="flex-wrap:wrap;gap:10px"><a class="btn brand" href="https://start.schulportal.hessen.de/index.php" target="_blank" rel="noopener">'+ic("rechts")+'Schulportal öffnen</a>'+
-    '<a class="btn" href="https://info.bildungslogin.de/" target="_blank" rel="noopener">'+ic("regal")+'Bildungslogin</a></div></section>'+
-    '<div id="nregal"></div>' + fuss();
+    '<a class="btn" href="https://info.bildungslogin.de/" target="_blank" rel="noopener">'+ic("regal")+'Bildungslogin</a></div></details>' + fuss();
   const regal = document.getElementById("nregal"), out = document.getElementById("ntreffer"), q = document.getElementById("nq");
-  const gruppen = {};
-  BUECHER.forEach(b => { (gruppen[b.fach] = gruppen[b.fach] || []).push(b); });
-  (gruppen.Religion = gruppen.Religion || []).unshift({id:"bibel", fach:"Religion", titel:"Bibel", kurz:"Lutherbibel 1912 mit Abkürzungsverzeichnis und Stellensuche", klassen:"5–10"});
-  let html = "";
-  FAECHER.map(f => f[0]).filter(f => gruppen[f]).forEach(f => {
-    html += '<section class="kapitel"><h2>'+fachTag(f)+esc(f)+'</h2><div class="themen">'+gruppen[f].map(b =>
-      '<a class="th" href="#/buch/'+b.id+'">'+fachTag(b.fach)+'<div><h3>'+esc(b.titel)+'</h3><p>'+esc(b.kurz)+'</p></div><div class="status"><span class="chip">Kl. '+esc(b.klassen)+'</span></div></a>').join("")+'</div></section>';
-  });
-  regal.innerHTML = html || '<div class="card leer-hinweis">Die Bücher kommen gleich.</div>';
+  const alle = [{id:"bibel", fach:"Religion", titel:"Bibel", kurz:"Lutherbibel 1912 mit Stellensuche", klassen:"5–10"}].concat(BUECHER);
+  const reihe = FAECHER.map(f => f[0]);
+  alle.sort((x, y) => (reihe.indexOf(x.fach) + 1 || 99) - (reihe.indexOf(y.fach) + 1 || 99));
+  /* Ein Regal statt einer Überschrift pro Fach: jedes Buch ist eine kleine Kachel */
+  regal.innerHTML = alle.length ? '<div class="buch-regal">'+alle.map(b => {
+    const teil = String(b.titel).split(": "), name = teil.length > 1 && teil[0] === b.fach ? teil.slice(1).join(": ") : b.titel;
+    return '<a class="buch-kachel" href="#/buch/'+b.id+'">'+fachTag(b.fach)+'<div><small>'+esc(b.fach)+'</small><b>'+esc(name)+'</b></div></a>';
+  }).join("")+'</div>' : '<div class="card leer-hinweis">Die Bücher kommen gleich.</div>';
   const zeig = () => {
     const w = q.value.trim().split(/\s+/).map(K.normTxt).filter(Boolean);
     const box = app.querySelector(".echte-buecher");
@@ -21448,7 +21537,8 @@ function einfuehrung(){
     {c:"var(--k5)", b:B.merke, t:"Erst verstehen", p:"Zu jedem Thema gibt es eine kurze Erklärung: den Merksatz, ein Beispiel Schritt für Schritt und den typischen Fehler, den viele machen."},
     {c:"var(--k8)", b:B.ueben, t:"Dann üben", p:"Zehn Aufgaben, von leicht nach schwer, jedes Mal mit neuen Zahlen. Du hast zwei Versuche und einen Tipp-Knopf. Klappt es nicht, zeigt Karo dir den Lösungsweg."},
     {c:"var(--k6)", b:B.test, t:"Test mit Note", p:"Fühlst du dich sicher, schreib einen Test wie eine echte Klassenarbeit, ohne Tipps. Karo korrigiert sofort und gibt dir eine Note."},
-    {c:"var(--k10)", b:B.heft, t:"Hausaufgaben und KI-Arbeit", p:"Trag ins Heft ein, was ihr im Unterricht hattet, in jedem Fach. Daraus schreibt dir die KI eine Probe-Arbeit mit Grafiken, Lösungswegen und Note."},
+    claudeRT ? {c:"var(--k10)", b:B.heft, t:"Hausaufgaben und KI-Arbeit", p:"Trag ins Heft ein, was ihr im Unterricht hattet, in jedem Fach. Daraus schreibt dir die KI eine Probe-Arbeit mit Grafiken, Lösungswegen und Note."}
+      : {c:"var(--k10)", b:B.heft, t:"Hausaufgaben", p:"Verbinde dein Schulportal, dann holt Karo deine Hausaufgaben und deinen Stundenplan von allein. Oder trag sie selbst ein. Abhaken, wenn du fertig bist."},
     {c:"var(--k7)", b:B.tag, t:"Jeden Tag ein bisschen", p:"Dein Tagesziel sind 20 Aufgaben. Übst du jeden Tag, wächst deine Serie. Für richtige Antworten gibt es XP, und im Zeugnis siehst du alle deine Noten."},
     {c:"var(--k9)", b:B.wer, t:"Wer bist du?", form:true}
   ];
@@ -22011,7 +22101,8 @@ function heftBearbeiten(e){
   q("#hb-d").value = e.datum || datum(0); q("#hb-f").value = FAECHER.some(f => f[0] === e.fach) ? e.fach : "Anderes"; q("#hb-t").value = e.thema || ""; q("#hb-a").value = e.aufgabe || "";
   const zu = () => { document.removeEventListener("keydown", taste); ov.remove(); };
   const taste = x => { if(x.key === "Escape") zu(); };
-  const row = el("div","row"); row.style.justifyContent = "flex-end";
+  const row = el("div","row"); row.style.justifyContent = "flex-end"; row.style.flexWrap = "wrap";
+  row.appendChild(btn("btn ghost", ic("muell")+"Löschen", async () => { zu(); if(await frage("Eintrag „"+e.thema+"“ löschen?", "Löschen")) Heft.loeschen(e.id); }));
   row.appendChild(btn("btn", "Abbrechen", zu));
   row.appendChild(btn("btn brand", "Speichern", () => {
     const thema = q("#hb-t").value.trim().slice(0,140), aufgabe = q("#hb-a").value.trim().slice(0,600);
@@ -22122,7 +22213,7 @@ function seiteStundenplan(){
       P.tage = [[],[],[],[],[]]; speichern(); zeichne();
     }));
     const sph = el("div","plan-sph");
-    if(nativ && sphDaten()){
+    if(sphMoeglich() && sphDaten()){
       sph.innerHTML = '<b>Schulportal Hessen</b><span class="leise">'+(P.quelle === "schulportal" && P.stand ? "Stundenplan aus dem Schulportal · Stand "+new Date(P.stand).toLocaleString("de-DE", {day:"numeric", month:"numeric", hour:"2-digit", minute:"2-digit"}) : "Noch nicht aus dem Schulportal geholt")+'</span>';
       const hol = btn("btn brand klein", ic("neu")+(P.quelle === "hand" ? "Aus dem Schulportal übernehmen" : "Jetzt holen"), async () => {
         if(P.quelle === "hand" && !planLeer() && !await frage("Deinen eigenen Stundenplan durch den aus dem Schulportal ersetzen?", "Ersetzen")) return;
@@ -22132,11 +22223,10 @@ function seiteStundenplan(){
         zeichne();
       });
       sph.appendChild(hol);
-    }else if(nativ){
-      sph.innerHTML = '<b>Schulportal Hessen</b><span class="leise">Verbinde das Schulportal im Hausaufgaben-Heft, dann kommt dein Stundenplan automatisch.</span><a class="btn klein" href="#/heft">Verbinden</a>';
+    }else if(sphMoeglich()){
+      sph.innerHTML = '<b>Automatisch aus dem Schulportal</b><span class="leise">Verbinde dein Schulportal bei den Hausaufgaben, dann kommt der Stundenplan von selbst.</span><a class="btn klein" href="#/heft">Verbinden</a>';
     }
-    if(nativ) unten.appendChild(sph);
-    else if(!claudeRT) unten.appendChild(sphBrowserKarte("stundenplan", zeichne));
+    if(sphMoeglich()) unten.appendChild(sph);
     unten.insertAdjacentHTML("beforeend", '<p class="weich" style="font-size:14.5px">Tipp: Wenn du im Hausaufgaben-Heft etwas einträgst, ist das Fach der aktuellen Stunde schon ausgewählt. Die Uhrzeiten änderst du, indem du links auf die Stunde tippst.</p>');
   }
   function dialog(titel, inhalt, speichernFn, leerenFn){
@@ -22183,7 +22273,6 @@ function seiteStundenplan(){
     d.querySelector("#za").value = pad(P.zeiten[i][0]); d.querySelector("#zb").value = pad(P.zeiten[i][1]);
   }
   zeichne();
-  sphHashImport("stundenplan");
   /* Handy drehen oder Fenster ändern: zwischen Wochen-Gitter und Tages-Liste wechseln */
   let breitAlt = innerWidth >= 760, uhr = null;
   const neuMessen = () => { clearTimeout(uhr); uhr = setTimeout(() => { const b = innerWidth >= 760; if(b !== breitAlt){ breitAlt = b; zeichne(); } }, 150); };
@@ -22191,34 +22280,36 @@ function seiteStundenplan(){
   const tick = setInterval(zeichne, 60000);
   aufraeumen = () => { window.removeEventListener("resize", neuMessen); clearInterval(tick); };
 }
-let heftFilter = "alle";
+let heftFilter = "offen";
 function seiteHeft(){
   crumbs([{t:"Start", href:"#/"}, {t:"Hausaufgaben"}]);
-  const wrap = el("div","runner");
-  wrap.innerHTML = '<div class="th-head">'+icoHtml("heft")+'<div><div class="eyebrow">Alle Fächer</div><h1>Hausaufgaben-Heft</h1>'+
-    '<p>Trag ein, was ihr in der Stunde gemacht habt.'+(claudeRT ? ' Aus diesen Themen schreibt dir die KI später eine passende Klassenarbeit.' : '')+'</p>'+
-    '<div class="row" style="margin-top:10px"><a class="btn klein" href="#/stundenplan">'+ic("plan")+(planLeer() ? "Stundenplan eintragen" : "Stundenplan")+'</a></div></div></div>';
-  const form = el("form","card pad formular");
+  const wrap = el("div","runner heft-seite");
+  wrap.innerHTML = '<div class="th-head">'+icoHtml("heft")+'<div><h1>Hausaufgaben</h1>'+
+    '<p>'+(sphDaten() ? "Kommen automatisch aus dem Schulportal. Abhaken, wenn du fertig bist." : "Alle Hausaufgaben an einem Ort. Abhaken, wenn du fertig bist.")+'</p></div></div>';
+  /* Oben nur zwei klare Knöpfe */
+  const knoepfe = el("div","heft-knoepfe");
+  const neuKnopf = btn("btn primary", ic("plus")+"Neuer Eintrag", () => { form.hidden = !form.hidden; neuKnopf.setAttribute("aria-expanded", String(!form.hidden)); if(!form.hidden) form.querySelector("#hthema").focus(); });
+  neuKnopf.setAttribute("aria-expanded","false");
+  knoepfe.appendChild(neuKnopf);
+  knoepfe.insertAdjacentHTML("beforeend", '<a class="btn" href="#/stundenplan">'+ic("plan")+'Stundenplan</a>');
+  wrap.appendChild(knoepfe);
+  const form = el("form","card pad formular heft-form");
   const letztesFach = planFachJetzt() || S.letztesFach || "Mathematik";
   form.innerHTML = '<h3 style="font-size:20px">Neuer Eintrag</h3>'+
-    '<div class="zwei"><label>Datum der Stunde<input type="date" id="hdat" required></label>'+
-    '<label>Fach<select id="hfach">'+FAECHER.map(f => '<option'+(f[0] === letztesFach ? " selected" : "")+'>'+esc(f[0])+'</option>').join("")+'</select></label></div>'+
-    '<label>Thema der Stunde<input type="text" id="hthema" maxlength="140" placeholder="z. B. Satz des Pythagoras" required></label>'+
-    '<label>Hausaufgabe<textarea id="haufg" maxlength="600" placeholder="z. B. Buch S. 112, Nr. 3a–c (optional)"></textarea></label>'+
-    '<div><button class="btn brand gross" type="submit">'+ic("plus")+'Eintragen</button></div>';
-  let imp;
-  if(nativ) imp = portalKarte();
-  else if(claudeRT) imp = importKarte();
-  else { imp = el("section","card pad"); imp.appendChild(sphBrowserKarte("heft")); }
-  imp.style.marginTop = "0"; imp.style.marginBottom = "16px";
-  wrap.appendChild(imp);
+    '<div class="zwei"><label>Fach<select id="hfach">'+FAECHER.map(f => '<option'+(f[0] === letztesFach ? " selected" : "")+'>'+esc(f[0])+'</option>').join("")+'</select></label>'+
+    '<label>Datum der Stunde<input type="date" id="hdat" required></label></div>'+
+    '<label>Hausaufgabe<textarea id="haufg" maxlength="600" placeholder="z. B. Buch S. 112, Nr. 3a–c"></textarea></label>'+
+    '<label>Thema der Stunde <span class="leise" style="font-weight:500">(optional)</span><input type="text" id="hthema" maxlength="140" placeholder="z. B. Satz des Pythagoras"></label>'+
+    '<div class="row"><button class="btn brand" type="submit">'+ic("haken")+'Speichern</button><button class="btn ghost" type="button" id="hzu">Abbrechen</button></div>';
+  form.hidden = true;
   wrap.appendChild(form);
-  /* Mit verbundenem Schulportal kommen die Einträge von selbst: das Formular nur auf Wunsch zeigen */
-  if(nativ && sphDaten()){
-    form.hidden = true;
-    const auf = btn("btn", ic("plus")+"Selbst etwas eintragen", () => { form.hidden = false; auf.remove(); form.querySelector("#hthema").focus(); });
-    auf.style.marginBottom = "16px";
-    wrap.insertBefore(auf, form);
+  form.querySelector("#hzu").addEventListener("click", () => { form.hidden = true; neuKnopf.setAttribute("aria-expanded","false"); });
+  /* Schulportal: in der App und auf der Webseite automatisch, in der claude.ai-Version per Screenshot */
+  if(sphMoeglich()) wrap.appendChild(portalKarte());
+  else if(claudeRT){
+    const imp = importKarte(); imp.hidden = true; imp.style.marginBottom = "16px";
+    const auf = btn("btn ghost klein", ic("ki")+"Aus dem Schulportal übernehmen (Screenshot)", () => { imp.hidden = !imp.hidden; });
+    knoepfe.appendChild(auf); wrap.appendChild(imp);
   }
   const filterBox = el("div","filter"); wrap.appendChild(filterBox);
   const listeBox = el("div"); wrap.appendChild(listeBox);
@@ -22228,26 +22319,29 @@ function seiteHeft(){
   form.querySelector("#hdat").value = datum(0);
   form.addEventListener("submit", ev => {
     ev.preventDefault();
-    const thema = form.querySelector("#hthema").value.trim();
-    if(!thema){ form.querySelector("#hthema").focus(); return; }
+    const thema = form.querySelector("#hthema").value.trim(), aufgabe = form.querySelector("#haufg").value.trim();
+    if(!thema && !aufgabe){ form.querySelector("#haufg").focus(); return; }
     const fach = form.querySelector("#hfach").value;
-    Heft.neu({datum: form.querySelector("#hdat").value || datum(0), fach: fach, thema: thema.slice(0,140), aufgabe: form.querySelector("#haufg").value.trim().slice(0,600)});
+    Heft.neu({datum: form.querySelector("#hdat").value || datum(0), fach: fach, thema: (thema || "Hausaufgabe").slice(0,140), aufgabe: aufgabe.slice(0,600)});
     S.letztesFach = fach; speichern();
     form.querySelector("#hthema").value = ""; form.querySelector("#haufg").value = "";
+    form.hidden = true; neuKnopf.setAttribute("aria-expanded","false");
     toast("Eingetragen");
   });
   function zeichne(){
     const alle = Heft.sortiert();
     const faecher = Array.from(new Set(alle.map(e => e.fach)));
-    if(heftFilter !== "alle" && heftFilter !== "offen" && faecher.indexOf(heftFilter) < 0) heftFilter = "alle";
+    if(["alle","offen","erledigt"].indexOf(heftFilter) < 0 && faecher.indexOf(heftFilter) < 0) heftFilter = "offen";
     filterBox.innerHTML = "";
-    [["alle","Alle"],["offen","Offen"]].concat(faecher.map(f => [f, f])).forEach(([k,l]) => {
+    const offenN = alle.filter(e => e.aufgabe && !e.erledigt).length;
+    [["offen","Offen"+(offenN ? " ("+offenN+")" : "")],["erledigt","Erledigt"],["alle","Alle"]].concat(faecher.length > 1 ? faecher.map(f => [f, f]) : []).forEach(([k,l]) => {
       const b = btn("", esc(l), () => { heftFilter = k; zeichne(); }); b.setAttribute("aria-pressed", heftFilter === k ? "true" : "false"); filterBox.appendChild(b);
     });
-    const liste = alle.filter(e => heftFilter === "alle" || (heftFilter === "offen" ? !e.erledigt && e.aufgabe : e.fach === heftFilter));
+    const liste = alle.filter(e => heftFilter === "alle" || (heftFilter === "offen" ? !e.erledigt && e.aufgabe : heftFilter === "erledigt" ? e.erledigt : e.fach === heftFilter));
     listeBox.innerHTML = "";
     if(!liste.length){
-      listeBox.innerHTML = '<div class="card leer-hinweis">'+(alle.length ? "Hier ist gerade nichts." : "Dein Heft ist noch leer. Trag oben die erste Stunde ein.")+'</div>';
+      listeBox.innerHTML = '<div class="card leer-hinweis">'+(heftFilter === "offen" && alle.length ? "🎉 Keine offenen Hausaufgaben!" : alle.length ? "Hier ist gerade nichts." :
+        sphDaten() ? "Noch nichts da. Karo holt die Hausaufgaben gleich aus dem Schulportal." : "Noch keine Hausaufgaben. Tippe oben auf „Neuer Eintrag“"+(sphMoeglich() ? " oder verbinde dein Schulportal." : "."))+'</div>';
     }
     let tag = null;
     liste.forEach(e => {
@@ -22261,20 +22355,16 @@ function seiteHeft(){
         h.setAttribute("aria-pressed", e.erledigt ? "true" : "false"); h.setAttribute("aria-label", e.erledigt ? "Als offen markieren" : "Als erledigt markieren");
         akt.appendChild(h);
       }
+      /* Bearbeiten und Löschen klein in der Zeile unten, damit die Einträge kompakt bleiben */
+      const meta = z.querySelector(".meta");
       const bea = btn("klein-x", ic("stift"), () => heftBearbeiten(e));
-      bea.setAttribute("aria-label","Eintrag bearbeiten"); akt.appendChild(bea);
-      const x = btn("klein-x", ic("muell"), async () => { if(await frage("Eintrag „"+e.thema+"“ löschen?", "Löschen")) Heft.loeschen(e.id); });
-      x.setAttribute("aria-label","Eintrag löschen"); akt.appendChild(x);
+      bea.setAttribute("aria-label","Eintrag bearbeiten oder löschen"); meta.appendChild(bea);
       z.appendChild(akt); listeBox.appendChild(z);
     });
-    info.innerHTML = '<h3 style="font-size:18px;margin-bottom:6px">Wo landen die Einträge?</h3><p class="weich" style="font-size:15px">'+
-      (Heft.db ? "Im Karo-Speicher dieser Seite. Du siehst sie auf jedem Gerät, auf dem du Karo über deinen Link öffnest."
-               : "Nur auf diesem Gerät. Öffnest du Karo über deinen claude.ai-Link, werden sie in den Karo-Speicher übernommen.")+
-      ' Einträge aus dem Schulportal übernimmst du oben mit einem Screenshot.</p>'+
-      (alle.length ? '<div style="margin-top:14px"><a class="btn brand" href="#/ki">'+ic("ki")+'KI-Arbeit aus diesen Themen</a></div>' : '');
+    info.hidden = !(claudeRT && alle.length);
+    info.innerHTML = '<p class="weich" style="font-size:15px">Aus den Themen im Heft schreibt dir die KI eine passende Klassenarbeit.</p><div style="margin-top:10px"><a class="btn brand" href="#/ki">'+ic("ki")+'KI-Arbeit aus diesen Themen</a></div>';
   }
   zeichne();
-  sphHashImport("heft");
   aufraeumen = Heft.hoere(zeichne);
 }
 
@@ -22494,82 +22584,6 @@ function sphPlanAuswerten(html){
   if(anzahl < 3 || !h) return null;
   return {n:Math.max(4, Math.min(12, h)), tage:tage, zeiten:zeiten};
 }
-/* ---------- Schulportal im Browser: Kopieren/Einfügen und Karo-Lesezeichen ----------
-   Das Schulportal erlaubt keine Anmeldung von fremden Seiten. Deshalb holt der Nutzer die Seite selbst:
-   entweder kopieren und in Karo einfügen, oder ein Lesezeichen auf der Schulportal-Seite antippen, das die Tabelle zu Karo schickt. */
-function tabelleAusText(t){
-  const zeilen = String(t || "").split(/\r?\n/).filter(z => z.trim());
-  const e = x => x.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-  return "<table>"+zeilen.map(z => "<tr>"+z.split("\t").map(c => "<td><b>"+e(c.trim().split(/\s{2,}| (?=R ?\d|\d{3})/)[0])+"</b> <small>"+e(c.trim().split(/\s{2,}/).slice(1).join(" "))+"</small></td>").join("")+"</tr>").join("")+"</table>";
-}
-function sphLesezeichen(){
-  const ziel = location.origin + location.pathname;
-  const js = "(()=>{const Z="+JSON.stringify(ziel)+",T=['montag','dienstag','mittwoch','donnerstag','freitag'];"+
-    "const C=e=>{const c=e.cloneNode(true);c.querySelectorAll('script,style,button,img,svg,input,select,textarea').forEach(x=>x.remove());"+
-    "c.querySelectorAll('*').forEach(x=>[...x.attributes].forEach(a=>{if(!/^(rowspan|colspan|class)$/i.test(a.name))x.removeAttribute(a.name)}));return c.outerHTML.replace(/\\s+/g,' ')};"+
-    "const t=[...document.querySelectorAll('table')].find(t=>[...t.querySelectorAll('tr')].some(r=>T.filter(d=>r.textContent.toLowerCase().includes(d)).length>=3));"+
-    "let s='stundenplan',h='';if(t)h=C(t);else{const r=document.querySelectorAll('table[id*=aktuell] tr,tr.printable');"+
-    "if(!r.length){alert('Karo: Öffne im Schulportal den Stundenplan oder „Mein Unterricht“ und tippe dann nochmal auf das Lesezeichen.');return}"+
-    "s='heft';h='<table id=\"aktuell\">'+[...r].map(C).join('')+'</table>'}"+
-    "location.href=Z+'#/'+s+'?import='+encodeURIComponent(h)})();";
-  return "javascript:"+encodeURIComponent(js);
-}
-function sphHashImport(art){
-  const q = new URLSearchParams(location.hash.split("?")[1] || "").get("import");
-  if(!q) return;
-  try{ history.replaceState(null, "", location.pathname + location.search + "#/" + art); }catch(e){}
-  if(art === "stundenplan"){
-    const pl = sphPlanAuswerten(q);
-    if(!pl){ toast("Im Schulportal wurde kein Stundenplan gefunden."); return; }
-    const alt = !planLeer() && plan().quelle !== "schulportal";
-    (alt ? frage("Deinen eigenen Stundenplan durch den aus dem Schulportal ersetzen?", "Ersetzen") : Promise.resolve(true)).then(ok => {
-      if(!ok) return; sphPlanUebernehmen(pl, true); toast("Stundenplan aus dem Schulportal übernommen"); route(); });
-  }else{
-    const liste = sphAuswerten(q); let neu = 0;
-    liste.forEach(e => { if(Heft.neu(e, e.id, "schulportal")) neu++; });
-    toast(liste.length ? (neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge")+" aus dem Schulportal" : "Alles schon im Heft") : "In „Mein Unterricht“ wurden keine Einträge erkannt.");
-  }
-}
-/* Karte mit beiden Wegen (nur im normalen Browser) */
-function sphBrowserKarte(art, fertig){
-  const d = el("div","plan-sph sph-browser");
-  const wofuer = art === "stundenplan" ? "deinen Stundenplan" : "Themen und Hausaufgaben aus „Mein Unterricht“";
-  d.innerHTML = '<b>Aus dem Schulportal Hessen übernehmen</b>'+
-    '<span class="leise">Direkt anmelden erlaubt das Schulportal im Browser nicht. So geht es trotzdem, für '+wofuer+':</span>'+
-    '<details class="sph-weg"><summary><b>1. Kopieren und hier einfügen</b></summary><ol><li>Im Schulportal '+(art === "stundenplan" ? "den <b>Stundenplan</b>" : "<b>Mein Unterricht</b>")+' öffnen.</li>'+
-    '<li>Alles markieren (<b>Strg + A</b>, am Handy lange drücken → „Alles auswählen“) und kopieren.</li><li>Hier in das Feld tippen und einfügen.</li></ol>'+
-    '<div class="sph-feld" contenteditable="true" role="textbox" aria-label="Hier einfügen" data-leer="Hier einfügen …"></div></details>'+
-    '<details class="sph-weg"><summary><b>2. Karo-Lesezeichen (ein Klick)</b></summary><ol><li><b>Am PC:</b> Den Knopf unten in die Lesezeichenleiste ziehen.</li>'+
-    '<li><b>Am Handy:</b> „Code kopieren“ tippen, irgendeine Seite als Lesezeichen speichern und beim Bearbeiten die Adresse durch den Code ersetzen. Name: <b>Karo</b>.</li>'+
-    '<li>Im Schulportal den Stundenplan oder „Mein Unterricht“ öffnen und das Lesezeichen antippen (am Handy: in die Adresszeile <b>Karo</b> tippen und es auswählen).</li></ol>'+
-    '<div class="row" style="flex-wrap:wrap;gap:8px"><a class="btn brand klein sph-lz" href="#" draggable="true">'+ic("heft")+'Karo ⇢ Schulportal</a></div></details>';
-  const lz = d.querySelector(".sph-lz"); lz.setAttribute("href", sphLesezeichen());
-  lz.addEventListener("click", e => { e.preventDefault(); toast("Zieh den Knopf in die Lesezeichenleiste oder nimm „Code kopieren“."); });
-  const kopieren = btn("btn klein", "Code kopieren", () => {
-    const code = sphLesezeichen();
-    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast("Code kopiert. Jetzt als Lesezeichen-Adresse einfügen."), () => { prompt ? prompt("Diesen Code als Lesezeichen-Adresse speichern:", code) : null; });
-  });
-  lz.parentNode.appendChild(kopieren);
-  const feld = d.querySelector(".sph-feld");
-  feld.addEventListener("paste", e => {
-    e.preventDefault();
-    const cd = e.clipboardData || window.clipboardData, html = cd && cd.getData("text/html"), text = cd && cd.getData("text/plain");
-    if(art === "stundenplan"){
-      const pl = (html && sphPlanAuswerten(html)) || (text && sphPlanAuswerten(tabelleAusText(text)));
-      if(!pl){ feld.textContent = ""; toast("Darin war kein Stundenplan zu erkennen. Hast du die Stundenplan-Seite kopiert?"); return; }
-      const alt = !planLeer() && plan().quelle !== "schulportal";
-      (alt ? frage("Deinen eigenen Stundenplan durch den eingefügten ersetzen?", "Ersetzen") : Promise.resolve(true)).then(ok => {
-        feld.textContent = ""; if(!ok) return; sphPlanUebernehmen(pl, true); toast("Stundenplan übernommen"); if(fertig) fertig(); });
-    }else{
-      const liste = html ? sphAuswerten(html) : []; let neu = 0;
-      liste.forEach(x => { if(Heft.neu(x, x.id, "schulportal")) neu++; });
-      feld.textContent = "";
-      toast(liste.length ? (neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge")+" übernommen" : "Alles schon im Heft") : "Darin waren keine Einträge zu erkennen. Hast du „Mein Unterricht“ kopiert?");
-      if(fertig) fertig();
-    }
-  });
-  return d;
-}
 function sphPlanUebernehmen(neu, erzwingen){
   const P = plan();
   if(!erzwingen && !planLeer() && P.quelle !== "schulportal") return false;
@@ -22578,42 +22592,58 @@ function sphPlanUebernehmen(neu, erzwingen){
   speichern(); return true;
 }
 let sphLaeuft = null;
-function sphAbruf(opt){
-  const d = sphDaten();
-  if(!d || !nativ) return Promise.resolve({ok:false, code:"aus"});
-  if(sphLaeuft) return sphLaeuft;
-  const H = window.Capacitor.Plugins.CapacitorHttp;
-  const kopf = {"User-Agent":"Mozilla/5.0 (Linux; Android) Karo"};
-  const login = "https://login.schulportal.hessen.de/?i="+encodeURIComponent(d.schule);
-  sphLaeuft = (async () => {
+/* Geht die automatische Verbindung? In der App direkt, auf der Webseite über den Schulportal-Helfer im Karo-Server */
+function sphMoeglich(){ return nativ || (typeof Konto !== "undefined" && Konto.an()); }
+/* Seiten holen: in der Android-App direkt vom Handy, im Browser über die Supabase-Funktion „schulportal“ */
+async function sphHolen(d){
+  if(nativ){
+    const H = window.Capacitor.Plugins.CapacitorHttp;
+    const kopf = {"User-Agent":"Mozilla/5.0 (Linux; Android) Karo"};
+    const login = "https://login.schulportal.hessen.de/?i="+encodeURIComponent(d.schule);
     await H.request({url:login, method:"GET", headers:kopf});
     await H.request({url:login, method:"POST", headers:Object.assign({"Content-Type":"application/x-www-form-urlencoded"}, kopf),
       data:{user2:d.benutzer, user:d.schule+"."+d.benutzer, password:d.passwort}});
     await H.request({url:"https://connect.schulportal.hessen.de/", method:"GET", headers:kopf});
     const r = await H.request({url:"https://start.schulportal.hessen.de/meinunterricht.php", method:"GET", headers:kopf, responseType:"text"});
-    const html = typeof r.data === "string" ? r.data : "";
-    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !/logout|abmelden/i.test(html)) throw {code:"login"};
+    const mu = typeof r.data === "string" ? r.data : "";
+    if(String(r.url || "").indexOf("login.schulportal") >= 0 || !/logout|abmelden/i.test(mu)) throw {code:"login"};
+    let plan = "";
+    try{ const rp = await H.request({url:"https://start.schulportal.hessen.de/stundenplan.php", method:"GET", headers:kopf, responseType:"text"}); plan = typeof rp.data === "string" ? rp.data : ""; }catch(e){}
+    return {mu:mu, plan:plan};
+  }
+  const ctl = new AbortController(), uhr = setTimeout(() => ctl.abort(), 45000);
+  try{
+    const r = await fetch(KONTO_URL+"/functions/v1/schulportal", {method:"POST", signal:ctl.signal,
+      headers:{"Content-Type":"application/json", apikey:KONTO_KEY}, body:JSON.stringify({schule:d.schule, benutzer:d.benutzer, passwort:d.passwort})});
+    if(r.status === 404) throw {code:"helfer"};
+    const j = await r.json().catch(() => ({}));
+    if(!j.ok) throw {code:j.code === "login" ? "login" : j.code === "helfer" ? "helfer" : "netz"};
+    return {mu:j.mu || "", plan:j.plan || ""};
+  }finally{ clearTimeout(uhr); }
+}
+function sphAbruf(opt){
+  const d = sphDaten();
+  if(!d || !sphMoeglich()) return Promise.resolve({ok:false, code:"aus"});
+  if(sphLaeuft) return sphLaeuft;
+  sphLaeuft = (async () => {
+    const seiten = await sphHolen(d);
     let planNeu = false;
-    try{
-      const rp = await H.request({url:"https://start.schulportal.hessen.de/stundenplan.php", method:"GET", headers:kopf, responseType:"text"});
-      const pl = sphPlanAuswerten(typeof rp.data === "string" ? rp.data : "");
-      if(pl) planNeu = sphPlanUebernehmen(pl, opt && opt.planErzwingen);
-    }catch(e){}
-    const liste = sphAuswerten(html);
+    try{ const pl = sphPlanAuswerten(seiten.plan); if(pl) planNeu = sphPlanUebernehmen(pl, opt && opt.planErzwingen); }catch(e){}
+    const liste = sphAuswerten(seiten.mu);
     if(!liste.length && !planNeu) throw {code:"leer"};
     let neu = 0; liste.forEach(e => { if(Heft.neu(e, e.id, "schulportal")) neu++; });
     const d2 = sphDaten() || d; d2.letzter = new Date().toISOString();
     d2.meldung = neu ? neu+(neu === 1 ? " neuer Eintrag" : " neue Einträge") : "nichts Neues"; sphSpeichern(d2);
     return {ok:true, neu:neu, gesamt:liste.length, plan:planNeu};
   })().catch(e => {
-    const code = e && e.code === "login" ? "login" : e && e.code === "leer" ? "leer" : "netz";
-    const d2 = sphDaten(); if(d2){ d2.letzter = new Date().toISOString(); d2.meldung = {login:"Anmeldung fehlgeschlagen", leer:"keine Einträge erkannt", netz:"keine Verbindung"}[code]; sphSpeichern(d2); }
+    const code = e && ["login","leer","helfer"].indexOf(e.code) >= 0 ? e.code : "netz";
+    const d2 = sphDaten(); if(d2){ d2.letzter = new Date().toISOString(); d2.meldung = {login:"Anmeldung fehlgeschlagen", leer:"keine Einträge erkannt", netz:"keine Verbindung", helfer:"Helfer fehlt"}[code]; sphSpeichern(d2); }
     return {ok:false, code:code};
   }).finally(() => { sphLaeuft = null; });
   return sphLaeuft;
 }
 function sphAutomatik(){
-  if(!nativ) return;
+  if(!sphMoeglich()) return;
   const pruefen = () => {
     const d = sphDaten(); if(!d) return;
     if(d.letzter && Date.now() - Date.parse(d.letzter) < 55*60*1000) return;
@@ -22624,43 +22654,51 @@ function sphAutomatik(){
   document.addEventListener("visibilitychange", () => { if(!document.hidden) pruefen(); });
 }
 function portalKarte(){
-  const c = el("section","card pad formular"); c.style.marginBottom = "16px";
+  const c = el("section","card pad portal-karte");
+  let offen = false;
   const zeichne = (meldung) => {
     const d = sphDaten();
     if(!d){
-      c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("heft")+'Schulportal Hessen verbinden <small class="leise" style="font-size:13px;font-weight:600">(nur für Schulen in Hessen)</small></h3>'+
-        '<p class="weich" style="font-size:15.5px">Einmal anmelden, dann holt Karo die Themen und Hausaufgaben aus „Mein Unterricht“ und deinen Stundenplan selbst: beim Öffnen der App und jede Stunde. Deine Zugangsdaten bleiben nur auf diesem Handy.</p>'+
-        '<label>Schulnummer<input type="text" id="sphschule" inputmode="numeric" autocomplete="off" placeholder="z. B. 5120"></label>'+
-        '<p class="leise" style="margin-top:-8px">Die Zahl hinter <b>?i=</b> in der Adresse der Schulportal-Anmeldeseite.</p>'+
-        '<label>Benutzername<input type="text" id="sphuser" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false"></label>'+
-        '<label>Passwort<input type="password" id="sphpw" autocomplete="current-password"></label>'+
-        '<div class="row"><button class="btn brand" type="button" id="sphlos">'+ic("haken")+'Verbinden und abrufen</button></div>'+(meldung || "");
+      c.classList.remove("verbunden");
+      c.innerHTML = '<div class="portal-kopf">'+ic("neu")+'<div><h3>Hausaufgaben automatisch holen</h3><p class="weich">Mit deinem Login vom <b>Schulportal Hessen</b> holt Karo Hausaufgaben und Stundenplan von selbst. Nie mehr abtippen.</p></div></div>'+
+        (offen ? '<div class="formular portal-form"><label>Schulnummer<input type="text" id="sphschule" inputmode="numeric" autocomplete="off" placeholder="z. B. 5120"></label>'+
+          '<p class="leise" style="margin-top:-8px">Steht in der Adresse der Schulportal-Anmeldung hinter <b>?i=</b>, oder frag in der Klasse.</p>'+
+          '<label>Benutzername<input type="text" id="sphuser" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="wie im Schulportal"></label>'+
+          '<label>Passwort<input type="password" id="sphpw" autocomplete="current-password"></label>'+
+          '<p class="leise">'+(nativ ? "Deine Zugangsdaten bleiben nur auf diesem Handy." : "Deine Zugangsdaten bleiben auf diesem Gerät. Zum Abrufen schickt Karo sie verschlüsselt an den Karo-Server, der sich für dich anmeldet und nichts speichert.")+'</p>'+
+          '<div class="row"><button class="btn brand" type="button" id="sphlos">'+ic("haken")+'Verbinden</button><button class="btn ghost" type="button" id="sphzu">Abbrechen</button></div></div>'
+        : '<div class="row"><button class="btn brand" type="button" id="sphauf">Schulportal verbinden</button></div>')+(meldung || "");
+      if(!offen){ c.querySelector("#sphauf").addEventListener("click", () => { offen = true; zeichne(); c.querySelector("#sphschule").focus(); }); return; }
+      c.querySelector("#sphzu").addEventListener("click", () => { offen = false; zeichne(); });
       c.querySelector("#sphlos").addEventListener("click", async () => {
         const schule = c.querySelector("#sphschule").value.replace(/\D/g, ""), benutzer = c.querySelector("#sphuser").value.trim(), pw = c.querySelector("#sphpw").value;
-        if(!schule || !benutzer || !pw){ zeichne('<p class="leise">Bitte alle drei Felder ausfüllen.</p>'); return; }
+        if(!schule || !benutzer || !pw){ zeichne('<p class="fb bad" style="padding:10px;margin-top:10px">Bitte alle drei Felder ausfüllen.</p>'); return; }
         sphSpeichern({schule:schule, benutzer:benutzer, passwort:pw});
         abrufen(true);
       });
       return;
     }
+    c.classList.add("verbunden");
     const wann = d.letzter ? new Date(d.letzter).toLocaleString("de-DE", {weekday:"short", hour:"2-digit", minute:"2-digit"}) : "noch nie";
-    c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("haken")+'Schulportal verbunden</h3>'+
-      '<p class="weich" style="font-size:15.5px">Angemeldet als <b>'+esc(d.benutzer)+'</b> (Schule '+esc(d.schule)+'). Zuletzt abgerufen: '+esc(wann)+(d.meldung ? " · "+esc(d.meldung) : "")+'</p>'+
-      '<div class="row"><button class="btn brand" type="button" id="sphjetzt">'+ic("neu")+'Jetzt abrufen</button><button class="btn ghost" type="button" id="sphaus">Trennen</button></div>'+(meldung || "");
+    c.innerHTML = '<div class="portal-leiste"><span class="portal-ok">'+ic("haken")+'</span><div><b>Schulportal verbunden</b><small>'+esc(d.benutzer)+' · zuletzt '+esc(wann)+(d.meldung ? " · "+esc(d.meldung) : "")+'</small></div>'+
+      '<button class="btn klein" type="button" id="sphjetzt" aria-label="Jetzt abrufen">'+ic("neu")+'<span>Holen</span></button>'+
+      '<button class="klein-x" type="button" id="sphaus" aria-label="Verbindung trennen">'+ic("kreuz")+'</button></div>'+(meldung || "");
     c.querySelector("#sphjetzt").addEventListener("click", () => abrufen(false));
     c.querySelector("#sphaus").addEventListener("click", async () => {
-      if(!await frage("Verbindung zum Schulportal trennen? Deine Zugangsdaten werden von diesem Handy gelöscht. Die Einträge im Heft bleiben.", "Trennen")) return;
-      sphSpeichern(null); zeichne();
+      if(!await frage("Verbindung zum Schulportal trennen? Deine Zugangsdaten werden von diesem Gerät gelöscht. Die Einträge im Heft bleiben.", "Trennen")) return;
+      sphSpeichern(null); offen = false; zeichne();
     });
   };
   async function abrufen(erstesMal){
     c.querySelectorAll("button").forEach(b => b.disabled = true);
-    c.insertAdjacentHTML("beforeend", '<div class="fb tipp" id="sphlauf"><div class="kopf">'+ic("neu")+'Karo meldet sich im Schulportal an …</div></div>');
-    const r = await sphAbruf();
-    if(r.ok) zeichne('<div class="fb ok"><div class="kopf">'+ic("haken")+(r.neu ? r.neu+(r.neu === 1 ? " neuer Eintrag" : " neue Einträge")+" im Heft" : "Alles aktuell")+'</div><p>'+r.gesamt+' Einträge im Schulportal gefunden.</p></div>');
-    else if(r.code === "login"){ if(erstesMal) sphSpeichern(null); zeichne('<div class="fb bad"><div class="kopf">'+ic("kreuz")+'Anmeldung hat nicht geklappt</div><p>Prüf Schulnummer, Benutzername und Passwort. Mit denselben Daten musst du dich auch auf der Schulportal-Webseite anmelden können.</p></div>'); }
-    else if(r.code === "leer") zeichne('<div class="fb info"><div class="kopf">'+ic("birne")+'Angemeldet, aber keine Einträge erkannt</div><p>Vielleicht steht bei „Mein Unterricht“ gerade nichts, oder das Schulportal sieht anders aus als erwartet. Sag Bescheid, dann passe ich Karo an.</p></div>');
-    else zeichne('<div class="fb bad"><div class="kopf">'+ic("kreuz")+'Keine Verbindung</div><p>Prüf die Internetverbindung und versuch es gleich noch einmal.</p></div>');
+    c.insertAdjacentHTML("beforeend", '<div class="fb tipp" style="margin-top:10px"><div class="kopf">'+ic("neu")+'Karo meldet sich im Schulportal an …</div></div>');
+    const r = await sphAbruf({planErzwingen:erstesMal && planLeer()});
+    const box = (art, kopf, text) => '<div class="fb '+art+'" style="margin-top:10px"><div class="kopf">'+kopf+'</div>'+(text ? '<p>'+text+'</p>' : '')+'</div>';
+    if(r.ok) zeichne(box("ok", ic("haken")+(r.neu ? r.neu+(r.neu === 1 ? " neue Hausaufgabe" : " neue Hausaufgaben") : "Alles aktuell"), r.plan ? "Dein Stundenplan wurde auch übernommen." : ""));
+    else if(r.code === "login"){ if(erstesMal){ sphSpeichern(null); offen = true; } zeichne(box("bad", ic("kreuz")+"Anmeldung hat nicht geklappt", "Prüf Schulnummer, Benutzername und Passwort. Es sind dieselben wie auf der Schulportal-Webseite.")); }
+    else if(r.code === "leer") zeichne(box("info", ic("birne")+"Angemeldet, aber nichts gefunden", "Bei „Mein Unterricht“ steht gerade nichts, oder das Schulportal sieht anders aus als erwartet."));
+    else if(r.code === "helfer") zeichne(box("bad", ic("kreuz")+"Der Schulportal-Helfer ist noch nicht eingerichtet", "Er muss einmal auf dem Karo-Server installiert werden."));
+    else zeichne(box("bad", ic("kreuz")+"Keine Verbindung", "Prüf das Internet und versuch es gleich noch einmal."));
   }
   zeichne();
   return c;
@@ -24076,7 +24114,9 @@ function freundKarte(){
   c.innerHTML = '<button type="button" class="freund-tier" aria-label="'+esc(f.name)+' antippen">'+freundSvg(zeigeStufe, zeigeStufe === 0 ? laune : laune)+'</button>'+
     '<div class="freund-info"><div class="eyebrow">Dein Karo-Freund · <span class="f-stufenname">'+FREUND_STUFEN[zeigeStufe]+'</span></div><h3>'+esc(f.name)+'</h3>'+
     '<div class="freund-blase">'+esc(freundSpruch(zeigeStufe, laune))+'</div>'+
-    '<div class="freund-futter"'+(zeigeStufe > 0 ? '' : ' hidden')+'><span>Futter heute</span><div class="bar"><i style="width:'+Math.round(Math.min(1, (futterAnimiert ? n - futterNeu : n)/TAGESZIEL)*100)+'%"></i></div><b class="num">'+Math.min(n, TAGESZIEL)+'/'+TAGESZIEL+'</b></div>'+
+    '<div class="freund-futter"><span>Tagesziel</span><div class="bar"><i style="width:'+Math.round(Math.min(1, (futterAnimiert ? n - futterNeu : n)/TAGESZIEL)*100)+'%"></i></div><b class="num">'+Math.min(n, TAGESZIEL)+'/'+TAGESZIEL+'</b></div>'+
+    '<div class="freund-pills"><span>'+ic("flamme","flame")+serieTage()+' '+(serieTage() === 1 ? "Tag" : "Tage")+'</span><span>'+ic("stern","star")+K.fmt(S.xp)+' XP</span>'+
+      '<a href="#/profil" title="Deine Abzeichen">🏅 '+ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length+'</a></div>'+
     '<a class="link-btn freund-anpassen" href="#/profil">Name und Farbe ändern</a></div>';
   const tier = c.querySelector(".freund-tier"), blase = c.querySelector(".freund-blase"), futter = c.querySelector(".freund-futter");
   const st = {stufe:zeigeStufe, laune:laune};

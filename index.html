@@ -336,7 +336,8 @@ sup, sub{font-size:.7em; line-height:0}
 .nl-fein .btn{min-width:48px; font-size:18px}
 /* Handy: Zahlenstrahl ganz zeigen statt seitlich wischen, dafür größere Schrift */
 @media (max-width:620px){
-  .fig svg.nl, .nl-pick svg{min-width:0}
+  .fig svg.nl, .nl-pick svg, .fig svg.breit{min-width:0}
+  svg.breit .lbl{font-size:20px}
   svg.nl .nltxt{font-size:21px} svg.nl .marklbl{font-size:24px}
   svg.nl .axis{stroke-width:3} svg.nl .tick{stroke-width:2.4}
 }
@@ -440,8 +441,8 @@ sup, sub{font-size:.7em; line-height:0}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .zeugnis .name{color:#9db6ff} }
 .z-klasse{margin-top:22px}
 .z-klasse h3{font-size:18px; display:flex; justify-content:space-between; gap:10px; padding-bottom:6px; border-bottom:1px solid var(--line)}
-.z-zeile{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:9px 0; border-bottom:1px dotted var(--line-2)}
-.z-zeile a{text-decoration:none}
+.z-zeile{display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:12px; align-items:center; padding:0; border-bottom:1px dotted var(--line-2)}
+.z-zeile a{text-decoration:none; display:inline-block; padding:10px 0; min-height:44px; overflow-wrap:anywhere}
 .z-zeile a:hover{text-decoration:underline}
 .z-note{font-family:var(--hand); font-size:30px; font-weight:700; color:var(--pen); min-width:90px; text-align:right; line-height:1}
 .z-note.leer{color:var(--ink-3); font-family:var(--body); font-size:15px}
@@ -455,6 +456,7 @@ sup, sub{font-size:.7em; line-height:0}
 .formular label{font-weight:700; display:flex; flex-direction:column; gap:6px}
 .formular input[type="text"], .formular input[type="password"]{font:inherit; font-size:19px; padding:12px 14px; border-radius:12px; border:2px solid var(--line-2); background:var(--paper-2); color:var(--ink)}
 .formular input[type="text"]:focus, .formular input[type="password"]:focus{outline:none; border-color:var(--brand); background:var(--paper)}
+.dialog.formular input[type="date"], .dialog.formular select, .dialog.formular textarea{font:inherit; font-size:17px; padding:10px 12px; border-radius:12px; border:2px solid var(--line-2); background:var(--paper-2); color:var(--ink); font-weight:400}
 .kl-wahl{display:grid; grid-template-columns:repeat(6, 1fr); gap:8px}
 .kl-wahl button{height:60px; border-radius:12px; border:none; background:var(--k); color:var(--k-ink); font-family:var(--display); font-weight:800; font-size:24px; cursor:pointer;
   box-shadow:inset 5px 0 0 rgba(0,0,0,.13); opacity:.55; transition:opacity .15s, transform .15s}
@@ -531,13 +533,13 @@ svg text.fn0{fill:var(--kd)} svg text.fn1{fill:var(--pen)} svg text.fn2{fill:var
 .ha p{color:var(--ink-2); font-size:15.5px; margin-top:2px; white-space:pre-wrap; overflow-wrap:anywhere}
 .ha .meta{font-size:13px; color:var(--ink-3); margin-top:4px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .ha.fertig h4, .ha.fertig p{text-decoration:line-through; opacity:.55}
-.haken-btn{width:40px; height:40px; border-radius:50%; border:2px solid var(--line-2); background:var(--paper); display:grid; place-items:center; cursor:pointer; color:transparent}
+.haken-btn{width:44px; height:44px; border-radius:50%; border:2px solid var(--line-2); background:var(--paper); display:grid; place-items:center; cursor:pointer; color:transparent}
 .haken-btn .ic{width:22px; height:22px; stroke-width:3}
 .haken-btn[aria-pressed="true"]{background:var(--ok); border-color:var(--ok); color:#fff}
 .ha .aktion{display:flex; flex-direction:column; gap:6px; align-items:center}
-.klein-x{background:none; border:none; color:var(--ink-3); cursor:pointer; padding:4px; border-radius:8px}
+.klein-x{background:none; border:none; color:var(--ink-3); cursor:pointer; padding:0; border-radius:10px; width:44px; height:44px; display:inline-grid; place-items:center}
 .klein-x:hover{color:var(--bad); background:var(--bad-bg)}
-.klein-x .ic{width:18px; height:18px}
+.klein-x .ic{width:20px; height:20px}
 .quelle{display:inline-flex; height:20px; align-items:center; padding:0 7px; border-radius:99px; background:var(--brand-soft); color:var(--brand); font-size:11.5px; font-weight:700}
 .schritt{padding:22px; display:flex; flex-direction:column; gap:14px}
 .schritt h2{font-size:20px; display:flex; align-items:center; gap:10px}
@@ -710,6 +712,16 @@ table.tab th{background:var(--brand-soft); font-weight:700}
   main{padding-bottom:150px}
   .leiste{bottom:calc(62px + env(safe-area-inset-bottom, 0px))}
   .toast{bottom:calc(92px + env(safe-area-inset-bottom, 0px))}
+}
+/* Handy quer: wenig Höhe. Kopfzeile scrollt mit weg, untere Leiste nur mit Symbolen */
+@media (max-width:999.98px) and (max-height:500px) and (orientation:landscape){
+  .top{position:relative}
+  .tabbar{padding:3px 6px calc(3px + env(safe-area-inset-bottom, 0px))}
+  .tab-link{padding:4px 2px}
+  .tab-link span{display:none}
+  .tab-link .ic{width:22px; height:22px}
+  .leiste{bottom:calc(36px + env(safe-area-inset-bottom, 0px)); padding-top:5px; padding-bottom:5px}
+  .hammer-knopf{bottom:calc(52px + env(safe-area-inset-bottom, 0px))}
 }
 @media (max-width:620px){
   .heute{grid-template-columns:1fr}
@@ -941,7 +953,15 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 .blitz-plus{position:absolute; right:18px; top:12px; font-family:var(--display); font-weight:800; font-size:26px; color:var(--ok); animation:xp-hoch .5s cubic-bezier(.2,1.4,.4,1) both}
 .blitz-loes{margin-top:12px; color:var(--bad); font-size:16px; animation:rein .2s}
 .blitz-gross{font-size:72px; line-height:1}
-.blitz-duell{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; margin:8px 0}
+.blitz-combo-pop{position:fixed; left:50%; top:38%; z-index:70; transform:translate(-50%,-50%); pointer-events:none; text-align:center; font-family:var(--display); font-weight:800; font-size:64px; color:#ff6a2b;
+  text-shadow:0 4px 0 rgba(0,0,0,.12), 0 0 30px rgba(255,160,40,.6); animation:combo-pop 1.3s cubic-bezier(.2,1.4,.4,1) forwards}
+.blitz-combo-pop small{display:block; font-size:16px; color:var(--ink-2); text-shadow:none; font-family:var(--body, inherit)}
+@keyframes combo-pop{0%{opacity:0; transform:translate(-50%,-50%) scale(.3)} 20%{opacity:1; transform:translate(-50%,-50%) scale(1.15)} 70%{opacity:1; transform:translate(-50%,-50%) scale(1)} 100%{opacity:0; transform:translate(-50%,-80%) scale(.9)}}
+@media (prefers-reduced-motion:reduce){ .blitz-combo-pop{animation:none; opacity:0} }
+.blitz-duell{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; width:100%; margin:8px 0}
+.blitz-duell > div, .blitz-duell .eyebrow{min-width:0; max-width:100%; overflow-wrap:anywhere; text-align:center}
+/* Lange Namen ohne Leerzeichen dürfen umbrechen statt über den Rand zu laufen */
+.seiten-kopf h1 .hand, .zeugnis .name, .profil-link span, .freund-info h3{overflow-wrap:anywhere}
 .blitz-duell > div{border:2px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:4px; align-items:center}
 .blitz-duell > div.sieger{border-color:var(--gold); background:var(--gold-soft)}
 .blitz-duell b{font-family:var(--display); font-size:40px}
@@ -982,6 +1002,11 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 /* ================= Hintergründe ================= */
 #hintergrund{position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none}
 #hintergrund > *{position:absolute}
+/* Deko liegt hinter allem. Überschriften direkt auf dem Hintergrund bekommen einen weichen Schein, damit Fische, Blasen und Glas sie nicht schwer lesbar machen */
+:root[data-hg] .seiten-kopf, :root[data-hg] .section-h h2, :root[data-hg] .th-head, :root[data-hg] .kapitel h2, :root[data-hg] .blitz-held{text-shadow:0 0 3px var(--paper), 0 0 14px var(--paper), 0 0 24px var(--paper)}
+:root[data-hg="papier"] .seiten-kopf, :root[data-hg="papier"] .section-h h2, :root[data-hg="papier"] .th-head, :root[data-hg="papier"] .kapitel h2, :root[data-hg="papier"] .blitz-held{text-shadow:none}
+:root[data-hg="glas"][data-theme="dark"] .hg-kugel{opacity:.4}
+:root[data-hg="meer"] .hg-fisch-weg, :root[data-hg="meer"] .hg-blase-weg{opacity:.75}
 /* Bunt: Farbwolken und schwebende Zeichen auf Karopapier */
 .hg-wolke{width:60vmax; height:60vmax; border-radius:50%; opacity:.62; will-change:transform}
 .hg-wolke.w1{left:-18vmax; top:-22vmax; background:radial-gradient(closest-side, color-mix(in srgb, var(--k, #4f8cff) 55%, transparent), transparent); animation:wolke1 38s ease-in-out infinite alternate}
@@ -1046,7 +1071,7 @@ table.tab th{background:var(--brand-soft); font-weight:700}
 :root[data-hg="glas"] .card, :root[data-hg="glas"] .th, :root[data-hg="glas"] .top, :root[data-hg="glas"] .seite, :root[data-hg="glas"] .tabbar{background:rgba(255,255,255,.52); backdrop-filter:blur(18px) saturate(1.5); -webkit-backdrop-filter:blur(18px) saturate(1.5); border-color:rgba(255,255,255,.75)}
 :root[data-hg="glas"] .th{backdrop-filter:none; -webkit-backdrop-filter:none; background:rgba(255,255,255,.74)}
 :root[data-hg="glas"][data-theme="dark"] .th{background:rgba(20,27,45,.78)}
-:root[data-hg="glas"][data-theme="dark"] .card, :root[data-hg="glas"][data-theme="dark"] .th, :root[data-hg="glas"][data-theme="dark"] .top, :root[data-hg="glas"][data-theme="dark"] .seite, :root[data-hg="glas"][data-theme="dark"] .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)}
+:root[data-hg="glas"][data-theme="dark"] .card, :root[data-hg="glas"][data-theme="dark"] .th, :root[data-hg="glas"][data-theme="dark"] .top, :root[data-hg="glas"][data-theme="dark"] .seite, :root[data-hg="glas"][data-theme="dark"] .tabbar{background:rgba(20,27,45,.76); border-color:rgba(255,255,255,.14)}
 @media (prefers-color-scheme: dark){ :root[data-hg="glas"]:not([data-theme="light"]) .card, :root[data-hg="glas"]:not([data-theme="light"]) .th, :root[data-hg="glas"]:not([data-theme="light"]) .top, :root[data-hg="glas"]:not([data-theme="light"]) .seite, :root[data-hg="glas"]:not([data-theme="light"]) .tabbar{background:rgba(20,27,45,.55); border-color:rgba(255,255,255,.14)} }
 /* Bauplan */
 :root[data-hg="bauplan"] body{background-color:#1b4f93; background-image:linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px), radial-gradient(ellipse at 50% 40%, #2463ae, #163f78); background-size:120px 120px, 120px 120px, 24px 24px, 24px 24px, auto}
@@ -1298,7 +1323,8 @@ K.poly = terms => {
 /* ---------- Eingaben lesen ---------- */
 K.parseNum = s => {
   let t = String(s == null ? "" : s).trim().replace(/[−–]/g,"-").replace(/[\s'’]/g,"");
-  t = t.replace(/[^\d]+$/,"");                     /* Einheit oder % am Ende ignorieren */
+  t = t.replace(/(cm|mm|dm|km|m)\^?([23])$/i, (x, e, h) => e+(h === "2" ? "²" : "³")).replace(/^\((.*)\)$/,"$1"); /* "12 cm^2" und "(-3)" */
+  t = t.replace(/[^\d)]+$/,"").replace(/^\((.*)\)$/,"$1"); /* Einheit oder % am Ende ignorieren */
   t = t.replace(/^[a-z]+=/i,"");                    /* "x=5" -> "5" */
   if(t === "" || t === "-") return NaN;
   const hasC = t.indexOf(",")>=0, hasD = t.indexOf(".")>=0;
@@ -1310,6 +1336,7 @@ K.parseNum = s => {
 };
 K.parseFrac = s => {
   let t = String(s == null ? "" : s).trim().replace(/^[a-z]\s*=\s*/i,"").replace(/[−–]/g,"-").replace(/\s*\/\s*/g,"/").replace(/\s+/g," ");
+  t = t.replace(/^\((.*)\)$/,"$1").trim().replace(/^-\s+/,"-");    /* "(-2/3)" und "- 2/3" */
   let m;
   if((m = t.match(/^(-?)(\d+) (\d+)\/(\d+)$/))){
     const g=+m[2], z=+m[3], n=+m[4]; if(n===0) return null;
@@ -1453,6 +1480,12 @@ function textOk(liste, inp, genau){
       if(!ohneApo.length || !textOk(ohneApo, inp, genau).ok) return textOk(liste.map(a => String(a).replace(/['’‘`´ʼ]/g, "")), inp, true).ok ? {ok:false, form:"Fast! Da fehlt noch der Apostroph '."} : {ok:false};
       return textOk(ohneApo, inp, genau);
     }
+  }else{
+    /* Apostroph an der falschen Stelle (is'nt, sh'es) zählt nicht */
+    const apoN = x => String(x == null ? "" : x).toLowerCase().replace(/[’‘`´ʼ]/g, "'").replace(/[^a-z0-9äöüß']/g, "");
+    const mitApo = liste.filter(a => APO.test(String(a)));
+    if(mitApo.length && !mitApo.some(a => apoN(a) === apoN(inp)) && mitApo.some(a => normTxt(a) === normTxt(inp)))
+      return {ok:false, form:"Fast! Der Apostroph ' steht an der falschen Stelle."};
   }
   const ohneArtikel = x => { const r = String(x == null ? "" : x).trim().replace(/^(der|die|das|den|dem|des|ein|eine|einen|einem|einer|the|a|an|le|la|les|l'|un|une|el|los|las|il)\s+/i, ""); return r || String(x); };
   const g0 = normTxt(inp);
@@ -1474,10 +1507,19 @@ K.check = function(it, inp){
   if(t === "num"){
     const g = K.parseNum(inp);
     if(isNaN(g)) return {ok:false, fehler:"Bitte gib eine Zahl ein."};
+    const eh = einheitFalsch(inp, it.unit);
+    if(eh) return {ok:false, fehler:eh};
     return {ok: numNah(g, it.a, it)};
   }
   if(t === "nums"){
     const arr = Array.isArray(inp) ? inp : [];
+    /* Primfaktoren usw.: jede Reihenfolge zählt, wenn die Zahlen stimmen */
+    if(it.egal){
+      const g = arr.map(K.parseNum);
+      if(g.length !== it.felder.length || g.some(isNaN)) return {ok:false, fehler:"Bitte fülle alle Felder mit Zahlen."};
+      const soll = it.felder.map(f => f.a).sort((p, q) => p - q), ist = g.slice().sort((p, q) => p - q);
+      return {ok: soll.every((v, i) => Math.abs(v - ist[i]) < 1e-9)};
+    }
     let ok = true, fehler = null;
     it.felder.forEach((f,i)=>{
       const g = K.parseNum(arr[i]);
@@ -1568,6 +1610,18 @@ K.check = function(it, inp){
   }
   return {ok:false, fehler:"Unbekannte Aufgabenart."};
 };
+/* Schreibt jemand eine andere Einheit dazu als gesucht (12 cm bei einer Euro-Aufgabe), nicht einfach ignorieren */
+const EINHEITEN = {"€":"€", "euro":"€", "eur":"€", "ct":"ct", "cent":"ct", "mm":"mm", "cm":"cm", "dm":"dm", "m":"m", "km":"km",
+  "mg":"mg", "g":"g", "kg":"kg", "t":"t", "ml":"ml", "cl":"cl", "l":"l", "hl":"hl", "s":"s", "sek":"s", "min":"min", "h":"h", "std":"h",
+  "mm²":"mm²", "cm²":"cm²", "dm²":"dm²", "m²":"m²", "km²":"km²", "ha":"ha", "a":"a", "mm³":"mm³", "cm³":"cm³", "dm³":"dm³", "m³":"m³", "%":"%", "°":"°", "grad":"°"};
+function einheitFalsch(inp, unit){
+  if(!unit) return null;
+  const m = String(inp == null ? "" : inp).trim().replace(/\^2/g,"²").replace(/\^3/g,"³").match(/([a-zA-Zäöü€%°²³]+)\.?$/);
+  if(!m) return null;
+  const u = EINHEITEN[m[1].toLowerCase()], soll = EINHEITEN[String(unit).toLowerCase()] || String(unit);
+  if(!u || u === soll) return null;
+  return "Achte auf die Einheit: Gesucht ist die Antwort in "+unit+".";
+}
 function numNah(g, a, o){
   const tol = Math.max(o.tol || 0, (o.tolRel || 0)*Math.abs(a), 1e-9);
   return Math.abs(g - a) <= tol;
@@ -1730,7 +1784,9 @@ K.barSvg = function(labels, vals, max, unit){
   return s+'</svg>';
 };
 K.tallySvg = function(rows){
-  const W=720, rowH=46, H=rows.length*rowH+16;
+  /* So breit wie nötig: dann wird die Strichliste am Handy nicht winzig */
+  const maxN = Math.max.apply(null, rows.map(r => r.n).concat([1]));
+  const W = Math.max(440, 210 + Math.ceil(maxN/5)*54 + 20), rowH=46, H=rows.length*rowH+16;
   let s = '<svg viewBox="0 0 '+W+' '+H+'" class="breit" role="img" aria-label="Strichliste">';
   rows.forEach((r,i)=>{
     const yy = 12+i*rowH;
@@ -1745,7 +1801,8 @@ K.tallySvg = function(rows){
   return s+'</svg>';
 };
 K.pictoSvg = function(rows, per){
-  const W=720, rowH=52, H=rows.length*rowH+34;
+  const maxN = Math.max.apply(null, rows.map(r => r.n).concat([1]));
+  const W = Math.max(440, 150 + maxN*40 + 20), rowH=52, H=rows.length*rowH+34;
   const man = (x,y)=> '<g transform="translate('+x+','+y+')"><circle class="markfill" cx="9" cy="6" r="6"/><path class="markfill" d="M9 14c-6 0-9 4-9 10v10h4v14h4V34h2v14h4V34h4V24c0-6-3-10-9-10z"/></g>';
   let s = '<svg viewBox="0 0 '+W+' '+H+'" class="breit" role="img" aria-label="Bilddiagramm">';
   rows.forEach((r,i)=>{
@@ -1828,7 +1885,9 @@ function seitenLabel(P, Q, text, aussen, off){
   const mx = (P[0]+Q[0])/2, my = (P[1]+Q[1])/2;
   let nx = -(Q[1]-P[1]), ny = Q[0]-P[0];
   const len = Math.hypot(nx,ny) || 1; nx/=len; ny/=len;
-  const d = (off||20)*(aussen?1:-1);
+  /* Abstand je nach Textbreite: sonst liegt eine lange Beschriftung (c = 20 cm) auf der Linie */
+  const breite = String(text).replace(/<[^>]+>/g, "").length * 10.5;
+  const d = Math.max(off||20, Math.abs(nx)*(breite/2 + 10) + Math.abs(ny)*(off||20))*(aussen?1:-1);
   return '<text class="lbl dim" x="'+f1(mx+nx*d)+'" y="'+f1(my+ny*d+5)+'" text-anchor="middle">'+text+'</text>';
 }
 /* Rechtwinkliges Dreieck, rechter Winkel bei C (unten links).
@@ -1836,9 +1895,9 @@ function seitenLabel(P, Q, text, aussen, off){
         alpha, beta: Winkelbeschriftung bei A (oben) und B (rechts); ecken: false blendet A/B/C aus} */
 K.rtriSvg = function(o){
   const la = o.la || 4, lb = o.lb || 3;
-  const sc = Math.min(380/la, 210/lb);
+  const sc = Math.min(360/la, 210/lb);
   const W = 540, H = 300;
-  const C = [100, 262], B = [100+la*sc, 262], A = [100, 262-lb*sc];
+  const C = [135, 262], B = [135+la*sc, 262], A = [135, 262-lb*sc];
   let s = '<svg viewBox="0 0 '+W+' '+H+'" class="figur" role="img" aria-label="Rechtwinkliges Dreieck">';
   s += '<polygon class="shape" points="'+A.map(f1)+' '+B.map(f1)+' '+C.map(f1)+'"/>';
   s += '<path class="rw" d="M'+C[0]+' '+(C[1]-18)+' h18 v18"/><circle class="rwp" cx="'+(C[0]+8)+'" cy="'+(C[1]-8)+'" r="2"/>';
@@ -2109,13 +2168,14 @@ E.ZEIT_JETZT = ["now","at the moment","right now"];
 E.ZEIT_PAST = ["yesterday","last week","last Saturday","two days ago","last summer","in 2023"];
 
 /* Aufgaben-Bausteine */
-E.text = (q, a, weg, tip, extra) => Object.assign({t:"text", q:q, a:Array.isArray(a) ? a : [a], weg:weg, tip:tip}, extra || {});
+/* Englisch: Schreibweise zählt immer. Die Tippfehler-Toleranz würde sonst andere echte Wörter durchlassen (you/your, the/them). */
+E.text = (q, a, weg, tip, extra) => Object.assign({t:"text", q:q, a:Array.isArray(a) ? a : [a], weg:weg, tip:tip, genau:true}, extra || {});
 E.wahl = (q, options, a, weg, tip, extra) => {
   const o = shuffle(Array.from(new Set(options)));
   if(o.indexOf(a) < 0) o[0] = a;
   return Object.assign({t:"choice", q:q, options:shuffle(o), a:a, weg:weg, tip:tip}, extra || {});
 };
-E.luecken = (q, felder, weg, tip, extra) => Object.assign({t:"gaps", q:q, felder:felder.map(f => ({a:Array.isArray(f) ? f : [f]})), weg:weg, tip:tip}, extra || {});
+E.luecken = (q, felder, weg, tip, extra) => Object.assign({t:"gaps", q:q, felder:felder.map(f => ({a:Array.isArray(f) ? f : [f]})), weg:weg, tip:tip, genau:true}, extra || {});
 /* Satzbau: satz ohne Schlusszeichen, ende = "." oder "?" */
 E.satz = (q, satz, ende, weg, tip, alt) => {
   const woerter = satz.split(" ");
@@ -2221,7 +2281,7 @@ function genHaveSatz(stufe){
 }
 function genHaveWahl(){
   const p = pick(E.PERSONEN), o = pick(BESITZ), f = E.hat(p), falsch = f === "has" ? "have" : "has";
-  return E.wahl(cap(p[0]) + " ___ got " + o + ".", [f + " got", falsch + " got", f, "is got"].map(x => x.replace(/ got got/, " got")), f + " got",
+  return E.wahl(cap(p[0]) + " ___ got " + o + ".", [f, falsch, "is", "am"], f,
     ["Richtig: " + cap(p[0]) + " " + B(f) + " got " + o + "."], "Zu he, she, it gehört has.");
 }
 thema({id:"e5-have", kapitel:"Grundlagen", titel:"have got / has got", kurz:"Besitz ausdrücken: Aussage, Verneinung, Frage, Kurzantwort", icon:"have",
@@ -2243,9 +2303,10 @@ const PERSON_TEXT = [
   {n:"Mr Green", s:"he", o:"him", p:"his", tier:"His bike"}, {n:"The twins", s:"they", o:"them", p:"their", tier:"Their rabbit"}, {n:"Grandma", s:"she", o:"her", p:"her", tier:"Her garden"}];
 function genPronText(stufe){
   const x = pick(PERSON_TEXT), pl = x.s === "they", be = pl ? "are" : "is", ding = x.tier.split(" ")[1];
-  if(stufe === 1) return E.luecken("This is " + x.n + ". [] " + be + " my friend" + (pl ? "s" : "") + ".", [cap(x.s)], [x.n + " → " + B(cap(x.s))], "Welches Pronomen ersetzt " + x.n + "?");
-  if(stufe === 2) return E.luecken("This is " + x.n + ". I like [] a lot.", [x.o], ["Nach dem Verb steht die Objektform: " + B(x.o) + "."], "Objektformen: me, you, him, her, it, us, them.");
-  return E.luecken("This is " + x.n + ". [] " + be + " my friend" + (pl ? "s" : "") + ". I often help []. [] " + ding.toLowerCase() + " is very cute.", [cap(x.s), x.o, cap(x.p)],
+  const vor = pl ? "These are " + x.n.replace(/^The /, "the ") : "This is " + x.n;
+  if(stufe === 1) return E.luecken(vor + ". [] " + be + " my friend" + (pl ? "s" : "") + ".", [cap(x.s)], [x.n + " → " + B(cap(x.s))], "Welches Pronomen ersetzt " + x.n + "?");
+  if(stufe === 2) return E.luecken(vor + ". I like [] a lot.", [x.o], ["Nach dem Verb steht die Objektform: " + B(x.o) + "."], "Objektformen: me, you, him, her, it, us, them.");
+  return E.luecken(vor + ". [] " + be + " my friend" + (pl ? "s" : "") + ". I often help []. [] " + ding.toLowerCase() + " is " + ({dog:"very cute", cat:"very cute", rabbit:"very cute", bike:"really cool", garden:"beautiful"}[ding.toLowerCase()] || "great") + ".", [cap(x.s), x.o, cap(x.p)],
     [cap(x.s) + " (wer?), " + x.o + " (wen?), " + cap(x.p) + " " + ding.toLowerCase() + " (wessen?)"], "Wer? – Wen? – Wessen?");
 }
 function genPronWahl(){
@@ -5750,8 +5811,8 @@ function genPFZ(st){
     }while(n > (st === 1 ? 100 : 1000) || n < (st === 1 ? 12 : 60));
     let m = n; const kette = f.map(p => { const s = fmt(m)+" : "+p+" = "+fmt(m/p); m /= p; return s; });
     return {t:"nums",
-      q:"Zerlege <b>"+fmt(n)+"</b> in Primfaktoren. Trage sie der Größe nach ein (kleinster zuerst).<br>"+fmt(n)+" = "+f.map(() => "[]").join(" · "),
-      felder: f.map(p => ({a:p})),
+      q:"Zerlege <b>"+fmt(n)+"</b> in Primfaktoren. Trage sie ein, am besten der Größe nach (kleinster zuerst).<br>"+fmt(n)+" = "+f.map(() => "[]").join(" · "),
+      felder: f.map(p => ({a:p})), egal:true,
       tip:"Teile immer wieder durch die kleinste Primzahl, die aufgeht, bis 1 übrig bleibt.",
       weg:["Immer durch die kleinste passende Primzahl teilen: "+kette.join("; "), fmt(n)+" = "+f.join(" · ")]};
   }
@@ -6910,11 +6971,12 @@ function genSeite(st){
       weg:["u = 4 · a, also a = u : 4", "a = "+(4*a)+" cm : 4 = "+a+" cm"]};
   }
   if(Math.random() < 0.5){
-    const a = rnd(4,15);
-    return {t:"num", q:"Ein Quadrat hat den Flächeninhalt A = "+(a*a)+" cm². Wie lang ist eine Seite?",
-      a:a, unit:"cm", fig:K.rectSvg({la:1, lb:1, a:"a = ?"}),
-      tip:"Gesucht ist die Zahl, die mit sich selbst malgenommen "+(a*a)+" ergibt.",
-      weg:["A = a · a", "Welche Zahl mal sich selbst ergibt "+(a*a)+"? "+a+" · "+a+" = "+(a*a), "a = "+a+" cm"]};
+    /* Schwer: zwei Schritte – erst die Seite aus der Fläche, dann der Umfang */
+    const a = rnd(6,20);
+    return {t:"num", q:"Ein Quadrat hat den Flächeninhalt A = "+(a*a)+" cm². Wie groß ist sein Umfang?",
+      a:4*a, unit:"cm", fig:K.rectSvg({la:1, lb:1, a:"a = ?"}),
+      tip:"Finde zuerst die Seitenlänge: Welche Zahl mal sich selbst ergibt "+(a*a)+"? Dann u = 4 · a.",
+      weg:["A = a · a, also "+a+" · "+a+" = "+(a*a)+", die Seite ist a = "+a+" cm", "u = 4 · a = 4 · "+a+" cm = "+(4*a)+" cm"]};
   }
   let a, b; do{ a = pick([20,25,40,50]); b = rnd(3,20)*5; }while((a*b) % 100 !== 0 || a === b);
   const Adm = a*b/100;
@@ -13848,7 +13910,7 @@ function blatt1(){
         items:[
           {t:"num", q:"Der Vorgänger einer Zahl ist 1998. Wie heißt die Zahl?", a:1999, p:1},
           {t:"num", q:"Und wie heißt ihr Nachfolger?", a:2000, p:1},
-          {t:"num", q:"Der Nachfolger einer Zahl ist 176 401. Wie heißt die Zahl?", a:176400, p:1},
+          {t:"num", q:"Der Nachfolger einer Zahl ist 176.401. Wie heißt die Zahl?", a:176400, p:1},
           {t:"num", q:"Und wie heißt ihr Vorgänger?", a:176399, p:1},
           {t:"num", q:"Schreibe 3<sup>4</sup> als gewöhnliche Zahl.", a:81, p:1},
           {t:"num", q:"Vorgänger von 3<sup>4</sup>", a:80, p:1, inline:true},
@@ -13863,7 +13925,7 @@ function blatt1(){
           {t:"set", q:"b) Gib alle natürlichen Zahlen an, die man einsetzen kann: 43 &lt; ☐ &lt; 51", a:[44,45,46,47,48,49,50], p:2,
            hint:"Mit Komma trennen, zum Beispiel: 10, 11, 12"},
           {t:"sign", q:"c) 43 ☐ 34", a:">", p:1, inline:true},
-          {t:"sign", q:"16 000 ☐ 10⁶", a:"<", p:1, inline:true},
+          {t:"sign", q:"16.000 ☐ 10⁶", a:"<", p:1, inline:true},
           {t:"sign", q:"2⁴ ☐ 4²", a:"=", p:1, inline:true},
           {t:"sign", q:"2³ ☐ 3²", a:"<", p:1, inline:true}
         ]
@@ -13878,13 +13940,13 @@ function blatt1(){
           {t:"num", q:"C =", a:17, p:1, inline:true},
           {t:"point", q:"Setze die Zahl 150 auf den Zahlenstrahl (tippe auf die Stelle).", a:150, line:{min:0,max:200,step:10,labels:[0,100,200]}, p:1},
           {t:"point", q:"Setze die Zahl 25 auf den Zahlenstrahl.", a:25, line:{min:0,max:200,step:5,labels:[0,100,200]}, p:1},
-          {t:"num", q:"Welche Zahl liegt genau in der Mitte zwischen 3 000 und 100 000?", a:51500, p:1},
+          {t:"num", q:"Welche Zahl liegt genau in der Mitte zwischen 3.000 und 100.000?", a:51500, p:1},
           {t:"num", q:"Welche Zahl liegt genau in der Mitte zwischen 96 und 122?", a:109, p:1}
         ]
       },
       {
         title:"Aufgabe 7: Runden", pts:"7 Punkte",
-        intro:"Susi hat die Einwohnerzahlen notiert: Frankfurt 687 775, Wiesbaden 278 342, Gießen 83 628. Daraus hat sie ein Bilddiagramm gemalt (Frankfurt ist schon fertig).",
+        intro:"Susi hat die Einwohnerzahlen notiert: Frankfurt 687.775, Wiesbaden 278.342, Gießen 83.628. Daraus hat sie ein Bilddiagramm gemalt (Frankfurt ist schon fertig).",
         fig: pictoSvg([{label:"Frankfurt", n:7},{label:"Wiesbaden", n:0},{label:"Gießen", n:0}], "Noch offen: Wiesbaden und Gießen"),
         items:[
           {t:"num", q:"a) Für wie viele Einwohner steht ein Männchen?", a:100000, p:1},
@@ -13892,7 +13954,7 @@ function blatt1(){
           {t:"num", q:"c) Wiesbaden gerundet:", a:300000, p:1, inline:true},
           {t:"num", q:"Gießen gerundet:", a:100000, p:1, inline:true},
           {t:"num", q:"Wie viele Männchen malt Susi für Wiesbaden?", a:3, p:1, inline:true},
-          {t:"num", q:"d) Kassel hat gerundet 200 000 Einwohner. Wie viele Einwohner hat Kassel mindestens?", a:150000, p:1},
+          {t:"num", q:"d) Kassel hat gerundet 200.000 Einwohner. Wie viele Einwohner hat Kassel mindestens?", a:150000, p:1},
           {t:"num", q:"Wie viele Einwohner hat Kassel höchstens?", a:249999, p:1}
         ]
       }
@@ -13940,8 +14002,8 @@ function blatt2(){
       {
         title:"Aufgabe 3: Vorgänger und Nachfolger", pts:"5 Punkte",
         items:[
-          {t:"num", q:"Der Vorgänger ist 4 999. Wie heißt die Zahl?", a:5000, p:1},
-          {t:"num", q:"Der Nachfolger ist 300 000. Wie heißt die Zahl?", a:299999, p:1},
+          {t:"num", q:"Der Vorgänger ist 4.999. Wie heißt die Zahl?", a:5000, p:1},
+          {t:"num", q:"Der Nachfolger ist 300.000. Wie heißt die Zahl?", a:299999, p:1},
           {t:"num", q:"Schreibe 2<sup>5</sup> als gewöhnliche Zahl.", a:32, p:1},
           {t:"num", q:"Vorgänger von 2<sup>5</sup>", a:31, p:1, inline:true},
           {t:"num", q:"Nachfolger von 2<sup>5</sup>", a:33, p:1, inline:true}
@@ -13952,7 +14014,7 @@ function blatt2(){
         items:[
           {t:"num", q:"a) Zwölfmilliardensiebenhundertsiebenundvierzigmillionendreitausendundzwei", a:12747003002, p:2},
           {t:"num", q:"b) Achtmillionensechshunderttausenddreihundertunddrei", a:8600303, p:2},
-          {t:"text", q:"c) Schreibe 402 007 112 in einem Wort.", a:["vierhundertzweimillionensiebentausendeinhundertzwölf","vierhundertzweimillionensiebentausendhundertzwölf"], p:2,
+          {t:"text", q:"c) Schreibe 402.007.112 als Zahlwort.", a:["vierhundertzwei Millionen siebentausendeinhundertzwölf","vierhundertzwei Millionen siebentausendhundertzwölf"], p:2,
            hint:"Groß- und Kleinschreibung ist egal."}
         ]
       },
@@ -13964,9 +14026,9 @@ function blatt2(){
           {t:"set", q:"b) Gib alle natürlichen Zahlen an, die man einsetzen kann: 27 &lt; ☐ &lt; 34", a:[28,29,30,31,32,33], p:2,
            hint:"Mit Komma trennen, zum Beispiel: 10, 11, 12"},
           {t:"sign", q:"c) 98 ☐ 89", a:">", p:1, inline:true},
-          {t:"sign", q:"25 000 ☐ 10⁵", a:"<", p:1, inline:true},
+          {t:"sign", q:"25.000 ☐ 10⁵", a:"<", p:1, inline:true},
           {t:"sign", q:"5² ☐ 2⁵", a:"<", p:1, inline:true},
-          {t:"sign", q:"10³ ☐ 1 000", a:"=", p:1, inline:true}
+          {t:"sign", q:"10³ ☐ 1.000", a:"=", p:1, inline:true}
         ]
       },
       {
@@ -13988,12 +14050,12 @@ function blatt2(){
         title:"Aufgabe 7: Lange Flüsse", pts:"5 Punkte",
         intro:"Sabrina hat die längsten Flüsse der Welt aufgeschrieben. Runde jede Länge auf Tausender.",
         items:[
-          {t:"num", q:"Nil (Afrika): 6 671 km ≈", a:7000, unit:"km", p:0.5, inline:true},
-          {t:"num", q:"Donau (Europa): 2 858 km ≈", a:3000, unit:"km", p:0.5, inline:true},
-          {t:"num", q:"Wolga (Europa): 3 531 km ≈", a:4000, unit:"km", p:0.5, inline:true},
-          {t:"num", q:"Amazonas (Südamerika): 6 437 km ≈", a:6000, unit:"km", p:0.5, inline:true},
-          {t:"num", q:"Jangtsekiang (China): 5 526 km ≈", a:6000, unit:"km", p:0.5, inline:true},
-          {t:"num", q:"Der Rhein hat auf Hunderter gerundet 1 200 km. Wie lang ist er mindestens?", a:1150, unit:"km", p:1.25},
+          {t:"num", q:"Nil (Afrika): 6.671 km ≈", a:7000, unit:"km", p:0.5, inline:true},
+          {t:"num", q:"Donau (Europa): 2.858 km ≈", a:3000, unit:"km", p:0.5, inline:true},
+          {t:"num", q:"Wolga (Europa): 3.531 km ≈", a:4000, unit:"km", p:0.5, inline:true},
+          {t:"num", q:"Amazonas (Südamerika): 6.437 km ≈", a:6000, unit:"km", p:0.5, inline:true},
+          {t:"num", q:"Jangtsekiang (China): 5.526 km ≈", a:6000, unit:"km", p:0.5, inline:true},
+          {t:"num", q:"Der Rhein hat auf Hunderter gerundet 1.200 km. Wie lang ist er mindestens?", a:1150, unit:"km", p:1.25},
           {t:"num", q:"Wie lang ist der Rhein höchstens?", a:1249, unit:"km", p:1.25}
         ]
       }
@@ -18198,20 +18260,20 @@ K.buch({
         ["2", "He", "Helium", "4,00", "VIII. Hauptgruppe (18)", "1"],
         ["3", "Li", "Lithium", "6,94", "I. Hauptgruppe (1)", "2"],
         ["4", "Be", "Beryllium", "9,01", "II. Hauptgruppe (2)", "2"],
-        ["5", "B", "Bor", "10,81", "Nebengruppe (7)", "2"],
-        ["6", "C", "Kohlenstoff", "12,01", "Nebengruppe (8)", "2"],
-        ["7", "N", "Stickstoff", "14,01", "Nebengruppe (9)", "2"],
-        ["8", "O", "Sauerstoff", "16,00", "Nebengruppe (10)", "2"],
-        ["9", "F", "Fluor", "19,00", "Nebengruppe (11)", "2"],
-        ["10", "Ne", "Neon", "20,18", "Nebengruppe (12)", "2"],
+        ["5", "B", "Bor", "10,81", "III. Hauptgruppe (13)", "2"],
+        ["6", "C", "Kohlenstoff", "12,01", "IV. Hauptgruppe (14)", "2"],
+        ["7", "N", "Stickstoff", "14,01", "V. Hauptgruppe (15)", "2"],
+        ["8", "O", "Sauerstoff", "16,00", "VI. Hauptgruppe (16)", "2"],
+        ["9", "F", "Fluor", "19,00", "VII. Hauptgruppe (17)", "2"],
+        ["10", "Ne", "Neon", "20,18", "VIII. Hauptgruppe (18)", "2"],
         ["11", "Na", "Natrium", "22,99", "I. Hauptgruppe (1)", "3"],
         ["12", "Mg", "Magnesium", "24,31", "II. Hauptgruppe (2)", "3"],
-        ["13", "Al", "Aluminium", "26,98", "Nebengruppe (7)", "3"],
-        ["14", "Si", "Silicium", "28,09", "Nebengruppe (8)", "3"],
-        ["15", "P", "Phosphor", "30,97", "Nebengruppe (9)", "3"],
-        ["16", "S", "Schwefel", "32,06", "Nebengruppe (10)", "3"],
-        ["17", "Cl", "Chlor", "35,45", "Nebengruppe (11)", "3"],
-        ["18", "Ar", "Argon", "39,95", "Nebengruppe (12)", "3"],
+        ["13", "Al", "Aluminium", "26,98", "III. Hauptgruppe (13)", "3"],
+        ["14", "Si", "Silicium", "28,09", "IV. Hauptgruppe (14)", "3"],
+        ["15", "P", "Phosphor", "30,97", "V. Hauptgruppe (15)", "3"],
+        ["16", "S", "Schwefel", "32,06", "VI. Hauptgruppe (16)", "3"],
+        ["17", "Cl", "Chlor", "35,45", "VII. Hauptgruppe (17)", "3"],
+        ["18", "Ar", "Argon", "39,95", "VIII. Hauptgruppe (18)", "3"],
         ["19", "K", "Kalium", "39,10", "I. Hauptgruppe (1)", "4"],
         ["20", "Ca", "Calcium", "40,08", "II. Hauptgruppe (2)", "4"],
         ["21", "Sc", "Scandium", "44,96", "Nebengruppe (3)", "4"],
@@ -20021,7 +20083,20 @@ function laden(){
   return s;
 }
 let S = laden();
-function speichern(){ abzeichenPruefen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+/* Fertige Runden (mit allen Aufgaben und Grafiken) nicht ewig aufheben: sonst wird der Speicher groß und langsam */
+function sitzAufraeumen(){
+  const fertig = Object.keys(S.sitz || {}).filter(k => S.sitz[k] && S.sitz[k].fertig && Array.isArray(S.sitz[k].items));
+  if(fertig.length <= 12) return;
+  fertig.sort((a, b) => (S.sitz[a].t0 || 0) - (S.sitz[b].t0 || 0)).slice(0, fertig.length - 12).forEach(k => { delete S.sitz[k]; });
+}
+function speichern(){ abzeichenPruefen(); sitzAufraeumen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+/* Zwei offene Tabs: Hat der andere Tab gespeichert, hier den neuen Stand übernehmen statt ihn beim nächsten Speichern zu überschreiben */
+window.addEventListener("storage", e => {
+  if(e.key !== SKEY || !e.newValue) return;
+  try{ S = laden(); }catch(x){ return; }
+  if(typeof Heft !== "undefined" && !Heft.db) Heft.liste = Heft.lokal().map(x => Object.assign({}, x));
+  if(typeof route === "function") route();
+});
 function st(id){ if(!S.themen[id]) S.themen[id] = {runden:0, sterne:0, tests:0, note:null, letzte:null, richtig:0, gesamt:0}; return S.themen[id]; }
 
 function datum(off){
@@ -20060,7 +20135,7 @@ const ABZEICHEN = [
   {id:"a500", e:"🏔️", t:"Bergsteiger", x:"500 Aufgaben gelöst", ok:() => zaehler().aufgaben >= 500},
   {id:"a2000", e:"🌋", t:"Unaufhaltsam", x:"2000 Aufgaben gelöst", ok:() => zaehler().aufgaben >= 2000},
   {id:"serie3", e:"🔥", t:"Dranbleiber", x:"3 Tage am Stück geübt", ok:() => S.serie.tage >= 3},
-  {id:"serie7", e:"⚡", t:"Eine Woche", x:"7 Tage am Stück geübt", ok:() => S.serie.tage >= 7},
+  {id:"serie7", e:"📅", t:"Eine Woche", x:"7 Tage am Stück geübt", ok:() => S.serie.tage >= 7},
   {id:"serie30", e:"👑", t:"Monats-König", x:"30 Tage am Stück geübt", ok:() => S.serie.tage >= 30},
   {id:"sterne", e:"⭐", t:"Drei Sterne", x:"Eine Übungsrunde mit 3 Sternen", ok:() => alleThemenStats().some(s => s.sterne >= 3)},
   {id:"eins", e:"🥇", t:"Glatte Eins", x:"Eine Eins in einem Test oder einer Arbeit", ok:() => alleThemenStats().some(s => s.note === 1) || (Array.isArray(S.ki) && S.ki.some(A => A.ab && A.proz >= 92))},
@@ -20107,7 +20182,7 @@ function fehlerMerken(thId, titel, it){
   if(alt){ alt.gut = 0; alt.am = datum(0); return; }
   const x = JSON.parse(JSON.stringify(it)); delete x.fid; delete x.thId; x.herkunft = titel;
   S.fehler.unshift({id:"f"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), th:thId, titel:titel, it:x, am:datum(0), gut:0});
-  if(S.fehler.length > 60) S.fehler.length = 60;
+  if(S.fehler.length > 150) S.fehler.length = 150;
 }
 function fehlerErgebnis(fid, st){
   const f = (S.fehler || []).find(x => x.id === fid); if(!f) return;
@@ -20526,7 +20601,7 @@ function crumbs(list){
   zurueck = v && v.href && v.href !== "#/" ? v : null;
 }
 function fuss(){
-  return '<footer class="fuss"><span>Karo · Mathe und Englisch üben · kostenlos, ohne Werbung, ohne Anmeldung</span>'+
+  return '<footer class="fuss"><span>Karo Schlauer · Mathe und Englisch üben · kostenlos, ohne Werbung, ohne Anmeldung</span>'+
          '<span>Dein Fortschritt bleibt nur auf diesem Gerät.</span></footer>';
 }
 
@@ -20561,9 +20636,10 @@ function route(){
   else if(a === "ki" && b) seiteKiArbeit(b, c);
   else if(a === "ki") seiteKi();
   else if(a === "foto" && b) seiteFoto(b, c);
+  else if(a === "foto") seiteKi();
   else if(a === "buecher") seiteBuecher();
   else if(a === "buch" && b) seiteBuch(b, c);
-  else { location.hash = "#/"; return; }
+  else seiteNichtGefunden();
   if(zurueck) app.insertAdjacentHTML("afterbegin", '<a class="zurueck" href="'+zurueck.href+'">'+ic("links")+esc(zurueck.t)+'</a>');
   requestAnimationFrame(einblenden);
   if(!S.intro) einfuehrung();
@@ -20576,10 +20652,17 @@ window.addEventListener("hashchange", () => {
   tiefeJetzt = neu;
   if(document.startViewTransition && !ruhig()){
     document.documentElement.dataset.richtung = richtung; document.documentElement.classList.add("vt");
-    try{ document.startViewTransition(() => route()); }catch(e){ route(); }
+    /* Schnell hintereinander geklickt: der alte Übergang wird abgebrochen. Das ist gewollt, also keine Fehlermeldung. */
+    try{ const vt = document.startViewTransition(() => route()); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); }catch(e){ route(); }
   }else route();
 });
 
+function seiteNichtGefunden(){
+  crumbs([{t:"Start", href:"#/"}]);
+  app.innerHTML = '<section class="card pad stack nicht-gefunden" style="margin-top:20px;text-align:center;align-items:center"><div style="font-size:54px">🧭</div><h1>Seite nicht gefunden</h1>'+
+    '<p class="weich">Diese Adresse gibt es bei Karo nicht (mehr). Vielleicht ein Tippfehler im Link?</p>'+
+    '<div class="row" style="justify-content:center"><a class="btn primary" href="#/">Zur Startseite</a><a class="btn" href="#/lernen">Themen ansehen</a></div></section>'+fuss();
+}
 /* ================= Startseite ================= */
 function seiteStart(){
   crumbs([]);
@@ -20605,7 +20688,7 @@ function seiteStart(){
   }
   html += '<div class="card ziel-karte"><div class="eyebrow">Tagesziel</div>'+
     '<div class="ring"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="48"/><circle class="fg'+(anteil>=1?" voll":"")+'" cx="60" cy="60" r="48" stroke-dasharray="'+U.toFixed(1)+'" stroke-dashoffset="'+(U*(1-anteil)).toFixed(1)+'"/></svg>'+
-    '<div class="mitte"><div><b class="num">'+Math.min(n,99)+'</b><br><span>von '+TAGESZIEL+'</span></div></div></div>'+
+    '<div class="mitte"><div>'+(n >= TAGESZIEL ? '<b class="num">✓</b><br><span>'+(n > TAGESZIEL ? '+'+(n - TAGESZIEL)+' extra' : 'geschafft')+'</span>' : '<b class="num">'+n+'</b><br><span>von '+TAGESZIEL+'</span>')+'</div></div></div>'+
     '<div class="pills"><span class="pill">'+ic("flamme","flame")+serie+' '+(serie === 1 ? "Tag" : "Tage")+'</span><span class="pill">'+ic("stern","star")+K.fmt(S.xp)+' XP</span>'+
     '<a class="pill" href="#/profil" title="Deine Abzeichen">🏅 '+ABZEICHEN.filter(a => S.abz && S.abz[a.id]).length+'</a></div></div>';
   html += '</section><div id="freundplatz"></div>';
@@ -20698,17 +20781,24 @@ function seiteLernen(suchFokus){
     '<label class="suche lernen-suche" for="q">'+ic("suche")+'<input class="suche-feld" id="q" type="search" placeholder="Thema suchen, z. B. Brüche, Prozent, Simple Past" autocomplete="off"></label>'+
     '<div id="treffer"></div>' + fuss();
   const q = document.getElementById("q"), out = document.getElementById("treffer");
-  const heu = THEMEN.map(t => ({t:t, s:K.normTxt(t.titel+" "+t.kurz+" "+t.kapitel+" klasse"+t.klasse+" "+fachVon(t))}));
+  /* Suche verzeiht Einzahl/Mehrzahl (Bruch/Brüche) und kleine Tippfehler (pytagoras) */
+  const falte = x => K.normTxt(x).replace(/ae/g, "a").replace(/oe/g, "o").replace(/ue/g, "u");
+  const stamm = v => v.length > 4 ? v.replace(/(en|er|e|n|s)$/, "") : v;
+  const lev = (a, b) => { const d = [...Array(b.length + 1).keys()]; for(let i = 1; i <= a.length; i++){ let alt = d[0]; d[0] = i; for(let j = 1; j <= b.length; j++){ const t = d[j]; d[j] = Math.min(d[j] + 1, d[j-1] + 1, alt + (a[i-1] === b[j-1] ? 0 : 1)); alt = t; } } return d[b.length]; };
+  const heu = THEMEN.map(t => { const roh = t.titel+" "+t.kurz+" "+t.kapitel+" klasse"+t.klasse+" "+fachVon(t);
+    return {t:t, s:falte(roh), woerter:roh.split(/[\s,:;&·()\/–-]+/).map(falte).filter(x => x.length >= 4).map(stamm)}; });
+  const passt = (x, v) => { const st = stamm(v); if(x.s.indexOf(st) >= 0) return true;
+    return st.length >= 5 && x.woerter.some(wd => lev(st, wd) <= (st.length >= 8 ? 2 : 1) || (wd.length > st.length && lev(st, wd.slice(0, st.length)) <= 1)); };
   const zeig = () => {
-    const w = q.value.trim().split(/\s+/).map(K.normTxt).filter(Boolean);
+    const w = q.value.trim().split(/\s+/).map(falte).filter(Boolean);
     if(!w.length){ const vs = vokabelStand();
       out.innerHTML = '<div class="section-h"><h2>Mathematik</h2></div><div class="hefte">'+KLASSEN.map(k => heftHtml(k)).join("")+'</div>'+
       '<div class="section-h" style="margin-top:30px"><h2>Englisch</h2></div><div class="hefte">'+EN_KLASSEN.map(k => heftHtml(k, FACH_E)).join("")+
       '<a class="heft" data-k="ev" href="#/vokabeln"><span class="gross-n" aria-hidden="true">Aa</span><div class="etikett"><div class="fach">Vokabeln</div><div class="kl">Karteikasten</div><div class="linie"></div><div class="wer">'+(S.profil.name ? esc(S.profil.name) : "&nbsp;")+'</div></div>'+
       '<div class="fort"><span>'+vs.sicher+' von '+vs.gesamt+' Wörtern sicher</span><div class="bar"><i style="width:'+Math.round(vs.sicher/Math.max(1, vs.gesamt)*100)+'%"></i></div></div></a></div>'; return; }
-    const liste = heu.filter(x => w.every(v => x.s.indexOf(v) >= 0)).map(x => x.t);
+    const liste = heu.filter(x => w.every(v => passt(x, v))).map(x => x.t);
     out.innerHTML = liste.length ? '<p class="leise" style="margin-bottom:10px">'+liste.length+' Treffer</p><div class="themen">'+liste.map(themaZeile).join("")+'</div>'
-      : '<div class="card leer-hinweis">Nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Bruch“ statt „Brüche“.</div>';
+      : '<div class="card leer-hinweis">Nichts gefunden. Versuch ein anderes Wort, zum Beispiel „Prozent“, „Gleichung“ oder „Simple Past“.</div>';
   };
   q.addEventListener("input", zeig); zeig();
   if(suchFokus) setTimeout(() => q.focus(), 50);
@@ -20797,7 +20887,8 @@ function vokabelRunde(id){
       erledigt = true; w.sperren(); if(w.zeigeRichtig) w.zeigeRichtig();
       const key = vokKey(x.l, x.w), alt = S.vok[key] || {b:0, f:heute, n:0, r:0};
       alt.n++;
-      if(ok){ alt.r++; alt.b = Math.min(5, (x.s ? alt.b + 1 : 1)); if(R.nochmal[key]) alt.b = Math.min(alt.b, 1); alt.f = datum(VOK_TAGE[alt.b]); R.richtig++; aufgabeGeschafft(2); }
+      /* War die Karte in dieser Runde schon falsch, steigt sie nicht auf: sie bleibt ganz vorne und kommt morgen wieder */
+      if(ok){ alt.r++; if(R.nochmal[key]){ alt.b = 0; alt.f = datum(1); } else { alt.b = Math.min(5, (x.s ? alt.b + 1 : 1)); alt.f = datum(VOK_TAGE[alt.b]); } R.richtig++; aufgabeGeschafft(2); }
       else { alt.b = 0; alt.f = heute; if(!R.nochmal[key]){ R.nochmal[key] = true; R.karten.push({l:x.l, w:x.w, s:alt}); } if(!R.falsch.some(y => vokKey(y.l, y.w) === key)) R.falsch.push(x); }
       S.vok[key] = alt; x.s = alt; speichern();
       fb.innerHTML = ok ? '<div class="fb ok"><div class="kopf">'+ic("haken")+'Richtig!</div><p><b>'+esc(en)+'</b> = '+esc(de)+(r && r.schreib ? '<br>So schreibt man es: <b>'+esc(r.schreib)+'</b>' : '')+'</p></div>'
@@ -20851,8 +20942,9 @@ function seiteProfil(){
   });
   box.querySelector("#intro").addEventListener("click", () => einfuehrung());
   box.querySelector("#reset").addEventListener("click", async () => {
-    if(!await frage("Wirklich alles zurücksetzen? XP, Noten, Serie und laufende Runden werden gelöscht. Name und Klasse bleiben.", "Zurücksetzen")) return;
-    const behalten = {profil:S.profil, theme:S.theme, hg:S.hg, intro:S.intro, glasTipp:S.glasTipp, freund:S.freund ? {name:S.freund.name, farbe:S.freund.farbe, stufe:null} : undefined};
+    if(!await frage("Wirklich zurücksetzen? Gelöscht werden: XP und Level, alle Noten und Sterne, Serie, laufende Runden, Fehler-Heft, Vokabel-Fortschritt, Abzeichen und Blitz-Rekorde. Karli wird wieder ein Ei. Es bleiben: Name, Klasse, Hausaufgaben-Heft, deine KI-Arbeiten und Einstellungen.", "Zurücksetzen")) return;
+    const behalten = {profil:S.profil, theme:S.theme, hg:S.hg, intro:S.intro, glasTipp:S.glasTipp, heft:S.heft, ki:S.ki, fotos:S.fotos, sph:S.sph,
+      freund:S.freund ? {name:S.freund.name, farbe:S.freund.farbe, stufe:null} : undefined};
     S = leer(); Object.keys(behalten).forEach(k => { if(behalten[k] !== undefined) S[k] = behalten[k]; });
     speichern(); themaSetzen(); hintergrundSetzen(); toast("Fortschritt zurückgesetzt"); route();
   });
@@ -20869,14 +20961,17 @@ function seiteZeugnis(){
   let html = '<article class="card zeugnis schmal" style="margin:10px auto 0"><div class="kopf"><h1>Zeugnis</h1>'+
     '<p>für <span class="name">'+(name ? esc(name) : "dich")+'</span></p><p class="leise">Karo Schlauer · Stand '+esc(heute)+'</p></div>';
   let irgendwas = false;
-  KLASSEN.forEach(k => {
-    const zeilen = themenVon(k).map(t => ({t:t.titel, href:"#/thema/"+t.id+"/test", n:S.themen[t.id] && S.themen[t.id].note}))
-      .concat(KA.filter(b => b.klasse === k).map(b => ({t:b.titel, href:"#/blatt/"+b.id, n:S.themen[b.id] && S.themen[b.id].note})));
+  const abschnitte = KLASSEN.map(k => [k, FACH_M]).concat(EN_KLASSEN.map(k => [k, FACH_E]));
+  abschnitte.forEach(([k, fach]) => {
+    const en = fach === FACH_E;
+    const zeilen = themenVon(k, fach).map(t => ({t:t.titel, href:"#/thema/"+t.id+"/test", n:S.themen[t.id] && S.themen[t.id].note}))
+      .concat(en ? [] : KA.filter(b => b.klasse === k).map(b => ({t:b.titel, href:"#/blatt/"+b.id, n:S.themen[b.id] && S.themen[b.id].note})));
     const noten = zeilen.map(z => z.n).filter(Boolean);
-    if(!noten.length && S.profil.klasse !== k) return;
+    const meineKl = en ? Math.min(7, S.profil.klasse || 0) : S.profil.klasse;
+    if(!noten.length && meineKl !== k) return;
     irgendwas = irgendwas || noten.length > 0;
     const schnitt = noten.length ? noten.reduce((a,b)=>a+b,0)/noten.length : null;
-    html += '<section class="z-klasse" data-k="'+k+'"><h3><span>Klasse '+k+'</span><span class="leise">'+(schnitt ? "Durchschnitt "+K.fmtD(schnitt,1) : "noch keine Tests")+'</span></h3>'+
+    html += '<section class="z-klasse" data-k="'+(en ? "e"+k : k)+'"><h3><span>'+(en ? "Englisch " : "Mathe ")+'Klasse '+k+'</span><span class="leise">'+(schnitt ? "Durchschnitt "+K.fmtD(schnitt,1) : "noch keine Tests")+'</span></h3>'+
       zeilen.map(z => '<div class="z-zeile"><a href="'+z.href+'">'+esc(z.t)+'</a>'+(z.n ? '<span class="z-note">'+z.n+' <span style="font-size:20px">'+NOTENWORT[z.n]+'</span></span>' : '<span class="z-note leer">–</span>')+'</div>').join("")+'</section>';
   });
   const besteProz = A => Math.max.apply(null, (A.ab ? [A.proz] : []).concat((A.versuche || []).map(v => v.proz || 0)));
@@ -20951,7 +21046,7 @@ function nachschlagIndex(){
 }
 /* Treffer: alle Wörter müssen vorkommen (im Eintrag oder in Überschrift/Spaltenkopf); Eintrag selbst zählt mehr */
 function nachschlagen(q){
-  const w = q.trim().split(/\s+/).map(sn).filter(Boolean), ganz = sn(q);
+  const w = q.trim().split(/\s+/).map(sn).filter(Boolean), ganz = sn(q), mathe = /[+=²³·×*^√]|\d\s*[-:/]\s*\d/.test(q);
   if(!w.length) return [];
   return nachschlagIndex().map((e, i) => {
     if(!w.every(v => e.own.indexOf(v) >= 0 || e.ctx.indexOf(v) >= 0)) return null;
@@ -20961,6 +21056,8 @@ function nachschlagen(q){
     if(e.own === ganz || e.own.indexOf(ganz) === 0) p += 3;
     if(e.zellen && e.zellen.indexOf(ganz) >= 0) p += 4;
     if(e.art === "abschnitt") p += 1;
+    /* Mit Rechenzeichen gesucht (a+b, x², 3·4): Mathe und Physik zuerst */
+    if(mathe && /Mathematik|Physik/.test(e.b.fach || "")) p += 8;
     return {e:e, p:p, i:i};
   }).filter(Boolean).sort((a, b) => b.p - a.p || a.i - b.i).map(x => x.e);
 }
@@ -20971,7 +21068,7 @@ function seiteBuecher(){
     '<label class="suche lernen-suche" for="nq">'+ic("suche")+'<input class="suche-feld" id="nq" type="search" placeholder="In allen Büchern suchen, z. B. Satz des Pythagoras, went, Natrium" autocomplete="off"></label>'+
     '<div id="ntreffer"></div><section class="card pad echte-buecher"><div class="eb-kopf">'+ic("regal")+'<div><h2>Deine echten Schulbücher</h2>'+
     '<p>Die Bücher aus dem Unterricht (z. B. <b>Access</b> in Englisch) gibt es digital mit allen Seiten, wenn deine Schule sie für dich freigeschaltet hat. Für dich ist das kostenlos.</p></div></div>'+
-    '<ol class="eb-schritte"><li>Im <b>Schulportal Hessen</b> mit deinen Schuldaten anmelden.</li><li>Dort <b>Bildungslogin</b> oder <b>Medienregal</b> öffnen. Da stehen deine Bücher.</li><li>Nichts gefunden? Frag deine Lehrkraft: „Wie komme ich an unsere digitalen Schulbücher?“</li></ol>'+
+    '<ol class="eb-schritte"><li>Im Schulportal deiner Schule anmelden (in Hessen: <b>Schulportal Hessen</b>).</li><li>Dort <b>Bildungslogin</b> oder <b>Medienregal</b> öffnen. Da stehen deine Bücher.</li><li>Nichts gefunden? Frag deine Lehrkraft: „Wie komme ich an unsere digitalen Schulbücher?“</li></ol>'+
     '<div class="row" style="flex-wrap:wrap;gap:10px"><a class="btn brand" href="https://start.schulportal.hessen.de/index.php" target="_blank" rel="noopener">'+ic("rechts")+'Schulportal öffnen</a>'+
     '<a class="btn" href="https://info.bildungslogin.de/" target="_blank" rel="noopener">'+ic("regal")+'Bildungslogin</a></div></section>'+
     '<div id="nregal"></div>' + fuss();
@@ -21112,7 +21209,7 @@ function einfuehrung(){
   if(document.querySelector(".overlay.einf")) return;
   const B = einfuehrungBilder();
   const seiten = [
-    {c:"var(--brand)", b:B.hefte, t:"Willkommen bei Karo", p:"Karo ist dein Mathe-Heft zum Üben, von Klasse 5 bis 10. Kostenlos, ohne Werbung, ohne Anmeldung. Hier siehst du kurz, wie es funktioniert."},
+    {c:"var(--brand)", b:B.hefte, t:"Willkommen bei Karo Schlauer", p:"Karo ist dein Heft zum Üben für Mathe und Englisch, von Klasse 5 bis 10. Kostenlos, ohne Werbung, ohne Anmeldung. Hier siehst du kurz, wie es funktioniert."},
     {c:"var(--k5)", b:B.merke, t:"Erst verstehen", p:"Zu jedem Thema gibt es eine kurze Erklärung: den Merksatz, ein Beispiel Schritt für Schritt und den typischen Fehler, den viele machen."},
     {c:"var(--k8)", b:B.ueben, t:"Dann üben", p:"Zehn Aufgaben, von leicht nach schwer, jedes Mal mit neuen Zahlen. Du hast zwei Versuche und einen Tipp-Knopf. Klappt es nicht, zeigt Karo dir den Lösungsweg."},
     {c:"var(--k6)", b:B.test, t:"Test mit Note", p:"Fühlst du dich sicher, schreib einen Test wie eine echte Klassenarbeit, ohne Tipps. Karo korrigiert sofort und gibt dir eine Note."},
@@ -21282,7 +21379,7 @@ function zeigeUeben(th, box){
       w.sperren(); w.zeigeRichtig();
       fbBox.appendChild(fb("bad", ic("kreuz")+"Leider falsch", (res.form ? '<p>'+esc(res.form)+'</p>' : '')+'<p class="loes">Richtig ist: <b>'+K.solHtml(it)+'</b></p><div class="eyebrow" style="margin-top:4px">So geht\'s</div>'+wegHtml(it)));
     }else if(res.v === 1){
-      fbBox.appendChild(fb("bad", ic("kreuz")+"Noch nicht ganz", '<p>'+(res.form ? esc(res.form) : "Prüf deine Rechnung noch einmal.")+' Du hast noch einen Versuch.</p>'));
+      fbBox.appendChild(fb("bad", ic("kreuz")+"Noch nicht ganz", '<p>'+(res.form ? esc(res.form) : (["choice","multi","sign","order","satz","text","gaps"].indexOf(it.t) >= 0 ? "Schau dir die Aufgabe noch einmal genau an." : "Prüf deine Rechnung noch einmal."))+' Du hast noch einen Versuch.</p>'));
     }
     const akt = el("div","aktionen");
     const tippB = btn("btn ghost", ic("birne")+"Tipp", () => { if(res.tipp) return; res.tipp = true; speichern(); render(); });
@@ -21560,7 +21657,7 @@ function seiteBlatt(b){
   }));
   lw.appendChild(btn("btn", ic("auge")+"Lösungen", () => {
     reg.forEach(r => { r.w.set(K.solInput(r.it)); B.ans[r.k] = r.w.get(); setzeFb(r, null); });
-    B.checked = false; ergebnis.innerHTML = ""; info.textContent = K.fmt(max)+" Punkte möglich"; speichern();
+    B.checked = false; B.mitLoesung = true; ergebnis.innerHTML = ""; info.textContent = K.fmt(max)+" Punkte möglich"; speichern();
   }));
   lw.appendChild(btn("btn", ic("neu")+"Neu", async () => {
     if(!await frage("Alle Antworten auf diesem Blatt löschen?", "Löschen")) return;
@@ -21581,10 +21678,13 @@ function seiteBlatt(b){
     let got = 0;
     reg.forEach(r => { const e = r.w.get(); const ok = !K.leer(r.it, e) && K.check(r.it, e).ok; if(ok) got += r.it.p || 1; setzeFb(r, ok); });
     const proz = Math.round(got/max*100), note = K.noteVon(proz);
-    ergebnis.innerHTML = '<section class="card zeugnis-note">'+stempel(note, klick)+'<div><h2>'+K.fmt(got)+' von '+K.fmt(max)+' Punkten</h2><p>'+proz+' % richtig. Rote Felder zeigen dir die richtige Lösung.</p></div></section>';
+    /* Wer vorher die Lösungen angesehen hat, bekommt keine Note und keinen Zeugnis-Eintrag */
+    ergebnis.innerHTML = B.mitLoesung
+      ? '<section class="card pad stack"><h2>'+K.fmt(got)+' von '+K.fmt(max)+' Punkten · geübt mit Lösungen</h2><p class="weich">Weil du die Lösungen angesehen hast, gibt es keine Note und keinen Eintrag im Zeugnis. Tippe auf „Neu“, dann kannst du die Arbeit ohne Hilfe schreiben.</p></section>'
+      : '<section class="card zeugnis-note">'+stempel(note, klick)+'<div><h2>'+K.fmt(got)+' von '+K.fmt(max)+' Punkten</h2><p>'+proz+' % richtig. Rote Felder zeigen dir die richtige Lösung.</p></div></section>';
     info.textContent = K.fmt(got)+" von "+K.fmt(max)+" Punkten";
     B.checked = true;
-    if(klick){ const s = st(b.id); s.tests++; s.letzte = note.n; s.note = s.note ? Math.min(s.note, note.n) : note.n; window.scrollTo({top:0, behavior:"smooth"}); }
+    if(klick && !B.mitLoesung){ const s = st(b.id); s.tests++; s.letzte = note.n; s.note = s.note ? Math.min(s.note, note.n) : note.n; window.scrollTo({top:0, behavior:"smooth"}); }
     speichern();
   }
   if(B.checked) auswerten(false);
@@ -21660,7 +21760,35 @@ function tagName(d){
   if(d === datum(-1)) return "Gestern";
   if(d === datum(1)) return "Morgen";
   const t = new Date(d+"T12:00:00");
-  return isNaN(t) ? d : t.toLocaleDateString("de-DE", {weekday:"long", day:"numeric", month:"long"});
+  return isNaN(t) ? d : t.toLocaleDateString("de-DE", Object.assign({weekday:"long", day:"numeric", month:"long"}, t.getFullYear() !== new Date().getFullYear() ? {year:"numeric"} : {}));
+}
+/* Heft-Eintrag bearbeiten: Datum, Fach, Thema und Hausaufgabe */
+function heftBearbeiten(e){
+  const alt = document.querySelector(".overlay.frage"); if(alt) alt.remove();
+  const ov = el("div","overlay frage"); ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  const d = el("div","dialog stack formular");
+  d.innerHTML = '<h2 style="font-size:22px">Eintrag bearbeiten</h2>'+
+    '<label>Datum<input type="date" id="hb-d"></label>'+
+    '<label>Fach<select id="hb-f">'+FAECHER.map(f => '<option>'+esc(f[0])+'</option>').join("")+'</select></label>'+
+    '<label>Thema<input type="text" id="hb-t" maxlength="140"></label>'+
+    '<label>Hausaufgabe<textarea id="hb-a" rows="3" maxlength="600"></textarea></label>';
+  const q = id => d.querySelector(id);
+  q("#hb-d").value = e.datum || datum(0); q("#hb-f").value = FAECHER.some(f => f[0] === e.fach) ? e.fach : "Anderes"; q("#hb-t").value = e.thema || ""; q("#hb-a").value = e.aufgabe || "";
+  const zu = () => { document.removeEventListener("keydown", taste); ov.remove(); };
+  const taste = x => { if(x.key === "Escape") zu(); };
+  const row = el("div","row"); row.style.justifyContent = "flex-end";
+  row.appendChild(btn("btn", "Abbrechen", zu));
+  row.appendChild(btn("btn brand", "Speichern", () => {
+    const thema = q("#hb-t").value.trim().slice(0,140), aufgabe = q("#hb-a").value.trim().slice(0,600);
+    if(!thema && !aufgabe){ q("#hb-t").focus(); return; }
+    const dd = /^\d{4}-\d{2}-\d{2}$/.test(q("#hb-d").value) ? q("#hb-d").value : e.datum;
+    Heft.aendern(e.id, {datum:dd, fach:q("#hb-f").value, thema:thema || "Stunde", aufgabe:aufgabe, erledigt:aufgabe ? !!e.erledigt : false});
+    zu(); toast("Gespeichert");
+  }));
+  d.appendChild(row); ov.appendChild(d);
+  ov.addEventListener("click", x => { if(x.target === ov) zu(); });
+  document.addEventListener("keydown", taste);
+  document.body.appendChild(ov); setTimeout(() => q("#hb-t").focus(), 30);
 }
 let heftFilter = "alle";
 function seiteHeft(){
@@ -21727,6 +21855,8 @@ function seiteHeft(){
         h.setAttribute("aria-pressed", e.erledigt ? "true" : "false"); h.setAttribute("aria-label", e.erledigt ? "Als offen markieren" : "Als erledigt markieren");
         akt.appendChild(h);
       }
+      const bea = btn("klein-x", ic("stift"), () => heftBearbeiten(e));
+      bea.setAttribute("aria-label","Eintrag bearbeiten"); akt.appendChild(bea);
       const x = btn("klein-x", ic("muell"), async () => { if(await frage("Eintrag „"+e.thema+"“ löschen?", "Löschen")) Heft.loeschen(e.id); });
       x.setAttribute("aria-label","Eintrag löschen"); akt.appendChild(x);
       z.appendChild(akt); listeBox.appendChild(z);
@@ -21783,7 +21913,7 @@ function bildWahl(o){
 function kennung(t){ let h1 = 5381, h2 = 52711; for(let i=0;i<t.length;i++){ const c = t.charCodeAt(i); h1 = (h1*33) ^ c; h2 = (h2*33) ^ c; } return "sph-"+(h1>>>0).toString(16)+(h2>>>0).toString(16); }
 function importKarte(){
   const c = el("section","card pad formular"); c.style.marginTop = "16px";
-  c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("ki")+'Aus dem Schulportal übernehmen</h3>'+
+  c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("ki")+'Aus dem Schulportal übernehmen <small class="leise" style="font-size:13px;font-weight:600">(Schulportal Hessen)</small></h3>'+
     '<p class="weich" style="font-size:15.5px">Öffne im Schulportal <b>Mein Unterricht</b> und mach einen Screenshot. Oder markiere dort alles, kopiere es und füge es unten ein. Die KI liest Fach, Datum, Thema und Hausaufgabe heraus. Dein Passwort braucht Karo dafür nicht.</p>'+
     '<div class="row" style="flex-wrap:wrap;gap:10px"><a class="btn" href="https://start.schulportal.hessen.de/index.php" target="_blank" rel="noopener">'+ic("rechts")+'Schulportal öffnen</a></div>'+
     '<ol class="eb-schritte"><li>Schulportal öffnen, anmelden und <b>Mein Unterricht</b> antippen.</li><li>Screenshot machen (am iPad: obere Taste und Home-Taste bzw. Lauter-Taste gleichzeitig drücken).</li><li>Zurück zu Karo, unten den Screenshot auswählen und auf <b>Einträge erkennen</b> tippen.</li></ol>'+
@@ -21951,7 +22081,7 @@ function portalKarte(){
   const zeichne = (meldung) => {
     const d = sphDaten();
     if(!d){
-      c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("heft")+'Schulportal Hessen verbinden</h3>'+
+      c.innerHTML = '<h3 style="font-size:20px;display:flex;gap:10px;align-items:center">'+ic("heft")+'Schulportal Hessen verbinden <small class="leise" style="font-size:13px;font-weight:600">(nur für Schulen in Hessen)</small></h3>'+
         '<p class="weich" style="font-size:15.5px">Einmal anmelden, dann holt Karo die Themen und Hausaufgaben aus „Mein Unterricht“ selbst: beim Öffnen der App und jede Stunde. Deine Zugangsdaten bleiben nur auf diesem Handy.</p>'+
         '<label>Schulnummer<input type="text" id="sphschule" inputmode="numeric" autocomplete="off" placeholder="z. B. 5120"></label>'+
         '<p class="leise" style="margin-top:-8px">Die Zahl hinter <b>?i=</b> in der Adresse der Schulportal-Anmeldeseite.</p>'+
@@ -22729,7 +22859,7 @@ const DRUCK_CSS =
   '.d-kopf i{flex:1;border-bottom:1px solid #111;height:18px}'+
   '.d-titel{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2.5px solid #111;padding-bottom:8px;margin-bottom:14px}'+
   '.d-unter{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555}'+
-  '.d-logo{font-weight:800;font-size:13px;color:#2f5fd0;white-space:nowrap}'+
+  '.d-logo{font-weight:800;font-size:13px;color:#2f5fd0;text-align:right;min-width:0}'+
   '.d-note{display:flex;gap:10px;font-size:12.5px;white-space:nowrap}'+
   '.d-note b{display:inline-block;min-width:22mm;border:1.5px solid #111;border-radius:6px;padding:4px 8px;font-weight:600}'+
   '.d-merke{border:1.5px solid #2f5fd0;border-radius:8px;padding:9px 12px;margin-bottom:14px;background:#f1f5fe}'+
@@ -23677,6 +23807,10 @@ function seiteBlitz(){
       punkteEl.textContent = E.punkte;
       if(ok){ punkteEl.classList.remove("bump"); void punkteEl.offsetWidth; punkteEl.classList.add("bump"); }
       const f = faktor(); comboEl.innerHTML = E.serie >= 3 ? '🔥 ×'+f : ''; comboEl.classList.toggle("an", E.serie >= 3);
+      /* Neuer Bonus: groß ansagen, damit man merkt, dass jetzt doppelt zählt */
+      if(ok && E.serie % 3 === 0 && f > 1 && f <= 4 && E.serie / 3 + 1 === f){
+        const pop = el("div","blitz-combo-pop", "🔥 ×"+f+"!<small>"+E.serie+" richtig hintereinander</small>"); wrap.appendChild(pop); setTimeout(() => pop.remove(), 1300);
+      }
       E.i++;
       setTimeout(zeige, ok ? 380 : uebersprungen ? 120 : 1100);
     }
@@ -23740,6 +23874,12 @@ sphAutomatik();
 themaSetzen();
 hintergrundSetzen();
 route();
+/* Offline: Nur die Webseiten-Version (Bibel als eigene Datei) bekommt einen Service Worker, der die Seite zwischenspeichert */
+(function(){
+  const bibel = document.getElementById("bibel-gz");
+  if(!("serviceWorker" in navigator) || claudeRT || nativ || location.protocol !== "https:" || !bibel || !bibel.getAttribute("data-src")) return;
+  try{ window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }catch(e){}
+})();
 })(Karo);
 
 </script>

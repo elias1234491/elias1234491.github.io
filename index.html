@@ -361,6 +361,10 @@ sup, sub{font-size:.7em; line-height:0}
 .plan-liste-h{font-size:19px; margin-bottom:4px}
 .plan-zeile{display:grid; grid-template-columns:92px minmax(0, 1fr); gap:8px; align-items:stretch}
 .plan-unten{margin-top:14px}
+.konto-karte h3{display:flex; align-items:center; gap:8px}
+.konto-tabs{display:flex; gap:6px}
+.konto-form{gap:12px}
+.konto-form .fb{margin:0}
 .plan-sph{display:flex; flex-direction:column; gap:6px; align-items:flex-start; padding:12px 14px; border-radius:12px; background:var(--brand-soft)}
 .plan-sph .leise{font-size:14px}
 .sph-browser{gap:10px}
@@ -20138,7 +20142,7 @@ function sitzAufraeumen(){
   if(fertig.length <= 12) return;
   fertig.sort((a, b) => (S.sitz[a].t0 || 0) - (S.sitz[b].t0 || 0)).slice(0, fertig.length - 12).forEach(k => { delete S.sitz[k]; });
 }
-function speichern(){ abzeichenPruefen(); sitzAufraeumen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function speichern(){ abzeichenPruefen(); sitzAufraeumen(); if(typeof Konto !== "undefined") Konto.merken(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
 /* Zwei offene Tabs: Hat der andere Tab gespeichert, hier den neuen Stand übernehmen statt ihn beim nächsten Speichern zu überschreiben */
 window.addEventListener("storage", e => {
   if(e.key !== SKEY || !e.newValue) return;
@@ -20650,8 +20654,9 @@ function crumbs(list){
   zurueck = v && v.href && v.href !== "#/" ? v : null;
 }
 function fuss(){
-  return '<footer class="fuss"><span>Karo Schlauer · Mathe und Englisch üben · kostenlos, ohne Werbung, ohne Anmeldung</span>'+
-         '<span>Dein Fortschritt bleibt nur auf diesem Gerät.</span></footer>';
+  return '<footer class="fuss"><span>Karo Schlauer · Mathe und Englisch üben · kostenlos, ohne Werbung'+(Konto.an() ? '' : ', ohne Anmeldung')+'</span>'+
+         '<span>'+(Konto.an() && Konto.nutzer ? 'Dein Fortschritt wird in deinem Konto gesichert.' : Konto.an() ? 'Anmelden ist freiwillig: ohne Konto bleibt alles auf diesem Gerät.' : 'Dein Fortschritt bleibt nur auf diesem Gerät.')+
+         (Konto.an() ? ' · <a href="#/datenschutz">Datenschutz</a>' : '')+'</span></footer>';
 }
 
 /* ================= Router ================= */
@@ -20683,6 +20688,7 @@ function route(){
   else if(a === "suche") seiteLernen(true);
   else if(a === "heft") seiteHeft();
   else if(a === "stundenplan") seiteStundenplan();
+  else if(a === "datenschutz") seiteDatenschutz();
   else if(a === "ki" && b) seiteKiArbeit(b, c);
   else if(a === "ki") seiteKi();
   else if(a === "foto" && b) seiteFoto(b, c);
@@ -20976,9 +20982,10 @@ function seiteProfil(){
     '<div class="card pad handy-karte"><div class="handy-qr">'+QR_SVG+'</div><div class="stack" style="gap:8px"><h3>Karo aufs Handy</h3>'+
     '<p class="weich" style="font-size:15px">QR-Code mit der Handy-Kamera scannen, ganz ohne Anmeldung. Dann auf den Startbildschirm legen:</p>'+
     '<p style="font-size:15px"><b>iPhone:</b> in Safari auf Teilen tippen → „Zum Home-Bildschirm“.<br><b>Android:</b> in Chrome auf ⋮ tippen → „Zum Startbildschirm hinzufügen“.</p></div></div>'+
-    '<div class="card pad stack"><h3>Deine Daten</h3><p class="weich">Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.</p>'+
+    '<div id="kontoplatz"></div><div class="card pad stack"><h3>Deine Daten</h3><p class="weich">'+(Konto.an() ? 'Ohne Konto speichert Karo alles nur in diesem Browser auf diesem Gerät. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg. Mit einem Konto (oben) ist er gesichert.' : 'Karo speichert alles nur in diesem Browser auf diesem Gerät. Es gibt kein Konto und nichts wird verschickt. Wenn du den Browser-Speicher löschst, ist der Fortschritt weg.')+'</p>'+
     '<div class="row"><button class="btn" type="button" id="intro">'+ic("buch")+'Einführung ansehen</button><button class="btn" type="button" id="reset">Fortschritt zurücksetzen</button></div></div>';
   app.appendChild(box); app.insertAdjacentHTML("beforeend", fuss());
+  if(Konto.an()){ const kk = kontoKarte(); box.querySelector("#kontoplatz").replaceWith(kk); aufraeumen = () => Konto.hoerer.clear(); } else box.querySelector("#kontoplatz").remove();
   box.querySelector("#freundeinst").replaceWith(freundEinstellungen());
   box.querySelector("#hgplatz").replaceWith(hintergrundWahl());
   const nm = box.querySelector("#pname"); nm.value = S.profil.name || "";
@@ -21002,6 +21009,183 @@ function seiteProfil(){
 }
 function themaSetzen(){ const t = HG_DUNKEL.indexOf(S.hg) >= 0 ? "dark" : S.theme; if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
 
+/* ================= Konto (Supabase): anmelden und Spielstand auf allen Geräten =================
+   Anmelden mit Benutzername + Passwort (ohne E-Mail). Der ganze Spielstand liegt als ein Eintrag in der Tabelle
+   „spielstand“; die Sicherheitsregeln dort erlauben jedem nur seinen eigenen Eintrag. Nur auf der Webseite und in der App,
+   in der claude.ai-Version gibt es den Karo-Speicher. */
+const KONTO_URL = "https://paiesexuhxgmjgdlchmx.supabase.co";
+const KONTO_KEY = "sb_publishable_7I6ItliMxMgCpU7NH4Mr0g_Ar4D-xLQ";
+const KONTO_DOMAIN = "nutzer.karoschlauer.de";
+var Konto = {
+  sb:null, nutzer:null, laden:null, uhr:null, status:"", fehler:"",
+  an(){ return !claudeRT && KONTO_KEY.indexOf("__") !== 0; },
+  hatSitzung(){ try{ return Object.keys(localStorage).some(k => k.indexOf("sb-paiesexuhxgmjgdlchmx") === 0); }catch(e){ return false; } },
+  bibliothek(){
+    if(window.supabase && window.supabase.createClient) return Promise.resolve();
+    if(this.laden) return this.laden;
+    /* Die Anmelde-Technik liegt bei Karo selbst (js/supabase.min.js), nur zur Not vom CDN */
+    const lade = src => new Promise((ok, nein) => { const s = document.createElement("script"); s.src = src; s.onload = () => ok(); s.onerror = () => { s.remove(); nein({code:"netz"}); }; document.head.appendChild(s); });
+    this.laden = lade("js/supabase.min.js").catch(() => lade("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js")).catch(e => { this.laden = null; throw e; });
+    return this.laden;
+  },
+  async client(){
+    if(this.sb) return this.sb;
+    await this.bibliothek();
+    this.sb = window.supabase.createClient(KONTO_URL, KONTO_KEY, {auth:{persistSession:true, autoRefreshToken:true}});
+    return this.sb;
+  },
+  name(u){ return String((u && u.email) || "").split("@")[0]; },
+  email(name){ return String(name).trim().toLowerCase()+"@"+KONTO_DOMAIN; },
+  /* Beim Start: war schon jemand angemeldet? Dann Stand vom Konto holen */
+  async start(){
+    if(!this.an() || !this.hatSitzung()) return;
+    try{
+      const sb = await this.client();
+      const {data} = await sb.auth.getSession();
+      this.nutzer = data && data.session ? data.session.user : null;
+      if(this.nutzer){ await this.abgleich(false); this.melde(); }
+    }catch(e){ this.status = "offline"; }
+  },
+  async registrieren(name, pw){
+    const sb = await this.client();
+    const {data, error} = await sb.auth.signUp({email:this.email(name), password:pw, options:{data:{name:name}}});
+    if(error) throw error;
+    if(!data.session) throw {message:"email_confirm"};
+    this.nutzer = data.user; await this.abgleich(true); this.melde();
+  },
+  async anmelden(name, pw){
+    const sb = await this.client();
+    const {data, error} = await sb.auth.signInWithPassword({email:this.email(name), password:pw});
+    if(error) throw error;
+    this.nutzer = data.user; await this.abgleich(true); this.melde();
+  },
+  async abmelden(){
+    await this.hochladen();
+    try{ const sb = await this.client(); await sb.auth.signOut(); }catch(e){}
+    this.nutzer = null; delete S.konto; try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
+    this.melde();
+  },
+  async loeschen(){
+    const sb = await this.client();
+    const {error} = await sb.rpc("konto_loeschen");
+    if(error) throw error;
+    try{ await sb.auth.signOut(); }catch(e){}
+    this.nutzer = null; delete S.konto; try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
+    this.melde();
+  },
+  /* Stand vergleichen: Wer ist neuer? Bei echtem Konflikt (beide geändert) fragt Karo nach */
+  async abgleich(frisch){
+    const sb = await this.client();
+    const {data, error} = await sb.from("spielstand").select("daten, aktualisiert").eq("user_id", this.nutzer.id).maybeSingle();
+    if(error) throw error;
+    const k = S.konto || {};
+    if(!data){ await this.hochladen(true); return; }
+    if(k.id === this.nutzer.id && k.stand === data.aktualisiert){ if(k.geaendert) await this.hochladen(true); return; }
+    const lokalLeer = !S.xp && !Object.keys(S.themen || {}).length;
+    let nimmKonto = true;
+    if(!lokalLeer && (k.id !== this.nutzer.id ? frisch : k.geaendert)){
+      nimmKonto = await frage("Auf diesem Gerät und in deinem Konto gibt es verschiedene Spielstände. Konto: "+K.fmt(data.daten.xp || 0)+" XP, dieses Gerät: "+K.fmt(S.xp || 0)+" XP. Welchen willst du behalten?", "Konto", "Dieses Gerät");
+    }
+    if(nimmKonto){
+      const neu = data.daten; neu.konto = {id:this.nutzer.id, stand:data.aktualisiert, geaendert:false};
+      S = neu; Object.keys(leer()).forEach(x => { if(S[x] === undefined) S[x] = leer()[x]; });
+      try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
+      if(typeof Heft !== "undefined" && !Heft.db) Heft.liste = Heft.lokal().map(x => Object.assign({}, x));
+      themaSetzen(); hintergrundSetzen(); route();
+    }else await this.hochladen(true);
+  },
+  /* Nach jedem Speichern: kurz warten, dann hochladen (spart Anfragen) */
+  merken(){
+    if(!this.nutzer) return;
+    S.konto = Object.assign(S.konto || {}, {id:this.nutzer.id, geaendert:true});
+    clearTimeout(this.uhr); this.uhr = setTimeout(() => this.hochladen(), 2500);
+  },
+  async hochladen(sofort){
+    clearTimeout(this.uhr);
+    if(!this.nutzer || !this.sb) return;
+    const daten = Object.assign({}, S); delete daten.konto;
+    const jetzt = new Date().toISOString();
+    try{
+      const {error} = await this.sb.from("spielstand").upsert({user_id:this.nutzer.id, daten:daten, aktualisiert:jetzt});
+      if(error) throw error;
+      S.konto = {id:this.nutzer.id, stand:jetzt, geaendert:false};
+      try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
+      this.status = "gespeichert"; this.fehler = "";
+    }catch(e){ this.status = "offline"; this.fehler = e && e.message || ""; }
+    this.melde();
+  },
+  hoerer:new Set(), melde(){ this.hoerer.forEach(f => { try{ f(); }catch(e){} }); }
+};
+/* Fehlermeldungen von Supabase auf Deutsch */
+function kontoFehler(e){
+  const m = String(e && (e.message || e.code) || "");
+  if(/Invalid login/i.test(m)) return "Benutzername oder Passwort stimmt nicht.";
+  if(/already registered|already exists/i.test(m)) return "Diesen Benutzernamen gibt es schon. Nimm einen anderen oder melde dich an.";
+  if(/at least|Password should/i.test(m)) return "Das Passwort muss mindestens 8 Zeichen haben.";
+  if(/email_confirm/.test(m)) return "Im Supabase-Projekt ist noch „Confirm email“ eingeschaltet. Bitte dort ausschalten.";
+  if(/signups? (are )?(not allowed|disabled)|signup_disabled/i.test(m)) return "Neue Konten sind gerade ausgeschaltet. Versuch es später nochmal.";
+  if(/rate|too many/i.test(m)) return "Zu viele Versuche. Warte kurz und probier es dann nochmal.";
+  if(/netz|fetch|network/i.test(m)) return "Keine Verbindung. Prüf dein Internet.";
+  return "Das hat nicht geklappt. Versuch es gleich nochmal.";
+}
+function kontoKarte(){
+  const c = el("div","card pad stack konto-karte");
+  const zeichne = () => {
+    if(Konto.nutzer){
+      const stand = S.konto && S.konto.stand ? new Date(S.konto.stand).toLocaleTimeString("de-DE", {hour:"2-digit", minute:"2-digit"}) : "";
+      c.innerHTML = '<h3>'+ic("person")+'Dein Konto</h3><p>Angemeldet als <b>'+esc(Konto.name(Konto.nutzer))+'</b>.</p>'+
+        '<p class="weich" style="font-size:15px">'+(Konto.status === "offline" ? "Gerade keine Verbindung. Karo speichert, sobald du wieder online bist." : "Dein Fortschritt wird automatisch im Konto gespeichert"+(stand ? " (zuletzt um "+stand+" Uhr)" : "")+". Melde dich auf einem anderen Gerät an, dann geht es dort weiter.")+'</p>';
+      const r = el("div","row"); r.style.flexWrap = "wrap"; r.style.gap = "8px";
+      r.appendChild(btn("btn", ic("neu")+"Jetzt speichern", async () => { await Konto.hochladen(true); toast(Konto.status === "gespeichert" ? "Gespeichert" : "Keine Verbindung"); }));
+      r.appendChild(btn("btn", "Abmelden", async () => { if(!await frage("Abmelden? Dein Fortschritt bleibt im Konto und auf diesem Gerät.", "Abmelden")) return; await Konto.abmelden(); toast("Abgemeldet"); }));
+      r.appendChild(btn("btn ghost", ic("muell")+"Konto löschen", async () => {
+        if(!await frage("Konto wirklich für immer löschen? Der Spielstand im Konto ist dann weg. Auf diesem Gerät bleibt er erhalten.", "Konto löschen")) return;
+        try{ await Konto.loeschen(); toast("Konto gelöscht"); }catch(e){ toast(kontoFehler(e)); }
+      }));
+      c.appendChild(r);
+      return;
+    }
+    c.innerHTML = '<h3>'+ic("person")+'Konto: überall weiterlernen</h3>'+
+      '<p class="weich" style="font-size:15px">Mit einem Konto ist dein Fortschritt gesichert, und du kannst am Handy, Tablet und PC weiterlernen. Du brauchst nur einen Benutzernamen und ein Passwort, keine E-Mail.</p>'+
+      '<div class="wahl konto-tabs" role="tablist"></div>'+
+      '<form class="formular konto-form" autocomplete="on"><label>Benutzername<input type="text" id="kname" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20" placeholder="z. B. mia.k2014"></label>'+
+      '<label>Passwort<input type="password" id="kpw" autocomplete="current-password" minlength="8" maxlength="72"></label>'+
+      '<p class="leise konto-hinweis"></p><div class="konto-meldung"></div><div class="row"><button class="btn brand" type="submit"></button></div></form>'+
+      '<p class="leise" style="font-size:13px">Gespeichert werden nur Benutzername, Passwort (verschlüsselt) und dein Spielstand, auf Servern von Supabase in der EU. Du kannst das Konto jederzeit löschen. <a href="#/datenschutz">Datenschutz</a></p>';
+    let modus = "neu";
+    const tabs = c.querySelector(".konto-tabs"), form = c.querySelector("form"), knopf = form.querySelector("button"), meld = form.querySelector(".konto-meldung"), hinweis = form.querySelector(".konto-hinweis");
+    const setze = m => { modus = m; tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === m ? "true" : "false"));
+      knopf.innerHTML = m === "neu" ? ic("plus")+"Konto erstellen" : ic("haken")+"Anmelden";
+      form.querySelector("#kpw").setAttribute("autocomplete", m === "neu" ? "new-password" : "current-password");
+      hinweis.textContent = m === "neu" ? "Benutzername: 3 bis 20 Zeichen, nur Buchstaben, Zahlen, Punkt, Strich. Passwort: mindestens 8 Zeichen. Merk es dir gut, man kann es nicht zurücksetzen." : ""; meld.innerHTML = ""; };
+    [["neu","Neues Konto"],["an","Anmelden"]].forEach(([m, l]) => { const b = btn("opt", l, () => setze(m)); b.dataset.m = m; tabs.appendChild(b); });
+    setze(S.konto ? "an" : "neu");
+    form.addEventListener("submit", async ev => {
+      ev.preventDefault();
+      const name = form.querySelector("#kname").value.trim(), pw = form.querySelector("#kpw").value;
+      if(!/^[a-zA-Z0-9._-]{3,20}$/.test(name)){ meld.innerHTML = '<p class="fb bad" style="padding:10px">Der Benutzername muss 3 bis 20 Zeichen haben: nur Buchstaben (ohne ä, ö, ü), Zahlen, Punkt oder Strich.</p>'; return; }
+      if(pw.length < 8){ meld.innerHTML = '<p class="fb bad" style="padding:10px">Das Passwort muss mindestens 8 Zeichen haben.</p>'; return; }
+      knopf.disabled = true; knopf.textContent = "Einen Moment …";
+      /* Nach 25 Sekunden ohne Antwort aufgeben, statt ewig „Einen Moment …“ zu zeigen */
+      const zeit = new Promise((_, nein) => setTimeout(() => nein({message:"netz"}), 25000));
+      try{ await Promise.race([modus === "neu" ? Konto.registrieren(name, pw) : Konto.anmelden(name, pw), zeit]); toast(modus === "neu" ? "Konto erstellt. Dein Fortschritt ist gesichert!" : "Angemeldet"); }
+      catch(e){ meld.innerHTML = '<p class="fb bad" style="padding:10px">'+esc(kontoFehler(e))+'</p>'; knopf.disabled = false; setze(modus); }
+    });
+  };
+  zeichne();
+  Konto.hoerer.add(zeichne);
+  return c;
+}
+function seiteDatenschutz(){
+  crumbs([{t:"Profil", href:"#/profil"}, {t:"Datenschutz"}]);
+  app.innerHTML = '<article class="card pad stack schmal" style="margin:10px auto 0;max-width:760px"><h1>Datenschutz</h1>'+
+    '<p><b>Ohne Konto</b> speichert Karo Schlauer alles nur in deinem Browser auf deinem Gerät. Es wird nichts verschickt.</p>'+
+    '<p><b>Mit Konto</b> werden gespeichert: dein Benutzername, dein Passwort (nur verschlüsselt, niemand kann es lesen) und dein Spielstand (XP, Noten, Fortschritt, Hausaufgaben-Heft, Stundenplan, Einstellungen). Das dient nur dazu, dass du auf mehreren Geräten weiterlernen kannst.</p>'+
+    '<p>Die Daten liegen bei <b>Supabase</b> auf Servern in der EU (Irland). Karo gibt sie an niemanden weiter, es gibt keine Werbung und kein Tracking.</p>'+
+    '<p>Du kannst dein Konto jederzeit im <a href="#/profil">Profil</a> unter „Konto löschen“ selbst löschen. Dann werden Konto und Spielstand sofort entfernt.</p>'+
+    '<p>Die Seite lädt Schriftarten von Google Fonts. Dabei sieht Google deine IP-Adresse, wie bei jeder Webseite.</p>'+
+    '<p><b>Unter 16 Jahren?</b> Dann frag bitte deine Eltern, bevor du ein Konto erstellst.</p></article>'+fuss();
+}
 /* ================= Zeugnis ================= */
 function seiteZeugnis(){
   crumbs([{t:"Start", href:"#/"}, {t:"Zeugnis"}]);
@@ -24234,6 +24418,9 @@ function seiteBlitz(){
 Heft.init();
 abzeichenPruefen(); try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
 sphAutomatik();
+Konto.start();
+/* Beim Verlassen der Seite noch schnell hochladen */
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "hidden" && S.konto && S.konto.geaendert) Konto.hochladen(true); });
 themaSetzen();
 hintergrundSetzen();
 route();

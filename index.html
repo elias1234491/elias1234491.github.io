@@ -20757,7 +20757,7 @@ function zeigeTopnav(){
   if(leiste) leiste.innerHTML = logo + menue.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
     '<div class="unten"><a class="lv-karte" href="#/profil"><div class="row"><span class="row" style="gap:6px">'+ic("blitz")+'Level '+lv.n+'</span><span class="num">'+K.fmt(S.xp)+' XP</span></div>'+
     '<div class="bar"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></a>'+
-    '<a class="profil-link" href="#/profil"'+akt("profil")+'><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span><span>'+(name ? esc(name) : "Profil")+
+    '<a class="profil-link" href="#/profil"><span class="avatar">'+(init ? esc(init) : ic("person"))+'</span><span>'+(name ? esc(name) : "Profil")+
     '<small>'+(S.profil.klasse ? "Klasse "+S.profil.klasse+" · " : "")+'Einstellungen</small></span></a></div>';
   const tab = document.getElementById("tabbar");
   if(tab) tab.innerHTML = menue.map(([k,i,,l,h]) => '<a class="tab-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("");
@@ -21235,6 +21235,10 @@ var Konto = {
       const imKonto = {}; (neu.heft || []).forEach(e => { imKonto[e.id] = true; });
       const fehlen = (S.heft || []).filter(e => e && !imKonto[e.id]);
       if(fehlen.length){ neu.heft = (neu.heft || []).concat(fehlen); neu.konto.geaendert = true; }
+      /* Genauso Arbeiten aus dem Kalender, die nur auf diesem Gerät eingetragen wurden */
+      const arbImKonto = {}; (neu.arbeiten || []).forEach(a => { if(a) arbImKonto[a.id] = true; });
+      const arbFehlen = (Array.isArray(S.arbeiten) ? S.arbeiten : []).filter(a => a && !arbImKonto[a.id]);
+      if(arbFehlen.length){ neu.arbeiten = (neu.arbeiten || []).concat(arbFehlen); neu.konto.geaendert = true; }
       S = neu; Object.keys(leer()).forEach(x => { if(S[x] === undefined) S[x] = leer()[x]; });
       try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
       if(typeof Heft !== "undefined" && !Heft.db) Heft.liste = Heft.lokal().map(x => Object.assign({}, x));
@@ -22487,7 +22491,7 @@ function seiteHeft(){
   const neuKnopf = btn("btn primary", ic("plus")+"Neuer Eintrag", () => { form.hidden = !form.hidden; neuKnopf.setAttribute("aria-expanded", String(!form.hidden)); if(!form.hidden) form.querySelector("#hthema").focus(); });
   neuKnopf.setAttribute("aria-expanded","false");
   knoepfe.appendChild(neuKnopf);
-  knoepfe.insertAdjacentHTML("beforeend", '<a class="btn" href="#/kalender">'+ic("kalender")+'Kalender und Stundenplan</a>');
+  knoepfe.insertAdjacentHTML("beforeend", '<a class="btn" href="#/kalender">'+ic("kalender")+'Kalender</a>');
   wrap.appendChild(knoepfe);
   const form = el("form","card pad formular heft-form");
   const letztesFach = planFachJetzt() || S.letztesFach || "Mathematik";

@@ -1,6 +1,6 @@
 /* Karo Schlauer offline: Seite und Bibel-Daten zwischenspeichern.
    Immer zuerst das Netz fragen (damit Updates sofort da sind), ohne Netz den gespeicherten Stand zeigen. */
-const CACHE = "karo-schlauer-v6";
+const CACHE = "karo-schlauer-v7";
 const DATEIEN = ["./", "./index.html", "./js/bibel-daten.js", "./js/supabase.min.js"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(DATEIEN)).then(() => self.skipWaiting()));

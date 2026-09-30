@@ -607,6 +607,32 @@ svg text.fn0{fill:var(--kd)} svg text.fn1{fill:var(--pen)} svg text.fn2{fill:var
 .klein-x{background:none; border:none; color:var(--ink-3); cursor:pointer; padding:0; border-radius:10px; width:44px; height:44px; display:inline-grid; place-items:center}
 .klein-x:hover{color:var(--bad); background:var(--bad-bg)}
 .klein-x .ic{width:20px; height:20px}
+.klein-x.sicher{color:var(--bad); background:var(--bad-bg)}
+/* Kalender: Arbeiten und Lernplan */
+.kalender-seite .th-head .ico .ic{width:30px; height:30px}
+.arbeiten-liste{margin:6px 0 22px}
+.arbeit-karte{gap:10px}
+.arbeit-karte.vorbei{opacity:.7}
+.arbeit-kopf{display:flex; align-items:center; gap:12px}
+.arbeit-kopf > div{flex:1; min-width:0; display:flex; flex-direction:column}
+.arbeit-kopf b{font-size:18px} .arbeit-kopf span{color:var(--ink-2); font-size:14px}
+.arbeit-heute-txt{font-weight:700; color:var(--ok)}
+.lp-titel{margin:6px 0 0; font-size:15px; color:var(--ink-2)}
+.lernplan{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.lernplan li{display:grid; grid-template-columns:auto 1fr; column-gap:12px; row-gap:1px; align-items:center; padding:8px 12px; border-radius:10px; background:var(--paper-2)}
+.lernplan li input{grid-row:span 2}
+.lernplan li.heute{background:var(--brand-soft); font-weight:700}
+.lernplan input{width:22px; height:22px; accent-color:var(--ok); margin:0}
+.lernplan .lp-tag{font-size:13px; color:var(--ink-3); font-weight:700}
+.lernplan a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px}
+.lernplan li:has(input:checked) .lp-text{text-decoration:line-through; color:var(--ink-3)}
+.arbeiten-vorbei summary{cursor:pointer; font-weight:700}
+.arbeiten-vorbei[open]{display:flex; flex-direction:column; gap:10px}
+.arbeit-heute{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; text-decoration:none; color:var(--ink); padding:14px 16px; margin-bottom:8px}
+.arbeit-heute div{display:flex; flex-direction:column; min-width:0} .arbeit-heute .fachtag .ic{width:20px; height:20px} .arbeit-heute span{color:var(--ink-2); font-size:14px}
+.ich-kacheln{margin:0; grid-template-columns:1fr 1fr !important}
+.kacheln.fuenf{grid-template-columns:repeat(5, 1fr)}
+@media (max-width:900px){ .kacheln.fuenf{grid-template-columns:1fr 1fr} .kacheln.fuenf > :last-child{grid-column:1 / -1} }
 .quelle{display:inline-flex; height:20px; align-items:center; padding:0 7px; border-radius:99px; background:var(--brand-soft); color:var(--brand); font-size:11.5px; font-weight:700}
 .schritt{padding:22px; display:flex; flex-direction:column; gap:14px}
 .schritt h2{font-size:20px; display:flex; align-items:center; gap:10px}
@@ -20100,7 +20126,8 @@ const IC = {
   laut:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
   drucker:'<path d="M6.5 9V3.5h11V9"/><rect x="3" y="9" width="18" height="8.5" rx="2"/><path d="M6.5 14h11v6.5h-11z"/>',
   laden:'<path d="M12 3.5v11M7 10l5 5 5-5"/><path d="M4 16.5V20.5h16v-4"/>',
-  karten:'<rect x="3" y="6.5" width="14" height="13" rx="2"/><path d="M7 3.5h12a2 2 0 0 1 2 2V16"/><path d="M7 11.5h6M7 15h4"/>'
+  karten:'<rect x="3" y="6.5" width="14" height="13" rx="2"/><path d="M7 3.5h12a2 2 0 0 1 2 2V16"/><path d="M7 11.5h6M7 15h4"/>',
+  kalender:'<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2"/>'
 };
 const ic = (n, cls) => '<svg class="ic '+(cls||"")+'" viewBox="0 0 24 24" aria-hidden="true">'+(IC[n]||"")+'</svg>';
 const GLYPH = {masse:"kg", zahl:"10⁶", runden:"≈", strahl:"0→", plus:"+−", mal:"×", potenz:"aⁿ", diagramm:"▂▅▇", teiler:"ggT", bruch:"½",
@@ -20711,8 +20738,9 @@ function widgetInnen(it, opt){
 
 /* ================= Hauptmenü ================= */
 let bereich = "start", zurueck = null;
-const MENUE = [["start","home","Start","Start","#/"],["lernen","buch","Lernen","Lernen","#/lernen"],["heft","heft","Heft","Heft","#/heft"],
-  ["ki","ki","KI","KI","#/ki"],["buecher","regal","Bücher","Bücher","#/buecher"],["zeugnis","zeugnis","Zeugnis","Zeugnis","#/zeugnis"]];
+/* Fünf Bereiche: Heute, Hausaufgaben, Kalender, Mach mich schlauer, Ich. [Schlüssel, Icon, Name in der Seitenleiste, Name unten im Handy, Link] */
+const MENUE = [["start","home","Heute","Heute","#/"],["heft","heft","Hausaufgaben","Aufgaben","#/heft"],["kalender","kalender","Kalender","Kalender","#/kalender"],
+  ["lernen","birne","Mach mich schlauer","Schlauer","#/lernen"],["profil","person","Ich","Ich","#/profil"]];
 let xpGezeigt = null;
 function zeigeTopnav(){
   const lv = level(S.xp);
@@ -20725,8 +20753,7 @@ function zeigeTopnav(){
   const leiste = document.getElementById("seitenleiste");
   const wechsel = topnavBereich !== bereich; topnavBereich = bereich;
   const hops = k => (wechsel && bereich === k) ? ' data-hops="1"' : '';
-  /* Ohne KI (Webseite, Handy-App) gibt es den KI-Knopf nicht, das würde nur verwirren */
-  const menue = MENUE.filter(m => claudeRT || m[0] !== "ki");
+  const menue = MENUE;
   if(leiste) leiste.innerHTML = logo + menue.map(([k,i,l,,h]) => '<a class="nav-link" href="'+h+'"'+akt(k)+hops(k)+'>'+ic(i)+'<span>'+l+'</span>'+zahl(k)+'</a>').join("")+
     '<div class="unten"><a class="lv-karte" href="#/profil"><div class="row"><span class="row" style="gap:6px">'+ic("blitz")+'Level '+lv.n+'</span><span class="num">'+K.fmt(S.xp)+' XP</span></div>'+
     '<div class="bar"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></a>'+
@@ -20752,7 +20779,7 @@ function crumbs(list){
 function fuss(){
   return '<footer class="fuss"><span>Karo Schlauer · Mathe und Englisch üben · kostenlos, ohne Werbung'+(Konto.an() ? '' : ', ohne Anmeldung')+'</span>'+
          '<span>'+(Konto.an() && Konto.nutzer ? 'Dein Fortschritt wird in deinem Konto gesichert.' : Konto.an() ? 'Anmelden ist freiwillig: ohne Konto bleibt alles auf diesem Gerät.' : 'Dein Fortschritt bleibt nur auf diesem Gerät.')+
-         (Konto.an() ? ' · <a href="#/datenschutz">Datenschutz</a>' : '')+'</span></footer>';
+         '</span><span><a href="#/impressum">Impressum</a> · <a href="#/datenschutz">Datenschutz</a></span></footer>';
 }
 
 /* ================= Router ================= */
@@ -20765,7 +20792,8 @@ function route(){
   kFarbe(null);
   zeigeTopnav();
   const [a, b, c] = teile;
-  bereich = !a ? "start" : (["klasse","thema","blatt","lernen","suche","englisch","vokabeln","fehler","mix"].indexOf(a) >= 0 ? "lernen" : a === "foto" ? "ki" : a === "buch" ? "buecher" : a === "stundenplan" ? "heft" : a);
+  bereich = !a ? "start" : ["klasse","thema","blatt","lernen","suche","englisch","vokabeln","fehler","mix","blitz","buecher","buch","ki","foto"].indexOf(a) >= 0 ? "lernen"
+    : ["kalender","stundenplan"].indexOf(a) >= 0 ? "kalender" : ["zeugnis","datenschutz","impressum"].indexOf(a) >= 0 ? "profil" : a;
   zurueck = null;
   zeigeTopnav();
   if(!a) seiteStart();
@@ -20784,7 +20812,9 @@ function route(){
   else if(a === "suche") seiteLernen(true);
   else if(a === "heft") seiteHeft();
   else if(a === "stundenplan") seiteStundenplan();
+  else if(a === "kalender") seiteKalender();
   else if(a === "datenschutz") seiteDatenschutz();
+  else if(a === "impressum") seiteImpressum();
   else if(a === "ki" && b) seiteKiArbeit(b, c);
   else if(a === "ki") seiteKi();
   else if(a === "foto" && b) seiteFoto(b, c);
@@ -20838,15 +20868,7 @@ function seiteStart(){
       '<span class="btn primary gross">'+(lauf ? "Weitermachen" : "Jetzt üben")+' '+ic("pfeil")+'</span></a>';
   }
   html += '<div id="freundplatz"></div></section>';
-  const mixR = S.sitz["u:mix"], mixHeute = S.mixTag === datum(0), mixLauf = !mixHeute && mixR && mixR.tag === datum(0) && !mixR.fertig && mixR.i > 0;
-  const fehlerN = (S.fehler || []).length, rekord = S.blitz && S.blitz.best && S.blitz.best["m"+(k || 5)];
-  const kachel = (href, ico, titel, text, extra) => '<a class="kachel'+(extra || "")+'" href="'+href+'">'+ico+'<b>'+titel+'</b><small>'+text+'</small></a>';
-  html += '<div class="section-h"><h2>Schnell üben</h2></div><section class="kacheln wiederholen">'+
-    kachel("#/mix", icoHtml("mix"), "Tagesmix", mixHeute ? "Heute geschafft ✓" : mixLauf ? "Weiter · "+(mixR.i+1)+" von "+mixR.items.length : "10 gemischte Aufgaben", mixHeute ? " fertig" : "")+
-    kachel("#/blitz", '<span class="blitz-logo">'+ic("blitz")+'</span>', "Blitz", rekord ? "Rekord: "+rekord : "60 Sekunden, allein oder zu zweit", " blitz")+
-    kachel("#/fehler", icoHtml("fehler"), "Fehler-Heft", fehlerN ? fehlerN+" zum Wiederholen" : "Gerade leer", fehlerN ? " hat" : "")+
-    (claudeRT ? kachel("#/ki", '<span class="ico">'+ic("kamera")+'</span>', "KI-Trainer", "Foto machen, Übungen bekommen")
-      : kachel(blattZiel(), '<span class="ico">'+ic("drucker")+'</span>', "Übungsblatt", "Zum Ausdrucken"))+'</section>';
+  html += '<div class="section-h"><h2>Schnell üben</h2></div>'+schnellKacheln(false);
   /* Hausaufgaben und Stundenplan nur, wenn es etwas zu zeigen gibt */
   const offen = Heft.sortiert().filter(e => e.aufgabe && !e.erledigt);
   if(offen.length){
@@ -20854,7 +20876,7 @@ function seiteStart(){
       '<div class="card mini-ha-karte"><div class="mini-ha">'+offen.slice(0,3).map(e =>
       '<a href="#/heft">'+fachTag(e.fach)+'<div><b>'+esc(e.thema || e.fach)+'</b><br><span>'+esc(String(e.aufgabe).slice(0,70))+'</span></div></a>').join("")+'</div></div>';
   }
-  html += vertretungKarte(true) + planKarte();
+  html += arbeitKarteHeute() + vertretungKarte(true) + planKarte();
   if(!offen.length && !sphDaten() && sphMoeglich())
     html += '<a class="tipp-leiste" href="#/heft">'+ic("heft")+'<span>Hausaufgaben automatisch aus dem <b>Schulportal</b> holen</span>'+ic("rechts")+'</a>';
   if(k && themenVon(k).length){
@@ -20868,6 +20890,20 @@ function seiteStart(){
   }
   app.innerHTML = html + fuss();
   const fp = app.querySelector("#freundplatz"); if(fp) fp.replaceWith(freundKarte());
+}
+const kachel = (href, ico, titel, text, extra) => '<a class="kachel'+(extra || "")+'" href="'+href+'">'+ico+'<b>'+titel+'</b><small>'+text+'</small></a>';
+/* Tagesmix, Blitz, Fehler-Heft, KI oder Übungsblatt; auf „Mach mich schlauer“ zusätzlich Nachschlagen */
+function schnellKacheln(mitBuch){
+  const k = S.profil.klasse;
+  const mixR = S.sitz["u:mix"], mixHeute = S.mixTag === datum(0), mixLauf = !mixHeute && mixR && mixR.tag === datum(0) && !mixR.fertig && mixR.i > 0;
+  const fehlerN = (S.fehler || []).length, rekord = S.blitz && S.blitz.best && S.blitz.best["m"+(k || 5)];
+  return '<section class="kacheln wiederholen'+(mitBuch ? " fuenf" : "")+'">'+
+    kachel("#/mix", icoHtml("mix"), "Tagesmix", mixHeute ? "Heute geschafft ✓" : mixLauf ? "Weiter · "+(mixR.i+1)+" von "+mixR.items.length : "10 gemischte Aufgaben", mixHeute ? " fertig" : "")+
+    kachel("#/blitz", '<span class="blitz-logo">'+ic("blitz")+'</span>', "Blitz", rekord ? "Rekord: "+rekord : "60 Sekunden, allein oder zu zweit", " blitz")+
+    kachel("#/fehler", icoHtml("fehler"), "Fehler-Heft", fehlerN ? fehlerN+" zum Wiederholen" : "Gerade leer", fehlerN ? " hat" : "")+
+    (claudeRT ? kachel("#/ki", '<span class="ico">'+ic("kamera")+'</span>', "KI-Trainer", "Foto machen, Übungen bekommen")
+      : kachel(blattZiel(), '<span class="ico">'+ic("drucker")+'</span>', "Übungsblatt", "Zum Ausdrucken"))+
+    (mitBuch ? kachel("#/buecher", '<span class="ico">'+ic("regal")+'</span>', "Nachschlagen", "Formeln, Vokabeln, Fakten aus jedem Fach") : "")+'</section>';
 }
 function heftHtml(k, fach){
   fach = fach || FACH_M;
@@ -20925,7 +20961,7 @@ function seiteKlasse(k, fach, gewollt){
 /* ================= Lernen: Klassen und Suche ================= */
 function seiteLernen(suchFokus){
   crumbs([]);
-  app.innerHTML = '<header class="seiten-kopf"><h1>Lernen</h1><p>Wähle ein Heft oder such direkt nach einem Thema.</p></header>'+
+  app.innerHTML = '<header class="seiten-kopf"><h1>Mach mich schlauer</h1><p>Üben, Tests mit Note, Vokabeln und Nachschlagen. Such ein Thema oder wähl dein Heft.</p></header>'+
     '<label class="suche lernen-suche" for="q">'+ic("suche")+'<input class="suche-feld" id="q" type="search" placeholder="Thema suchen, z. B. Brüche, Prozent, Simple Past" autocomplete="off"></label>'+
     '<div id="treffer"></div>' + fuss();
   const q = document.getElementById("q"), out = document.getElementById("treffer");
@@ -20947,13 +20983,13 @@ function seiteLernen(suchFokus){
         /* Eigene Klasse groß, alle anderen Klassen als kleine Knöpfe darunter */
         const eigenE = EN_KLASSEN.indexOf(k) >= 0;
         const chips = (liste, fach) => liste.map(n => '<a data-k="'+(fach === FACH_E ? "e"+n : n)+'" href="'+klasseHref(n, fach)+'" aria-label="'+fach+' Klasse '+n+'">'+n+'</a>').join("");
-        out.innerHTML = '<div class="section-h"><h2>Deine Hefte · Klasse '+k+'</h2></div><div class="hefte">'+heftHtml(k)+(eigenE ? heftHtml(k, FACH_E) : "")+vokHeft+'</div>'+
+        out.innerHTML = schnellKacheln(true)+'<div class="section-h" style="margin-top:30px"><h2>Deine Hefte · Klasse '+k+'</h2></div><div class="hefte">'+heftHtml(k)+(eigenE ? heftHtml(k, FACH_E) : "")+vokHeft+'</div>'+
           '<div class="section-h" style="margin-top:30px"><h2>Andere Klassen</h2></div><div class="card andere-klassen">'+
           '<div><b>Mathe</b><div class="klassen-chips">'+chips(KLASSEN.filter(n => n !== k), FACH_M)+'</div></div>'+
           '<div><b>Englisch</b><div class="klassen-chips">'+chips(EN_KLASSEN.filter(n => !eigenE || n !== k), FACH_E)+'</div></div></div>';
         return;
       }
-      out.innerHTML = '<div class="section-h"><h2>Mathematik</h2></div><div class="hefte">'+KLASSEN.map(n => heftHtml(n)).join("")+'</div>'+
+      out.innerHTML = schnellKacheln(true)+'<div class="section-h" style="margin-top:30px"><h2>Mathematik</h2></div><div class="hefte">'+KLASSEN.map(n => heftHtml(n)).join("")+'</div>'+
       '<div class="section-h" style="margin-top:30px"><h2>Englisch</h2></div><div class="hefte">'+EN_KLASSEN.map(n => heftHtml(n, FACH_E)).join("")+vokHeft+'</div>'; return; }
     const liste = heu.filter(x => w.every(v => passt(x, v))).map(x => x.t);
     out.innerHTML = liste.length ? '<p class="leise" style="margin-bottom:10px">'+liste.length+' Treffer</p><div class="themen">'+liste.map(themaZeile).join("")+'</div>'
@@ -21069,14 +21105,17 @@ function vokabelRunde(id){
 
 /* ================= Profil ================= */
 function seiteProfil(){
-  crumbs([{t:"Start", href:"#/"}, {t:"Profil"}]);
+  crumbs([]);
   const lv = level(S.xp);
   const box = el("div","schmal stack"); box.style.margin = "10px auto 0";
-  box.innerHTML = '<h1 style="font-size:32px">Dein Profil</h1>'+
+  const sd = sphDaten();
+  box.innerHTML = '<h1 style="font-size:32px">Ich</h1>'+
     '<div class="card pad stack"><div class="row" style="justify-content:space-between"><div><div class="eyebrow">Level '+lv.n+'</div>'+
     '<div style="font-family:var(--display);font-size:26px;font-weight:800">'+K.fmt(S.xp)+' XP</div></div>'+
     '<div class="leise">noch '+K.fmt(lv.bis - S.xp)+' XP bis Level '+(lv.n+1)+'</div></div>'+
     '<div class="bar" style="background:var(--line);color:var(--gold)"><i style="width:'+Math.round(lv.anteil*100)+'%"></i></div></div>'+
+    '<section class="kacheln ich-kacheln">'+kachel("#/zeugnis", '<span class="ico">'+ic("zeugnis")+'</span>', "Meine Noten", "Dein Karo-Zeugnis mit allen Testnoten")+
+      (sphMoeglich() ? kachel("#/heft", '<span class="ico">'+ic("heft")+'</span>', "Schulportal", sd ? "Verbunden · "+esc(sd.benutzer || "") : "Verbinden: Hausaufgaben, Stundenplan, Vertretungen") : "")+'</section>'+
     '<div id="kontoplatz"></div><div class="card pad formular"><label>Dein Name<input type="text" id="pname" maxlength="24" placeholder="optional"></label>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Deine Klasse</div><div class="kl-wahl" id="pkl"></div></div>'+
     '<div><div style="font-weight:700;margin-bottom:6px">Darstellung</div><div class="wahl" id="pth"></div></div><div id="hgplatz"></div></div>'+
@@ -21286,19 +21325,48 @@ function kontoKarte(){
   Konto.hoerer.add(zeichne);
   return c;
 }
+/* Angaben für Impressum und Datenschutz (Anbieter nach § 5 DDG). Leere Felder zeigen einen Hinweis. */
+const IMPRESSUM = {
+  name: "Elias Ullrich",
+  strasse: "",
+  ort: "",
+  email: "ullrichelias07@gmail.com",
+  telefon: ""
+};
+function impressumZeile(wert, was){
+  return wert ? esc(wert) : '<span class="leise">['+was+' fehlt noch]</span>';
+}
+function seiteImpressum(){
+  crumbs([{t:"Start", href:"#/"}, {t:"Impressum"}]);
+  const I = IMPRESSUM;
+  app.innerHTML = '<article class="card pad stack schmal" style="margin:10px auto 0;max-width:760px"><h1>Impressum</h1>'+
+    '<h2 style="font-size:18px;margin:0">Angaben gemäß § 5 DDG</h2>'+
+    '<p>'+impressumZeile(I.name, "Name")+'<br>'+impressumZeile(I.strasse, "Straße und Hausnummer")+'<br>'+impressumZeile(I.ort, "PLZ und Ort")+'<br>Deutschland</p>'+
+    '<h2 style="font-size:18px;margin:0">Kontakt</h2>'+
+    '<p>E-Mail: '+(I.email ? '<a href="mailto:'+esc(I.email)+'">'+esc(I.email)+'</a>' : impressumZeile("", "E-Mail"))+
+      (I.telefon ? '<br>Telefon: '+esc(I.telefon) : '')+'</p>'+
+    '<h2 style="font-size:18px;margin:0">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>'+
+    '<p>'+impressumZeile(I.name, "Name")+', Anschrift wie oben</p>'+
+    '<h2 style="font-size:18px;margin:0">Haftung für Inhalte und Links</h2>'+
+    '<p>Die Aufgaben und Erklärungen in Karo Schlauer wurden mit Sorgfalt erstellt. Trotzdem können Fehler vorkommen. Wenn dir einer auffällt, schreib bitte eine E-Mail. Für Inhalte fremder Seiten, auf die Karo Schlauer verlinkt, sind deren Betreiber verantwortlich.</p>'+
+    '<p><a href="#/datenschutz">Zur Datenschutzerklärung</a></p></article>'+fuss();
+}
 function seiteDatenschutz(){
-  crumbs([{t:"Profil", href:"#/profil"}, {t:"Datenschutz"}]);
+  crumbs([{t:"Start", href:"#/"}, {t:"Datenschutz"}]);
   app.innerHTML = '<article class="card pad stack schmal" style="margin:10px auto 0;max-width:760px"><h1>Datenschutz</h1>'+
     '<p><b>Ohne Konto</b> speichert Karo Schlauer alles nur in deinem Browser auf deinem Gerät. Es wird nichts verschickt.</p>'+
     '<p><b>Mit Konto</b> werden gespeichert: dein Benutzername, dein Passwort (nur verschlüsselt, niemand kann es lesen) und dein Spielstand (XP, Noten, Fortschritt, Hausaufgaben-Heft, Stundenplan, Einstellungen). Das dient nur dazu, dass du auf mehreren Geräten weiterlernen kannst.</p>'+
     '<p>Die Daten liegen bei <b>Supabase</b> auf Servern in der EU (Irland). Karo gibt sie an niemanden weiter, es gibt keine Werbung und kein Tracking.</p>'+
     '<p>Du kannst dein Konto jederzeit im <a href="#/profil">Profil</a> unter „Konto löschen“ selbst löschen. Dann werden Konto und Spielstand sofort entfernt.</p>'+
+    '<p><b>Schulportal Hessen:</b> Wenn du dein Schulportal verbindest, bleiben Schulnummer, Benutzername und Passwort nur auf deinem Gerät gespeichert. Beim Abrufen der Hausaufgaben und des Vertretungsplans werden sie verschlüsselt über einen kleinen Helfer bei Supabase (EU) an das Schulportal geschickt. Der Helfer speichert nichts. In der Handy-App spricht Karo direkt mit dem Schulportal. Du kannst die Verbindung jederzeit trennen.</p>'+
+    '<p><b>Hosting:</b> Die Webseite liegt bei GitHub Pages (GitHub Inc., USA). Beim Aufrufen sieht GitHub technisch bedingt deine IP-Adresse und speichert sie kurz in Server-Protokollen, um die Seite sicher auszuliefern.</p>'+
     '<p>Die Seite lädt Schriftarten von Google Fonts. Dabei sieht Google deine IP-Adresse, wie bei jeder Webseite.</p>'+
+    '<p><b>Verantwortlich</b> ist '+impressumZeile(IMPRESSUM.name, "Name")+' (Anschrift im <a href="#/impressum">Impressum</a>). Du hast das Recht auf Auskunft, Berichtigung, Löschung und Beschwerde bei einer Datenschutz-Aufsichtsbehörde. Schreib dafür einfach eine E-Mail an '+(IMPRESSUM.email ? esc(IMPRESSUM.email) : impressumZeile("", "E-Mail"))+'.</p>'+
     '<p><b>Unter 16 Jahren?</b> Dann frag bitte deine Eltern, bevor du ein Konto erstellst.</p></article>'+fuss();
 }
 /* ================= Zeugnis ================= */
 function seiteZeugnis(){
-  crumbs([{t:"Start", href:"#/"}, {t:"Zeugnis"}]);
+  crumbs([{t:"Ich", href:"#/profil"}, {t:"Zeugnis"}]);
   const name = (S.profil.name || "").trim();
   const heute = new Date().toLocaleDateString("de-DE", {day:"numeric", month:"long", year:"numeric"});
   let tests = 0, runden = 0; const alle = [];
@@ -21407,7 +21475,7 @@ function nachschlagen(q){
   }).filter(Boolean).sort((a, b) => b.p - a.p || a.i - b.i).map(x => x.e);
 }
 function seiteBuecher(){
-  crumbs([]);
+  crumbs([{t:"Mach mich schlauer", href:"#/lernen"}, {t:"Nachschlagen"}]);
   const q0 = hashQuery();
   app.innerHTML = '<header class="seiten-kopf"><h1>Bücher</h1><p>Buch vergessen? Hier steht das Wichtigste aus jedem Fach.</p></header>'+
     '<label class="suche lernen-suche" for="nq">'+ic("suche")+'<input class="suche-feld" id="nq" type="search" placeholder="Suchen, z. B. Pythagoras, went, Natrium" autocomplete="off"></label>'+
@@ -22186,8 +22254,115 @@ function planKarte(){
     }).join("")+'</div>' : '<p class="weich" style="font-size:15px">Keine Stunden eingetragen.</p>')+'</a>';
 }
 let planTagWahl = null;
+/* ================= Kalender: Arbeiten, Lernplan, Stundenplan ================= */
+const ARBEIT_ARTEN = ["Klassenarbeit","Test","Klausur","Referat"];
+function arbeiten(){ if(!Array.isArray(S.arbeiten)) S.arbeiten = []; return S.arbeiten; }
+function tageBis(d){ const a = new Date(datum(0)+"T12:00"), b = new Date(d+"T12:00"); return Math.round((b - a) / 864e5); }
+function datumSchoen(d){ return new Date(d+"T12:00").toLocaleDateString("de-DE", {weekday:"short", day:"numeric", month:"short"}); }
+function wannText(n){ return n === 0 ? "heute" : n === 1 ? "morgen" : n === 2 ? "übermorgen" : n > 0 ? "in "+n+" Tagen" : "vorbei"; }
+/* Passende Karo-Themen zur Arbeit: nach den Wörtern im Thema, sonst Empfehlung für die eigene Klasse */
+function arbeitThemen(a){
+  const fach = a.fach === "Mathematik" ? FACH_M : a.fach === "Englisch" ? FACH_E : null;
+  if(!fach) return [];
+  const k = S.profil.klasse, falte = x => K.normTxt(x);
+  const pool = THEMEN.filter(t => fachVon(t) === fach && (!k || t.klasse <= k));
+  const woerter = (a.thema || "").split(/[\s,;:\/+&()-]+/).map(falte).filter(w => w.length >= 4 && ["oder","sowie","thema","arbeit"].indexOf(w) < 0).map(w => w.length > 5 ? w.slice(0, -2) : w);
+  /* Treffer im Titel zählen mehr als in der Beschreibung; bei Gleichstand gewinnt die eigene Klasse */
+  const punkte = t => { const ti = falte(t.titel), rest = falte(t.kurz+" "+t.kapitel); return woerter.reduce((p, w) => p + (ti.indexOf(w) >= 0 ? 3 : rest.indexOf(w) >= 0 ? 1 : 0), 0); };
+  let treffer = pool.map(t => ({t:t, p:punkte(t)})).filter(x => x.p > 0)
+    .sort((x, y) => y.p - x.p || Math.abs((k || x.t.klasse) - x.t.klasse) - Math.abs((k || y.t.klasse) - y.t.klasse)).map(x => x.t);
+  if(!treffer.length && k) treffer = empfehlungen(fach === FACH_E && EN_KLASSEN.indexOf(k) < 0 ? Math.min(k, 7) : k, 2, fach);
+  return treffer.slice(0, 2);
+}
+/* Lernplan: jeden Tag bis zur Arbeit eine kleine Aufgabe, am Tag davor ein Probetest */
+function lernplan(a){
+  const n = tageBis(a.datum), th = arbeitThemen(a), schritte = [];
+  if(n <= 0) return schritte;
+  const tage = Math.min(n, 7);
+  for(let i = n - tage; i < n; i++){
+    const d = datum(i), letzter = i === n - 1, t = th.length ? th[(i - (n - tage)) % th.length] : null;
+    let text, href = null;
+    if(letzter && t){ text = "Probetest: "+t.titel; href = "#/thema/"+t.id+"/test"; }
+    else if(t){ text = "10 Aufgaben üben: "+t.titel; href = "#/thema/"+t.id+"/ueben"; }
+    else if(letzter) text = "Alles noch einmal durchgehen und früh schlafen";
+    else text = i % 2 ? "Hefteinträge zum Thema durchlesen" : "Wichtige Begriffe und Formeln aufschreiben";
+    schritte.push({d:d, text:text, href:href, fertig:!!(a.erledigt && a.erledigt[d])});
+  }
+  return schritte;
+}
+function arbeitKarteHeute(){
+  const kommend = arbeiten().filter(a => tageBis(a.datum) >= 0 && tageBis(a.datum) <= 14).sort((x, y) => x.datum < y.datum ? -1 : 1);
+  if(!kommend.length) return "";
+  const a = kommend[0], n = tageBis(a.datum), heute = lernplan(a).find(x => x.d === datum(0));
+  return '<div class="section-h"><h2>Nächste Arbeit</h2><a class="btn ghost klein" href="#/kalender">Kalender '+ic("rechts")+'</a></div>'+
+    '<a class="card arbeit-heute" href="'+(heute && heute.href && !heute.fertig ? heute.href : "#/kalender")+'">'+fachTag(a.fach)+
+    '<div><b>'+esc(a.art)+' '+esc(a.fach)+' '+wannText(n)+'</b><span>'+(n === 0 ? "Viel Erfolg! Du schaffst das." : heute ? (heute.fertig ? "Heute schon erledigt ✓" : "Heute: "+esc(heute.text)) : esc(a.thema || ""))+'</span></div>'+ic("rechts")+'</a>';
+}
+function seiteKalender(){
+  crumbs([]);
+  const wrap = el("div","runner kalender-seite");
+  wrap.innerHTML = '<div class="th-head">'+'<span class="ico">'+ic("kalender")+'</span>'+'<div><h1>Kalender</h1>'+
+    '<p>Trag deine Arbeiten ein, dann macht Karo dir einen Lernplan bis dahin. Dazu dein Stundenplan und der Vertretungsplan.</p></div></div>';
+  const neuKnopf = btn("btn primary", ic("plus")+"Arbeit eintragen", () => { form.hidden = !form.hidden; neuKnopf.setAttribute("aria-expanded", String(!form.hidden)); if(!form.hidden) form.querySelector("#afach").focus(); });
+  neuKnopf.setAttribute("aria-expanded","false");
+  const knoepfe = el("div","heft-knoepfe"); knoepfe.appendChild(neuKnopf); wrap.appendChild(knoepfe);
+  const form = el("form","card pad formular heft-form");
+  form.innerHTML = '<h3 style="font-size:20px">Neue Arbeit</h3>'+
+    '<div class="zwei"><label>Fach<select id="afach">'+FAECHER.map(f => '<option'+(f[0] === (S.letztesFach || "Mathematik") ? " selected" : "")+'>'+esc(f[0])+'</option>').join("")+'</select></label>'+
+    '<label>Was?<select id="aart">'+ARBEIT_ARTEN.map(x => '<option>'+x+'</option>').join("")+'</select></label></div>'+
+    '<label>Datum<input type="date" id="adat" required min="'+datum(0)+'"></label>'+
+    '<label>Thema <span class="leise" style="font-weight:500">(hilft Karo beim Lernplan)</span><input type="text" id="athema" maxlength="140" placeholder="z. B. Prozentrechnung, Simple Past"></label>'+
+    '<div class="row"><button class="btn brand" type="submit">'+ic("haken")+'Speichern</button><button class="btn ghost" type="button" id="azu">Abbrechen</button></div>';
+  form.hidden = true; wrap.appendChild(form);
+  form.querySelector("#azu").addEventListener("click", () => { form.hidden = true; neuKnopf.setAttribute("aria-expanded","false"); });
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const d = form.querySelector("#adat").value; if(!d) return;
+    arbeiten().push({id:"a"+Date.now().toString(36), fach:form.querySelector("#afach").value, art:form.querySelector("#aart").value, datum:d, thema:form.querySelector("#athema").value.trim().slice(0,140), erledigt:{}});
+    speichern(); form.reset(); form.hidden = true; neuKnopf.setAttribute("aria-expanded","false"); zeichne(); toast("Arbeit eingetragen, Lernplan steht");
+  });
+  const liste = el("div","stack arbeiten-liste"); wrap.appendChild(liste);
+  wrap.insertAdjacentHTML("beforeend", (vertretungKarte(false) || "") + (planLeer()
+    ? '<a class="card arbeit-heute" href="#/stundenplan"><span class="fachtag" style="--f:var(--brand)">'+ic("plan")+'</span><div><b>Stundenplan</b><span>Noch leer. Tippe hier und trag deine Stunden ein'+(sphMoeglich() ? ', oder verbinde das Schulportal unter „Aufgaben“' : '')+'.</span></div>'+ic("rechts")+'</a>'
+    : planKarte()));
+  app.appendChild(wrap); app.insertAdjacentHTML("beforeend", fuss());
+  function zeichne(){
+    const alle = arbeiten().slice().sort((x, y) => x.datum < y.datum ? -1 : 1);
+    const kommend = alle.filter(a => tageBis(a.datum) >= 0), vorbei = alle.filter(a => tageBis(a.datum) < 0).reverse();
+    liste.innerHTML = '<div class="section-h"><h2>Arbeiten und Tests</h2></div>';
+    if(!kommend.length) liste.insertAdjacentHTML("beforeend", '<div class="card leer-hinweis">Keine Arbeit eingetragen. Tippe auf „Arbeit eintragen“, dann plant Karo mit dir die Tage bis dahin.</div>');
+    kommend.forEach(a => liste.appendChild(arbeitKarte(a)));
+    if(vorbei.length){
+      const det = el("details","card pad arbeiten-vorbei"); det.innerHTML = '<summary>Vorbei ('+vorbei.length+')</summary>';
+      vorbei.forEach(a => det.appendChild(arbeitKarte(a))); liste.appendChild(det);
+    }
+  }
+  function arbeitKarte(a){
+    const n = tageBis(a.datum), plan = lernplan(a), c = el("div","card pad arbeit-karte"+(n < 0 ? " vorbei" : ""));
+    c.style.setProperty("--f", fachFarbe(a.fach));
+    c.innerHTML = '<div class="arbeit-kopf">'+fachTag(a.fach)+'<div><b>'+esc(a.art)+' '+esc(a.fach)+'</b><span>'+esc(datumSchoen(a.datum))+' · '+wannText(n)+(a.thema ? ' · '+esc(a.thema) : '')+'</span></div></div>';
+    const weg = btn("klein-x", ic("kreuz"), () => { if(weg.dataset.sicher){ S.arbeiten = arbeiten().filter(x => x !== a); speichern(); zeichne(); } else { weg.dataset.sicher = "1"; weg.classList.add("sicher"); weg.setAttribute("aria-label","Wirklich löschen?"); toast("Nochmal tippen zum Löschen"); } });
+    weg.setAttribute("aria-label", a.art+" "+a.fach+" löschen"); c.querySelector(".arbeit-kopf").appendChild(weg);
+    if(n === 0) c.insertAdjacentHTML("beforeend", '<p class="arbeit-heute-txt">Heute ist es so weit. Viel Erfolg, du schaffst das! 🍀</p>');
+    if(plan.length){
+      const ol = el("ol","lernplan");
+      plan.forEach(x => {
+        const li = el("li", x.d === datum(0) ? "heute" : "");
+        const cb = el("input"); cb.type = "checkbox"; cb.checked = x.fertig; cb.setAttribute("aria-label", "Erledigt: "+x.text);
+        cb.addEventListener("change", () => { a.erledigt = a.erledigt || {}; if(cb.checked) a.erledigt[x.d] = 1; else delete a.erledigt[x.d]; speichern(); });
+        li.appendChild(cb);
+        li.insertAdjacentHTML("beforeend", '<span class="lp-tag">'+(x.d === datum(0) ? "Heute" : esc(datumSchoen(x.d)))+'</span>'+
+          (x.href ? '<a class="lp-text" href="'+x.href+'">'+esc(x.text)+'</a>' : '<span class="lp-text">'+esc(x.text)+'</span>'));
+        ol.appendChild(li);
+      });
+      c.insertAdjacentHTML("beforeend", '<h4 class="lp-titel">Dein Lernplan</h4>'); c.appendChild(ol);
+    }
+    return c;
+  }
+  zeichne();
+}
 function seiteStundenplan(){
-  crumbs([{t:"Heft", href:"#/heft"}, {t:"Stundenplan"}]);
+  crumbs([{t:"Kalender", href:"#/kalender"}, {t:"Stundenplan"}]);
   const P = plan();
   const wrap = el("div","runner plan-seite");
   wrap.innerHTML = '<div class="th-head">'+icoHtml("plan")+'<div><div class="eyebrow">Deine Woche</div><h1>Stundenplan</h1>'+
@@ -22312,7 +22487,7 @@ function seiteHeft(){
   const neuKnopf = btn("btn primary", ic("plus")+"Neuer Eintrag", () => { form.hidden = !form.hidden; neuKnopf.setAttribute("aria-expanded", String(!form.hidden)); if(!form.hidden) form.querySelector("#hthema").focus(); });
   neuKnopf.setAttribute("aria-expanded","false");
   knoepfe.appendChild(neuKnopf);
-  knoepfe.insertAdjacentHTML("beforeend", '<a class="btn" href="#/stundenplan">'+ic("plan")+'Stundenplan</a>');
+  knoepfe.insertAdjacentHTML("beforeend", '<a class="btn" href="#/kalender">'+ic("kalender")+'Kalender und Stundenplan</a>');
   wrap.appendChild(knoepfe);
   const form = el("form","card pad formular heft-form");
   const letztesFach = planFachJetzt() || S.letztesFach || "Mathematik";

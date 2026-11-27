@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Der beste Waffelteig</title>
+<meta name="description" content="Waffelteig, der außen knusprig und innen fluffig wird: Zutaten, sechs Schritte und die Tricks, auf die es ankommt.">
+<meta name="theme-color" content="#f6ecd9">
+<style>
+:root{
+  --ground:#f6ecd9; --paper:#fffaf0; --ink:#3a2413; --ink-2:#6f5137; --line:#e6d3b3;
+  --waffle:#d9963a; --waffle-deep:#a8641c; --butter:#ffd766; --butter-soft:#fff1c2;
+  --on-accent:#3a2413;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#1d140c; --paper:#281c11; --ink:#f7ead6; --ink-2:#cdb596; --line:#42301e;
+    --waffle:#e0a348; --waffle-deep:#f0bd6c; --butter:#ffd766; --butter-soft:#3c2f14;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font:17px/1.6 var(--body);
+}
+main{max-width:680px; margin:0 auto; padding:0 16px 56px}
+
+/* Kopf mit Waffelmuster */
+header{
+  position:relative; overflow:hidden;
+  padding:56px 16px 44px; text-align:center;
+  background:
+    repeating-linear-gradient(0deg,rgba(168,100,28,.28) 0 6px,transparent 6px 46px),
+    repeating-linear-gradient(90deg,rgba(168,100,28,.28) 0 6px,transparent 6px 46px),
+    var(--waffle);
+  color:#3a2413;
+}
+header::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 45%,rgba(255,246,222,.92) 0 38%,rgba(255,246,222,0) 72%);
+}
+header > *{position:relative; z-index:1}
+.eyebrow{
+  margin:0 0 10px; font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:#8a4f12;
+}
+h1{
+  margin:0; font-family:var(--display); font-weight:700;
+  font-size:clamp(2.2rem,8vw,3.4rem); line-height:1.05; letter-spacing:-.01em; text-wrap:balance;
+}
+.lead{margin:14px auto 0; max-width:30em; font-size:1.05rem; color:#5a3c20; text-wrap:pretty}
+.facts{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:22px 0 0; padding:0; list-style:none;
+}
+.facts li{
+  padding:5px 12px; border-radius:999px; background:rgba(255,250,240,.85);
+  border:1px solid rgba(168,100,28,.35); font-size:.88rem; font-weight:600;
+}
+
+h2{
+  margin:44px 0 14px; font-family:var(--display); font-size:1.6rem; line-height:1.2; text-wrap:balance;
+}
+.card{
+  background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+}
+
+/* Mengen-Umschalter */
+.amount{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+.amount span{font-weight:600; color:var(--ink-2)}
+.seg{display:inline-flex; padding:3px; border-radius:999px; background:var(--butter-soft); border:1px solid var(--line)}
+.seg button{
+  min-width:44px; min-height:40px; padding:0 12px; border:0; border-radius:999px; background:transparent;
+  font:inherit; font-weight:700; color:var(--ink-2); cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--butter); color:var(--on-accent)}
+.seg button:focus-visible{outline:3px solid var(--waffle-deep); outline-offset:2px}
+
+.zutaten{margin:0; padding:0; list-style:none}
+.zutaten li{
+  display:flex; gap:14px; align-items:baseline; padding:10px 0; border-top:1px dashed var(--line);
+}
+.zutaten li:first-child{border-top:0}
+.zutaten b{flex:0 0 6.2em; font-variant-numeric:tabular-nums; color:var(--waffle-deep)}
+.zutaten small{display:block; color:var(--ink-2); font-size:.86rem; line-height:1.4}
+
+/* Schritte */
+.schritte{margin:0; padding:0; list-style:none; counter-reset:s}
+.schritte li{
+  counter-increment:s; position:relative; padding:0 0 22px 54px;
+}
+.schritte li::before{
+  content:counter(s); position:absolute; left:0; top:0;
+  width:38px; height:38px; border-radius:10px; display:grid; place-items:center;
+  background:var(--waffle); color:#3a2413; font-weight:800;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.28);
+}
+.schritte li:not(:last-child)::after{
+  content:""; position:absolute; left:18px; top:44px; bottom:4px; width:2px; background:var(--line);
+}
+.schritte h3{margin:0 0 2px; font-size:1.05rem; line-height:38px}
+.schritte p{margin:0; color:var(--ink-2); text-wrap:pretty}
+
+/* Tricks */
+.tricks{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.tricks .card{padding:16px 18px}
+.tricks h3{margin:0 0 4px; font-size:1rem}
+.tricks p{margin:0; color:var(--ink-2); font-size:.95rem}
+
+footer{margin-top:44px; text-align:center; color:var(--ink-2); font-size:.95rem}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Grundrezept</p>
+  <h1>Der beste Waffelteig</h1>
+  <p class="lead">Außen knusprig, innen fluffig. Dafür braucht es keine Geheimzutat, nur die richtige Reihenfolge und ein paar Minuten Geduld.</p>
+  <ul class="facts">
+    <li>10 Min. rühren</li>
+    <li>15 Min. ruhen</li>
+    <li>2–3 Min. pro Waffel</li>
+  </ul>
+</header>
+
+<main>
+
+  <h2>Zutaten</h2>
+  <div class="card">
+    <div class="amount">
+      <span id="amount-label">Für wie viele Waffeln?</span>
+      <div class="seg" role="group" aria-labelledby="amount-label">
+        <button type="button" data-n="4" aria-pressed="false">4</button>
+        <button type="button" data-n="8" aria-pressed="true">8</button>
+        <button type="button" data-n="12" aria-pressed="false">12</button>
+        <button type="button" data-n="16" aria-pressed="false">16</button>
+      </div>
+    </div>
+    <ul class="zutaten" aria-live="polite">
+      <li><b data-q="125" data-u="g">125 g</b><div>weiche Butter<small>eine Stunde vorher aus dem Kühlschrank nehmen</small></div></li>
+      <li><b data-q="80" data-u="g">80 g</b><div>Zucker</div></li>
+      <li><b data-q="1" data-u="Pck.">1 Pck.</b><div>Vanillezucker</div></li>
+      <li><b data-q="2" data-u="">2</b><div>Eier (Größe M)<small>zimmerwarm</small></div></li>
+      <li><b data-q="250" data-u="g">250 g</b><div>Weizenmehl (Type 405)</div></li>
+      <li><b data-q="1" data-u="TL">1 TL</b><div>Backpulver</div></li>
+      <li><b>1 Prise</b><div>Salz</div></li>
+      <li><b data-q="200" data-u="ml">200 ml</b><div>Milch</div></li>
+      <li><b data-q="50" data-u="ml">50 ml</b><div>Mineralwasser mit Kohlensäure<small>kommt erst ganz zum Schluss dazu</small></div></li>
+    </ul>
+  </div>
+
+  <h2>So geht’s</h2>
+  <ol class="schritte">
+    <li>
+      <h3>Butter schaumig schlagen</h3>
+      <p>Butter, Zucker und Vanillezucker mit dem Mixer 3–4 Minuten rühren, bis die Masse hell und cremig ist. Diese Luft macht die Waffeln später locker.</p>
+    </li>
+    <li>
+      <h3>Eier einzeln unterrühren</h3>
+      <p>Jedes Ei etwa eine halbe Minute einarbeiten, bevor das nächste kommt. So bleibt die Masse glatt und gerinnt nicht.</p>
+    </li>
+    <li>
+      <h3>Mehl und Milch im Wechsel</h3>
+      <p>Mehl, Backpulver und Salz mischen. Abwechselnd mit der Milch unterrühren und aufhören, sobald kein trockenes Mehl mehr zu sehen ist.</p>
+    </li>
+    <li>
+      <h3>Ruhen lassen</h3>
+      <p>Den Teig 15 Minuten stehen lassen. Das Mehl quillt, der Teig wird dickflüssiger und die Waffeln backen gleichmäßiger.</p>
+    </li>
+    <li>
+      <h3>Sprudel einrühren</h3>
+      <p>Direkt vor dem Backen das Mineralwasser kurz unterheben. Der Teig soll schwer und zäh vom Löffel fließen.</p>
+    </li>
+    <li>
+      <h3>Backen</h3>
+      <p>Das Waffeleisen richtig heiß werden lassen und dünn einfetten. Pro Waffel etwa 2 Esslöffel Teig, 2–3 Minuten backen, bis kaum noch Dampf aufsteigt.</p>
+    </li>
+  </ol>
+
+  <h2>Worauf es ankommt</h2>
+  <div class="tricks">
+    <div class="card">
+      <h3>Nicht zu lange rühren</h3>
+      <p>Sobald Mehl im Teig ist, macht jedes weitere Rühren die Waffeln zäh. Ein paar kleine Klümpchen sind in Ordnung.</p>
+    </div>
+    <div class="card">
+      <h3>Nie stapeln</h3>
+      <p>Fertige Waffeln nebeneinander auf ein Kuchengitter legen. Im Stapel werden sie durch den Dampf in einer Minute weich.</p>
+    </div>
+    <div class="card">
+      <h3>Noch fluffiger</h3>
+      <p>Eier trennen, das Eiweiß steif schlagen und zusammen mit dem Sprudel vorsichtig unterheben.</p>
+    </div>
+    <div class="card">
+      <h3>Noch knuspriger</h3>
+      <p>Ein Fünftel des Mehls durch Speisestärke ersetzen und die Waffeln eine halbe Minute länger backen.</p>
+    </div>
+  </div>
+
+  <footer>Dazu passen Puderzucker, heiße Kirschen oder einfach ein Klecks Sahne.</footer>
+
+</main>
+
+<script>
+(function(){
+  var buttons = document.querySelectorAll('.seg button');
+  var amounts = document.querySelectorAll('.zutaten b[data-q]');
+  function fmt(v){
+    var whole = Math.floor(v), half = v - whole >= 0.5;
+    if (!half) return String(whole);
+    return (whole ? whole : '') + '½';
+  }
+  function show(n){
+    var f = n / 8;
+    amounts.forEach(function(el){
+      var u = el.dataset.u;
+      var v = el.dataset.q * f;
+      var text = (u === 'g' || u === 'ml') ? String(Math.round(v / 5) * 5) : fmt(v);
+      el.textContent = text + (u ? ' ' + u : '');
+    });
+    buttons.forEach(function(b){
+      b.setAttribute('aria-pressed', String(Number(b.dataset.n) === n));
+    });
+  }
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(){ show(Number(b.dataset.n)); });
+  });
+})();
+</script>
+</body>
+</html>

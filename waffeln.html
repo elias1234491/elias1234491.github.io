@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Der beste Waffelteig</title>
-<meta name="description" content="Waffelteig, der außen knusprig und innen fluffig wird: Zutaten, sechs Schritte und die Tricks, auf die es ankommt.">
+<meta name="description" content="Waffelteig, der außen knusprig und innen fluffig wird: Zutaten, sechs Schritte und die Tricks, auf die es ankommt. Dazu der beste Erdbeershake und Bananenshake.">
 <meta name="theme-color" content="#f6ecd9">
 <style>
 :root{
   --ground:#f6ecd9; --paper:#fffaf0; --ink:#3a2413; --ink-2:#6f5137; --line:#e6d3b3;
   --waffle:#d9963a; --waffle-deep:#a8641c; --butter:#ffd766; --butter-soft:#fff1c2;
   --on-accent:#3a2413;
+  --berry:#d8475f; --berry-deep:#b02a45; --banana:#eebf2e; --banana-deep:#8a6400;
   --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   color-scheme:light;
@@ -19,6 +20,7 @@
   :root{
     --ground:#1d140c; --paper:#281c11; --ink:#f7ead6; --ink-2:#cdb596; --line:#42301e;
     --waffle:#e0a348; --waffle-deep:#f0bd6c; --butter:#ffd766; --butter-soft:#3c2f14;
+    --berry:#e5637a; --berry-deep:#ff9db0; --banana:#eebf2e; --banana-deep:#ffd766;
     color-scheme:dark;
   }
 }
@@ -111,6 +113,23 @@ h2{
 .tricks h3{margin:0 0 4px; font-size:1rem}
 .tricks p{margin:0; color:var(--ink-2); font-size:.95rem}
 
+/* Shakes */
+.intro{margin:-6px 0 16px; color:var(--ink-2); text-wrap:pretty}
+.shakes{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); align-items:start}
+.shake{padding:0; overflow:hidden}
+.shake h3{
+  margin:0; padding:12px 20px; font-family:var(--display); font-size:1.3rem; line-height:1.2;
+  background:var(--accent); color:var(--on-accent);
+}
+.shake .zutaten{padding:6px 20px 0}
+.shake .zutaten b{flex-basis:5em; color:var(--accent-deep)}
+.shake .tipp{margin:8px 20px 18px; padding-top:12px; border-top:1px solid var(--line); color:var(--ink-2); font-size:.95rem; text-wrap:pretty}
+.shake .tipp strong{color:var(--ink)}
+.berry{--accent:var(--berry); --accent-deep:var(--berry-deep); --on-accent:#fff}
+.banana{--accent:var(--banana); --accent-deep:var(--banana-deep)}
+@media (prefers-color-scheme:dark){ .berry{--on-accent:#2a0d14} }
+.note{margin:22px 0 0; text-align:center; color:var(--ink-2); font-size:.95rem}
+
 footer{margin-top:44px; text-align:center; color:var(--ink-2); font-size:.95rem}
 </style>
 </head>
@@ -201,7 +220,36 @@ footer{margin-top:44px; text-align:center; color:var(--ink-2); font-size:.95rem}
     </div>
   </div>
 
-  <footer>Dazu passen Puderzucker, heiße Kirschen oder einfach ein Klecks Sahne.</footer>
+  <p class="note">Dazu passen Puderzucker, heiße Kirschen oder einfach ein Klecks Sahne.</p>
+
+  <h2>Und dazu: zwei Shakes</h2>
+  <p class="intro">Jeweils für 2 große Gläser. Alles in den Mixer geben, 30 bis 45 Sekunden auf höchster Stufe mixen und sofort servieren.</p>
+  <div class="shakes">
+    <section class="card shake berry">
+      <h3>Der beste Erdbeershake</h3>
+      <ul class="zutaten">
+        <li><b>300 g</b><div>reife Erdbeeren<small>geputzt, am besten eine Stunde angefroren</small></div></li>
+        <li><b>300 ml</b><div>kalte Milch</div></li>
+        <li><b>2 Kugeln</b><div>Vanilleeis</div></li>
+        <li><b>1 EL</b><div>Zucker oder Honig<small>bei sehr süßen Beeren weglassen</small></div></li>
+        <li><b>1 Spritzer</b><div>Zitronensaft</div></li>
+      </ul>
+      <p class="tipp"><strong>Der Trick:</strong> Der Spritzer Zitrone macht den Shake nicht sauer, sondern lässt die Erdbeeren kräftiger schmecken. Angefrorene Beeren machen ihn dick, ohne dass Eiswürfel ihn verwässern.</p>
+    </section>
+    <section class="card shake banana">
+      <h3>Der beste Bananenshake</h3>
+      <ul class="zutaten">
+        <li><b>2</b><div>sehr reife Bananen<small>mit braunen Punkten auf der Schale</small></div></li>
+        <li><b>400 ml</b><div>kalte Milch</div></li>
+        <li><b>2 Kugeln</b><div>Vanilleeis</div></li>
+        <li><b>1 Prise</b><div>Zimt</div></li>
+        <li><b>1 TL</b><div>Honig<small>nur wenn die Bananen noch nicht ganz reif sind</small></div></li>
+      </ul>
+      <p class="tipp"><strong>Der Trick:</strong> Die Bananen in Scheiben schneiden und zwei Stunden einfrieren, dann wird der Shake cremig wie Softeis. Gleich trinken, denn nach ein paar Minuten wird er braun.</p>
+    </section>
+  </div>
+
+  <footer>Guten Appetit!</footer>
 
 </main>
 
